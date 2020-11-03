@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -13,6 +15,11 @@ namespace RecipeFinder.WebAPI
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            //Changes JSON output from Pascal case to Camel case.
+            config.Formatters.JsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //Changes JSON output from enum ordinal to enum name.
+            config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
 
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

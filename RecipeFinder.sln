@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeFinder.Desktop", "Rec
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeFinder.DataLayer", "RecipeFinder.DataLayer\RecipeFinder.DataLayer.csproj", "{01932993-D77E-4A48-9732-20D73D73B2D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeFinder.WebAPI", "RecipeFinder.WebAPI\RecipeFinder.WebAPI.csproj", "{FAAFD8FC-0657-4AF6-AE30-9FD0114E47F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeFinder.WebAPI", "RecipeFinder.WebAPI\RecipeFinder.WebAPI.csproj", "{61849D39-4490-4582-856C-77FBFDB722A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,10 @@ Global
 		{01932993-D77E-4A48-9732-20D73D73B2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01932993-D77E-4A48-9732-20D73D73B2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01932993-D77E-4A48-9732-20D73D73B2D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAAFD8FC-0657-4AF6-AE30-9FD0114E47F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAAFD8FC-0657-4AF6-AE30-9FD0114E47F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAAFD8FC-0657-4AF6-AE30-9FD0114E47F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAAFD8FC-0657-4AF6-AE30-9FD0114E47F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61849D39-4490-4582-856C-77FBFDB722A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61849D39-4490-4582-856C-77FBFDB722A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61849D39-4490-4582-856C-77FBFDB722A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61849D39-4490-4582-856C-77FBFDB722A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
