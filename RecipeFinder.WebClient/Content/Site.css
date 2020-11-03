@@ -1,24 +1,26 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿@import url('https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&display=swap');
+/* Set a background image by replacing the URL below */
+body {
+    background: url('/Content/img/rachel-park-hrlvr2ZlUNk-unsplash.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.logo-img {
+    max-width: 100px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+.nav-item a {
+    font-size: 22px;
+    font-family: 'Goudy Bookletter 1911', serif;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+.nav-item {
+    margin-left: 20px;
+}
+
+.page-heading {
+    margin-bottom: 20px;
 }
