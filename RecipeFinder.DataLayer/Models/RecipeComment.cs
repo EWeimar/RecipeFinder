@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DataLayer.Models
 {
-    public class Recipe
+    public class RecipeComment
     {
-        public string Title { get; set; }
-        public string Instruction { get; set; }
+        public string Text { get; set; }
         public DateTime CreatedAt { get; set; }
-
     }
 }
