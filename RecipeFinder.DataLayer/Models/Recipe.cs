@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecipeFinder.DataLayer
+namespace RecipeFinder.DataLayer.Models
 {
-    public class Class1
+    public class Recipe
     {
+        public string Title { get; set; }
     }
 }
