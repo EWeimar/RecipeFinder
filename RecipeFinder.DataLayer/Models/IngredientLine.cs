@@ -8,7 +8,8 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class IngredientLine
     {
-        public Enum MeasureUnit { get; set; }
+        public MeasureUnit MeasureUnit { get; set; }
         public int Amount { get; set; }
+        public Ingredient Ingredient { get; set; }
     }
 }

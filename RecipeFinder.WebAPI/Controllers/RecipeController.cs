@@ -1,4 +1,6 @@
-﻿using RecipeFinder.WebAPI.Models;
+﻿using RecipeFinder.BusinessLayer.Interfaces;
+using RecipeFinder.BusinessLayer.Services;
+using RecipeFinder.DataLayer.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +12,29 @@ namespace RecipeFinder.WebAPI.Controllers
 {
     public class RecipeController : ApiController
     {
-        public List<Recipe> GetRecipes()
+        private IRecipeService RecipeService;
+        public RecipeController()
         {
-            return new List<Recipe>()
+            RecipeService = new RecipeService();
+        }
+        public List<IngredientLine> GetRecipes()
+        {
+            return new List<IngredientLine>()
             {
-                new Recipe()
+                new IngredientLine()
                 {
-                    Name = "Pølser",
-                    Description = "Dejlige store pølser",
-                    Rating = 5,
-                    Unit = DataLayer.Models.MeasureUnit.L
-                    
+                    //Name = "Pølser",
+                    //Description = "Dejlige store pølser",
+                    //Rating = 5,
+                    MeasureUnit = DataLayer.Models.MeasureUnit.None
+
                 }
             };
+        }
+
+        public Recipe GetRecipe(int id)
+        {
+            return RecipeService.GetRecipe(id);
         }
     }
 }
