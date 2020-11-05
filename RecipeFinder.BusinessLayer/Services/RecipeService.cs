@@ -10,6 +10,14 @@ namespace RecipeFinder.BusinessLayer.Services
 {
     public class RecipeService : IRecipeService
     {
+        private Recipe _recipe = new Recipe();
+
+        public void Create (Recipe recipe)
+        {
+            _recipe.Create(recipe);
+        }
+
+
         public Recipe GetRecipe(string title)
         {
             throw new NotImplementedException();

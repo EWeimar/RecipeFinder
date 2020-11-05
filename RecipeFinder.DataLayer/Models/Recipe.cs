@@ -11,7 +11,13 @@ namespace RecipeFinder.DataLayer.Models
         public string Title { get; set; }
         public string Instruction { get; set; }
         public DateTime CreatedAt { get; set; }
-        public IngredientLine IngredientLine { get; set; }
+
+        public Recipe()
+        {
+            IngredientLines = new List<IngredientLine>();
+        }
+
+        public List<IngredientLine> IngredientLines { get; set; }
         public Image Image { get; set; }
         public RecipeRating RecipeRating { get; set; }
         public RecipeComment RecipeComment { get; set; }
