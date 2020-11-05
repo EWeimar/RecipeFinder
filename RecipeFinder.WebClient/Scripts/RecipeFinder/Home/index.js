@@ -1,1 +1,1 @@
-﻿//alert("Hello from /Scripts/RecipeFinder/Home/index.js");
+﻿
