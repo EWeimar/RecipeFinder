@@ -14,4 +14,4 @@
     $( "#opener" ).on( "click", function() {
         $("#dialog").dialog("open");
     });
-  } );
+    });
