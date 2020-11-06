@@ -11,6 +11,7 @@ namespace RecipeFinder.WebClient.Models
     {
         Success,
         Warning,
-        Danger
+        Danger,
+        Info
     }
 }
