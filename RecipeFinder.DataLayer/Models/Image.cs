@@ -8,6 +8,7 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class Image
     {
+        public int Id { get; set; }
         public string FileName { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class Ingredient
     {
-        public String Name { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
