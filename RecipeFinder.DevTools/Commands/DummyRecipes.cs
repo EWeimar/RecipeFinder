@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DevTools.Commands
 {
-    class DummyRecipes
+    public class DummyRecipes
     {
-        public static void runCommand()
+        public static void RunCommand()
         {
             Console.WriteLine("Hello from DummyRecipes");
         }
