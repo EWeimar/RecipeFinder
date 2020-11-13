@@ -45,9 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\ApiHelpers\IDummyRecipesCaller.cs" />
-    <Compile Include="Commands\ApiHelpers\DummyRecipesCaller.cs" />
-    <Compile Include="Commands\DummyRecipesCommand.cs" />
     <Compile Include="Interfaces\IRecipeService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

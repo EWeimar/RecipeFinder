@@ -8,7 +8,9 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class Recipe
     {
+        public int id { get; set; }
         public string Title { get; set; }
+        public string Slug { get; set; }
         public string Instruction { get; set; }
         public DateTime CreatedAt { get; set; }
 
@@ -21,5 +23,6 @@ namespace RecipeFinder.DataLayer.Models
         public Image Image { get; set; }
         public RecipeRating RecipeRating { get; set; }
         public RecipeComment RecipeComment { get; set; }
+        public User UserId { get; set; }
     }
 }

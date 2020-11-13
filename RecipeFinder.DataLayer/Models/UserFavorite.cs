@@ -8,5 +8,7 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class UserFavorite
     {
+        public Recipe RecipeId { get; set; }
+        public User UserId { get; set; }
     }
 }

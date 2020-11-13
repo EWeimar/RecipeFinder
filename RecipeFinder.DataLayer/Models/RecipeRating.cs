@@ -8,6 +8,7 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class RecipeRating
     {
+        public int Id { get; set; }
         public int Value { get; set; }
     }
 }
