@@ -103,5 +103,8 @@
   <ItemGroup>
     <EmbeddedResource Include="DatabaseScripts\scripts1.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DatabaseScripts\scripts3.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
