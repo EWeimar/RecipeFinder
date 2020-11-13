@@ -60,8 +60,8 @@ CREATE TABLE RecipeReview (
     Comment NVARCHAR(255) NOT NULL,
     Rating INT NOT NULL,
     UNIQUE (RecipeId, CreatedAt),
-    FOREIGN KEY (RecipeId) REFERENCES Recipe (RecipeId),
-    FOREIGN KEY (UserId) REFERENCES Users (UserId)
+    FOREIGN KEY (RecipeId) REFERENCES Recipe (Id),
+    FOREIGN KEY (UserId) REFERENCES Users (Id)
 );
 
 /* Table UserNotification */
