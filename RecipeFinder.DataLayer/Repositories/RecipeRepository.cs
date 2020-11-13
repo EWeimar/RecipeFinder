@@ -19,7 +19,12 @@ namespace RecipeFinder.DataLayer.Repositories
 
         public void Create(Recipe entity)
         {
-            throw new NotImplementedException();
+            using(var db = new SqlConnection(connString))
+            {
+                string sql = "INSERT INTO Recipe() values (); ";
+
+                db.Query<Recipe>(sql);
+            }
         }
 
         public void Delete(int id)

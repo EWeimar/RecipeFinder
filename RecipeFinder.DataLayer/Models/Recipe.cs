@@ -8,21 +8,11 @@ namespace RecipeFinder.DataLayer.Models
 {
     public class Recipe
     {
-        public int id { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; }
         public string Slug { get; set; }
         public string Instruction { get; set; }
-        public DateTime CreatedAt { get; set; }
-
-        public Recipe()
-        {
-            IngredientLines = new List<IngredientLine>();
-        }
-
-        public List<IngredientLine> IngredientLines { get; set; }
-        public Image Image { get; set; }
-        public RecipeRating RecipeRating { get; set; }
-        public RecipeComment RecipeComment { get; set; }
-        public User UserId { get; set; }
+        public DateTime CreatedAt { get; set; }       
     }
 }

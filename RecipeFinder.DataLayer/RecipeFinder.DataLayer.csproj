@@ -58,9 +58,8 @@
     <Compile Include="Models\IngredientLine.cs" />
     <Compile Include="Models\MeasureUnit.cs" />
     <Compile Include="Models\Recipe.cs" />
-    <Compile Include="Models\RecipeComment.cs" />
     <Compile Include="Models\RecipeImage.cs" />
-    <Compile Include="Models\RecipeRating.cs" />
+    <Compile Include="Models\RecipeReview.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserFavorite.cs" />
     <Compile Include="Models\UserNotification.cs" />
