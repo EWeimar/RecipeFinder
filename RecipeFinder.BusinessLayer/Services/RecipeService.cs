@@ -1,5 +1,6 @@
 ﻿using RecipeFinder.BusinessLayer.Interfaces;
 using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DataLayer.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,11 +11,15 @@ namespace RecipeFinder.BusinessLayer.Services
 {
     public class RecipeService : IRecipeService
     {
-        private Recipe _recipe = new Recipe();
+        IRepository<Recipe> repo; 
+        public RecipeService()
+        {
+            repo = new RecipeRepository("Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;");
+        }
 
         public void Create (Recipe recipe)
         {
-            _recipe.Create(recipe);
+            repo.Create(recipe);
         }
 
 

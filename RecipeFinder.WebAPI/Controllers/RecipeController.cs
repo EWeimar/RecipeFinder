@@ -34,7 +34,17 @@ namespace RecipeFinder.WebAPI.Controllers
 
         public Recipe GetRecipe(int id)
         {
-            return RecipeService.GetRecipe(id);
+            Recipe r = new Recipe();
+            r.Id = 0;
+            r.UserId = 1;
+            r.Title = "Fiskefrikadeller";
+            r.Slug = "Fiskefrikadeller";
+            r.Instruction = "Steg fiskefrikadeller til de er færdige!";
+            r.CreatedAt = DateTime.Now;
+
+            RecipeService.Create(r);
+
+            return null;
         }
     }
 }

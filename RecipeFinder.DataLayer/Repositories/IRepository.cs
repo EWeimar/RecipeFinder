@@ -11,6 +11,7 @@ namespace RecipeFinder.DataLayer.Repositories
         void Create(T entity);
         T Get(int id);
         IEnumerable<T> GetAll();
+        IEnumerable<T> GetAll(string propertyName, object value);
         void Update(T entity);
         void Delete(int id);
 
