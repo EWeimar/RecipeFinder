@@ -9,6 +9,7 @@ namespace RecipeFinder.BusinessLayer.Interfaces
 {
     public interface IRecipeService
     {
+        void Create(Recipe recipe);
         Recipe GetRecipe(string title);
         Recipe GetRecipe(int id);
 
