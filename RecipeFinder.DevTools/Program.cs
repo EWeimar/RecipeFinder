@@ -1,5 +1,4 @@
-﻿using DbUp;
-using RecipeFinder.DevTools.Commands;
+﻿using RecipeFinder.DevTools.Commands;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,7 +11,6 @@ namespace RecipeFinder.DevTools
 {
     class Program
     {
-
         static void Main(string[] args)
         {
             Console.Clear();
@@ -30,7 +28,7 @@ namespace RecipeFinder.DevTools
                     DummyRecipes.RunCommand();
                     break;
                 case "2":
-                    MigrateDBUP.RunCommand();
+                    //MigrateDBUP.RunCommand();
                     break;
                 case "q":
                     Environment.Exit(0);
