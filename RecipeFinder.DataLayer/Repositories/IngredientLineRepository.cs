@@ -61,7 +61,7 @@ namespace RecipeFinder.DataLayer.Repositories
             using (var db = new SqlConnection(connString))
             {
                 //Replace propertyName with e.g. Amount and value with e.g. 4
-                //Ex: GetAll(nameof(IngredientLine.Amount), "4")
+                //Ex: GetAll(nameof(IngredientLine.Amount), 4)
                 string sql = "SELECT * FROM IngredientLine WHERE @propertyName = @value";
 
                 return db.Query<IngredientLine>(sql, new { propertyName = propertyName, value = value }).ToList();
