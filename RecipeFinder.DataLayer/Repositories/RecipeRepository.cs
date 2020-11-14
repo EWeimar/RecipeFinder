@@ -23,7 +23,7 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 string sql = "INSERT INTO Recipe(UserId, Title, Slug, Instruction, CreatedAt) values (@UserId, @Title, @Slug, @Instruction, @CreatedAt)";
 
-                db.Execute(sql, new {UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt });
+                db.Execute(sql, new { UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt });
             }
         }
 
@@ -32,6 +32,7 @@ namespace RecipeFinder.DataLayer.Repositories
             using (var db = new SqlConnection(connString))
             {
                 string sql = "DELETE FROM Recipe WHERE Id = @Id";
+
                 db.Execute(sql, new { Id = id });
             }
             
@@ -42,7 +43,8 @@ namespace RecipeFinder.DataLayer.Repositories
             using(var db = new SqlConnection(connString))
             {
                 string sql = "SELECT * FROM Recipe WHERE Id = @Id";
-                return db.Query<Recipe>(sql, new {Id = id }).FirstOrDefault();        
+
+                return db.Query<Recipe>(sql, new { Id = id }).FirstOrDefault();        
             }
         }
 
@@ -51,6 +53,7 @@ namespace RecipeFinder.DataLayer.Repositories
             using (var db = new SqlConnection(connString))
             {
                 string sql = "SELECT * FROM Recipe";
+
                 return db.Query<Recipe>(sql).ToList();
             }
         }
@@ -63,6 +66,7 @@ namespace RecipeFinder.DataLayer.Repositories
                 //Replace propertyName with e.g. Title and value with e.g. Flæskesteg
                 //Ex: GetAll(nameof(Recipe.Title), "Flæskesteg")
                 string sql = "SELECT * FROM Recipe WHERE @propertyName = @value";
+
                 return db.Query<Recipe>(sql, new { propertyName = propertyName, value = value }).ToList();
             }
         }
@@ -72,7 +76,8 @@ namespace RecipeFinder.DataLayer.Repositories
             using (var db = new SqlConnection(connString))
             {
                 string sql = "UPDATE Recipe SET UserId = @UserId, Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt WHERE Id = @Id";
-                db.Execute(sql, new {UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
+
+                db.Execute(sql, new { UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
             }
         }
     }
