@@ -19,9 +19,30 @@ namespace RecipeFinder.BusinessLayer.Services
 
         public void Create (Recipe recipe)
         {
+            if(recipe.Title == null)
+            {
+                throw new Exception("Missing title!");
+            }
+
+            if(recipe.Instruction == null)
+            {
+                throw new Exception("Missing instructions!");
+            }
+
+            
+
             repo.Create(recipe);
         }
 
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Recipe GetAll()
+        {
+            throw new NotImplementedException();
+        }
 
         public Recipe GetRecipe(string title)
         {
@@ -29,6 +50,11 @@ namespace RecipeFinder.BusinessLayer.Services
         }
 
         public Recipe GetRecipe(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(Recipe recipe)
         {
             throw new NotImplementedException();
         }

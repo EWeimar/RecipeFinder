@@ -64,6 +64,8 @@
     <Compile Include="Models\UserFavorite.cs" />
     <Compile Include="Models\UserNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\IngredientLineRepository.cs" />
+    <Compile Include="Repositories\IngredientRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\RecipeRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
