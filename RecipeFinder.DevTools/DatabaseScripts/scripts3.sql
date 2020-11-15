@@ -1,13 +1,3 @@
-DROP TABLE IF exists Users;
-DROP TABLE IF exists RecipeReview;
-DROP TABLE IF exists UserNotification;
-DROP TABLE IF exists UserFavorite;
-DROP TABLE IF exists Recipe;
-DROP TABLE IF exists RecipeImage;
-DROP TABLE IF exists Image;
-DROP TABLE IF exists IngredientLine;
-DROP TABLE IF exists Ingredient;
-
 /* Table user */
 CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY (1, 1),

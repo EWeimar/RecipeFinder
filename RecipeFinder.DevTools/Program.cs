@@ -26,9 +26,15 @@ namespace RecipeFinder.DevTools
             {
                 case "1":
                     DummyRecipes.RunCommand();
+
                     break;
                 case "2":
-                    //MigrateDBUP.RunCommand();
+                    //Console.WriteLine("Test");
+                    //var cs = ConfigurationManager.ConnectionStrings["ConnectionString"];
+                    // Console.WriteLine("ConnStr: " + cs);
+                    //Console.WriteLine(ConfigurationManager.AppSettings["ConnectionString"]);
+
+                    MigrateDBUP.RunCommand();
                     break;
                 case "q":
                     Environment.Exit(0);
