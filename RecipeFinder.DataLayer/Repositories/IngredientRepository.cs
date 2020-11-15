@@ -18,13 +18,13 @@ namespace RecipeFinder.DataLayer.Repositories
             this.connString = connString;
         }
 
-        public void Create(Ingredient entity)
+        public Ingredient Create(Ingredient entity)
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO Ingredient(Name) values (@Name)";
+                string sql = "INSERT INTO Ingredient(Name) OUTPUT INSERTED.* values (@Name)";
 
-                db.Execute(sql, new { Name = entity.Name });
+                return db.Query<Ingredient>(sql, new { Name = entity.Name }).Single();
 
             }
         }

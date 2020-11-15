@@ -8,7 +8,7 @@ namespace RecipeFinder.DataLayer.Repositories
 {
     public interface IRepository<T>
     {
-        void Create(T entity);
+        T Create(T entity);
         T Get(int id);
         IEnumerable<T> GetAll();
         IEnumerable<T> GetAll(string propertyName, object value);

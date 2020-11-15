@@ -11,7 +11,7 @@ namespace RecipeFinder.DataLayer.Models
         public int Id { get; set; }
         public int RecipeId { get; set; }
         public int IngredientId { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public MeasureUnit MeasureUnit { get; set; }
 
     }

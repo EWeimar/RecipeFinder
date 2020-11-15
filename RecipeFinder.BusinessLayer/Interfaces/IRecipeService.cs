@@ -1,4 +1,5 @@
 ﻿using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,7 @@ namespace RecipeFinder.BusinessLayer.Interfaces
 {
     public interface IRecipeService
     {
-        void Create(Recipe recipe);
-        Recipe GetRecipe(string title);
-        Recipe GetRecipe(int id);
-        Recipe GetAll();
-        void Update(Recipe recipe);
-        void Delete(int id);
-
-
-        
+        void Create(RecipeDTO recipe);
+        RecipeDTO Get(int id);
     }
 }

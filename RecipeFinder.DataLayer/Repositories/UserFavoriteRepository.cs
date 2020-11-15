@@ -16,13 +16,13 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public void Create(UserFavorite entity)
+        public UserFavorite Create(UserFavorite entity)
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO UserFavorite(UserId, RecipeId) values (@UserId, @RecipeId)";
+                string sql = "INSERT INTO UserFavorite(UserId, RecipeId) OUTPUT INSERTED.* values (@UserId, @RecipeId)";
 
-                db.Execute(sql, new { UserId = entity.UserId, RecipeId = entity.RecipeId });
+                return db.Query<UserFavorite>(sql, new { UserId = entity.UserId, RecipeId = entity.RecipeId }).Single();
 
             }
         }

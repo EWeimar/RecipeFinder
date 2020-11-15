@@ -17,13 +17,13 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public void Create(User entity)
+        public User Create(User entity)
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO User(Username, Email, Password, IsAdmin) values (@Username, @Email, @Password, @IsAdmin)";
+                string sql = "INSERT INTO User(Username, Email, Password, IsAdmin) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin)";
 
-                db.Execute(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin });
+                return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin }).Single();
             }
         }
 
