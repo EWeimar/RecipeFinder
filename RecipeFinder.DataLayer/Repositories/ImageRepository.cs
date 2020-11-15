@@ -62,9 +62,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. FileName and value with e.g. Flæskesteg.jpg
                 //Ex: GetAll(nameof(Image.FileName), "Flæskesteg.jpg"
-                string sql = "SELECT * FROM Image WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM Image WHERE [{propertyName}] = @value";
 
-                return db.Query<Image>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<Image>(sql, new { value = value }).ToList();
             }
         }
 

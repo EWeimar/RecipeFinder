@@ -130,7 +130,7 @@ namespace RecipeFinder.BusinessLayer.Services
             return result;
         }
 
-        //Validation of inbound recipe(in DTO format)
+        //Validation of inbound recipe(in DTO format2)
         private void Validation(RecipeDTO recipe)
         {
             if(recipe == null)

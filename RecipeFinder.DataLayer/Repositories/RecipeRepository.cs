@@ -65,9 +65,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. Title and value with e.g. Flæskesteg
                 //Ex: GetAll(nameof(Recipe.Title), "Flæskesteg")
-                string sql = "SELECT * FROM Recipe WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM Recipe WHERE [{propertyName}] = @value";
 
-                return db.Query<Recipe>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<Recipe>(sql, new { value = value }).ToList();
             }
         }
 

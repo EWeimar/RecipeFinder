@@ -43,7 +43,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT FROM Ingredient WHERE Id = @Id";
+                string sql = "SELECT * FROM Ingredient WHERE Id = @Id";
 
                 return db.Query<Ingredient>(sql, new { Id = id }).FirstOrDefault();
             }
@@ -65,9 +65,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. Name and value with e.g. Sukker
                 //Ex: GetAll(nameof(Ingredient.Name), "Sukker")
-                string sql = "SELECT * FROM Ingredient WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM Ingredient WHERE [{propertyName}] = @value";
 
-                return db.Query<Ingredient>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<Ingredient>(sql, new { value = value }).ToList();
             }
         }
 

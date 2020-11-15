@@ -63,9 +63,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. UserId and value with e.g. 2
                 //Ex: GetAll(nameof(UserFavorite.UserId), 2)
-                string sql = "SELECT * FROM UserFavorite WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM UserFavorite WHERE [{propertyName}] = @value";
 
-                return db.Query<UserFavorite>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<UserFavorite>(sql, new { value = value }).ToList();
             }
         }
 
