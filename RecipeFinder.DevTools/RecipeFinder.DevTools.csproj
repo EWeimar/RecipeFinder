@@ -104,7 +104,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseScripts\scripts3.sql" />
+    <Content Include="DatabaseScripts\scripts3.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
