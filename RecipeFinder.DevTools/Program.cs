@@ -15,8 +15,8 @@ namespace RecipeFinder.DevTools
         {
             Console.Clear();
             Console.WriteLine("Choose an option:");
-            Console.WriteLine("1) Seed dummy recipes");
-            Console.WriteLine("2) Migrate DBUP");
+            Console.WriteLine("1) Migrate with DbUp");
+            Console.WriteLine("2) Seed dummy data");
             Console.WriteLine("q) Exit");
             Console.Write("\r\nSelect an option: ");
 
@@ -25,16 +25,10 @@ namespace RecipeFinder.DevTools
             switch (option)
             {
                 case "1":
-                    DummyRecipes.RunCommand();
-
+                    MigrateDBUPCommand.RunCommand();
                     break;
                 case "2":
-                    //Console.WriteLine("Test");
-                    //var cs = ConfigurationManager.ConnectionStrings["ConnectionString"];
-                    // Console.WriteLine("ConnStr: " + cs);
-                    //Console.WriteLine(ConfigurationManager.AppSettings["ConnectionString"]);
-
-                    MigrateDBUP.RunCommand();
+                    DummyRecipesCommand.RunCommand();
                     break;
                 case "q":
                     Environment.Exit(0);

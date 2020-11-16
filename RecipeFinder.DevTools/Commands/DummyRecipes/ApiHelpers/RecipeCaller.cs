@@ -1,28 +1,35 @@
-﻿using System.Collections.Generic;
-using System.Configuration;
-using System.Net;
-using RecipeFinder.DataLayer.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using RestSharp;
 
-namespace RecipeFinder.BusinessLayer.Commands.ApiHelpers
+namespace RecipeFinder.DevTools.Commands.DummyRecipes.ApiHelpers
 {
-    public class DummyRecipeCaller : IDummyRecipesCaller
+    class RecipeCaller : IRecipeCaller
     {
         private RestClient client;
-        public DummyRecipeCaller(string baseUrl)
+        private String baseUrl;
+
+        public RecipeCaller(string baseUrl)
         {
+            
             client = new RestClient(baseUrl);
+
+            this.baseUrl = baseUrl;
         }
 
         // parameter-less constructor using default API URL from App.Config
-        public DummyRecipeCaller()
-        {
-            client = new RestClient("http://www.madopskrifter.nu/webservices/iphone/iphoneclientservice.svc/GetPopularRecipes/0");
-        }
+        // ..... other construct
 
         public List<Recipe> GetRecipes()
         {
-            var request = new RestRequest("films", Method.GET);
+            Console.WriteLine("endpoint url: " + baseUrl + "posts");
+            var request = new RestRequest("posts", Method.GET);
+
+            //request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
+
             var response = client.Execute<RecipeList>(request);
             return response.Data.results;
         }

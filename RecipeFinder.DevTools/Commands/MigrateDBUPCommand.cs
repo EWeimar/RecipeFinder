@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DevTools.Commands
 {
-    public class MigrateDBUP
+    public class MigrateDBUPCommand
     {
         public static void RunCommand() {
             var connectionString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinder;Integrated Security=True;";

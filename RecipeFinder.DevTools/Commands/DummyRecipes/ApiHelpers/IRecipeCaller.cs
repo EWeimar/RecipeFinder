@@ -1,9 +1,12 @@
-﻿using RecipeFinder.DataLayer.Models;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace RecipeFinder.BusinessLayer.Commands.ApiHelpers
+namespace RecipeFinder.DevTools.Commands.DummyRecipes.ApiHelpers
 {
-    public interface IDummyRecipesCaller
+    interface IRecipeCaller
     {
         List<Recipe> GetRecipes();
         Recipe GetRecipe(int id);

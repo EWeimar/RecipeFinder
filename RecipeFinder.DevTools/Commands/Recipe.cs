@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DevTools.Commands
 {
-    public class DummyRecipes
+    class Recipe
     {
-        public static void RunCommand()
-        {
-            Console.WriteLine("Hello from DummyRecipes");
-        }
+        public int id { get; set; }
+        public int userId { get; set; }
+        public string title { get; set; }
+        public string body { get; set; }
     }
 }
