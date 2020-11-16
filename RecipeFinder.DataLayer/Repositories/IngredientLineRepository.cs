@@ -16,13 +16,13 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public void Create(IngredientLine entity)
+        public IngredientLine Create(IngredientLine entity)
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO IngredientLine(RecipeId, IngredientId, Amount, MeasureUnit) values (@RecipeId, @IngredientId, @Amount, @MeasureUnit)";
+                string sql = "INSERT INTO IngredientLine(RecipeId, IngredientId, Amount, MeasureUnit) OUTPUT INSERTED.* values (@RecipeId, @IngredientId, @Amount, @MeasureUnit)";
 
-                db.Execute(sql, new { RecipeId = entity.RecipeId, IngredientId = entity.IngredientId, Amount = entity.Amount, MeasureUnit = entity.MeasureUnit });
+                return db.Query<IngredientLine>(sql, new { RecipeId = entity.RecipeId, IngredientId = entity.IngredientId, Amount = entity.Amount, MeasureUnit = entity.MeasureUnit }).Single();
             }
         }
 
@@ -62,9 +62,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. Amount and value with e.g. 4
                 //Ex: GetAll(nameof(IngredientLine.Amount), 4)
-                string sql = "SELECT * FROM IngredientLine WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM IngredientLine WHERE [{propertyName}] = @value";
 
-                return db.Query<IngredientLine>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<IngredientLine>(sql, new { value = value }).ToList();
             }
         }
 

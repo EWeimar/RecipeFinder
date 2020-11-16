@@ -16,13 +16,13 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public void Create(Image entity)
+        public Image Create(Image entity)
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO Image(RecipeId, FileName) values (@RecipeId, @FileName)";
+                string sql = "INSERT INTO Image(RecipeId, FileName) OUTPUT INSERTED.* values (@RecipeId, @FileName)";
 
-                db.Execute(sql, new { RecipeId = entity.RecipeId, FileName = entity.FileName });
+                return db.Query<Image>(sql, new { RecipeId = entity.RecipeId, FileName = entity.FileName }).Single();
             }
         }
 
@@ -62,9 +62,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. FileName and value with e.g. Flæskesteg.jpg
                 //Ex: GetAll(nameof(Image.FileName), "Flæskesteg.jpg"
-                string sql = "SELECT * FROM Image WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM Image WHERE [{propertyName}] = @value";
 
-                return db.Query<Image>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<Image>(sql, new { value = value }).ToList();
             }
         }
 

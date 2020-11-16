@@ -29,6 +29,8 @@ namespace RecipeFinder.DataLayer.Models
        Spsk,
        [EnumMember(Value = "knsp")]
        Knsp,
+       [EnumMember(Value = "stk")]
+       Stk,
 
     }
 }

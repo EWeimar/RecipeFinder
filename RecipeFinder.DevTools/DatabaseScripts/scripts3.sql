@@ -1,3 +1,4 @@
+
 /* Table user */
 CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY (1, 1),

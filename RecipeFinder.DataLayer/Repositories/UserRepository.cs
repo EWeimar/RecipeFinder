@@ -17,13 +17,13 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public void Create(User entity)
+        public User Create(User entity)
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO User(Username, Email, Password, IsAdmin) values (@Username, @Email, @Password, @IsAdmin)";
+                string sql = "INSERT INTO Users(Username, Email, Password, IsAdmin) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin)";
 
-                db.Execute(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin });
+                return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin }).Single();
             }
         }
 
@@ -31,7 +31,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "DELETE FROM User where Id = @Id";
+                string sql = "DELETE FROM Users where Id = @Id";
 
                 db.Execute(sql, new { Id = id });
             }
@@ -41,7 +41,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT * FROM User WHERE Id = @Id";
+                string sql = "SELECT * FROM Users WHERE Id = @Id";
 
                 return db.Query<User>(sql, new { Id = id }).FirstOrDefault();
             }
@@ -51,7 +51,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT * FROM User";
+                string sql = "SELECT * FROM Users";
 
                 return db.Query<User>(sql).ToList();
             } 
@@ -63,9 +63,9 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 //Replace propertyName with e.g. Email and value with e.g. User@email.com
                 //Ex: GetAll(nameof(User.Email), "User@email.com")
-                string sql = "SELECT * FROM User WHERE @propertyName = @value";
+                string sql = $"SELECT * FROM Users WHERE [{propertyName}] = @value";
 
-                return db.Query<User>(sql, new { propertyName = propertyName, value = value }).ToList();
+                return db.Query<User>(sql, new { value = value }).ToList();
             }
         }
 
@@ -73,7 +73,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "UPDATE User SET Username = @Username, Email = @Email, Password = @Password, IsAdmin = @IsAdmin";
+                string sql = "UPDATE Users SET Username = @Username, Email = @Email, Password = @Password, IsAdmin = @IsAdmin";
 
                 db.Execute(sql, new { Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin });
             }
