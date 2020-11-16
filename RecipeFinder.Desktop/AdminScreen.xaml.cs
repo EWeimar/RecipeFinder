@@ -18,11 +18,18 @@ namespace RecipeFinder.Desktop
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class AdminWindow : Window
     {
-        public MainWindow()
+        public AdminWindow()
         {
             InitializeComponent();
+        }
+
+        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        {
+            CreateRecipe create = new CreateRecipe();
+            create.Show();
+            this.Close();
         }
     }
 }

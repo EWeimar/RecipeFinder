@@ -1,0 +1,31 @@
+﻿<Window x:Class="RecipeFinder.Desktop.CreateRecipe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RecipeFinder.Desktop"
+        mc:Ignorable="d"
+        Title="Create Recipe" Height="450" Width="800" Background="#61892F">
+    <Grid >
+        <StackPanel >
+            <Label Name="lblTitle" Content="Title" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
+            <TextBox Name="txtTitle" HorizontalAlignment="Left" Width="200"/>
+            
+            <Label Name="lblIngredients" Content="Search Ingredient" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
+            <TextBox Name="txtIngredients" HorizontalAlignment="Left" Width="200"/>
+
+            <Label Name="lblChosenIngredients" Content="Added Ingredients" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
+            <TextBox Name="txtChosenIngredients" HorizontalAlignment="Left" Height="50" Width="200"/>
+
+            <Label Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
+            <TextBox Name="txtInstructions" HorizontalAlignment="Left" Height="75" Width="200"/>
+            
+            <Label Name="lblImage" Content="Images*" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
+            <Button Name="btnSelectImage" Content="Select Image from folder" Background="#222629" Foreground="White" HorizontalAlignment="Left" Width="200" Margin="10"/>
+            
+            <Button Name="btnCreate" Content="Create Recipe" Background="#86C232" Foreground="White" Width="100" Margin="0,0,0,0"/>
+            <Button Name="btnBack" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="0,0"/>
+        </StackPanel>
+            
+    </Grid>
+</Window>
