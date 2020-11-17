@@ -130,7 +130,51 @@ namespace RecipeFinder.BusinessLayer.Services
             return result;
         }
 
-        //Validation of inbound recipe(in DTO format2)
+        public void Update(RecipeDTO input)
+        {
+            Validation(input);
+
+            var updateRecipe = dbAccess.Recipes.Get(input.Id);
+            
+            //Check if recipe exists
+            if(updateRecipe == null)
+            {
+                throw new ArgumentNullException("The recipe could not be found!");
+            }
+
+            //Update the recipe properties
+            updateRecipe.Title = input.Title;
+            updateRecipe.Slug = input.Slug;
+            updateRecipe.Instruction = input.Instruction;
+
+
+            //Fetch ingredientLines in DB based on recipeId
+            var updateIngredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), updateRecipe.Id);
+
+            //Update ingredientLines
+            UpdateIngredientLine(input, updateIngredientLines.ToList());
+
+            //Fetch images in DB based on recipeId
+            var updateImages = dbAccess.Images.GetAll(nameof(Image.RecipeId), updateRecipe.Id);
+            //Update images
+            UpdateImage(input, updateImages.ToList());
+
+
+            //Update the recipe
+            dbAccess.Recipes.Update(updateRecipe);
+ 
+        }
+
+        public void Delete(RecipeDTO recipe)
+        {
+            throw new NotImplementedException();
+            //Delete from the bottom and up. 
+            //Images > IngredientLine > Recipe due to foreign key constraints in DB
+
+        }
+
+
+        //Validation of inbound recipe(in DTO format)
         private void Validation(RecipeDTO recipe)
         {
             if(recipe == null)
@@ -200,6 +244,154 @@ namespace RecipeFinder.BusinessLayer.Services
             if(dbAccess.Users.Get(recipe.User.Id) == null)
             {
                 throw new ArgumentException("UserId does not exist!");
+            }
+        }
+
+        private void UpdateIngredientLine(RecipeDTO dto, List<IngredientLine> existing)
+        {
+            //Add ingredient - Identify ingredientLine to be created
+            List<IngredientLineDTO> toBeCreated = new List<IngredientLineDTO>();
+            foreach (var item in dto.IngredientLines)
+            {
+                if (existing.Any(ex => ex.Id == item.Id))
+                {
+                    //Nothing happens!
+                }
+                else
+                {
+                    toBeCreated.Add(item);
+                }
+            }
+
+            //Update ingredient - Identify ingredientLine to be updated
+            List<IngredientLineDTO> toBeUpdated = new List<IngredientLineDTO>(); 
+            foreach (var item in dto.IngredientLines)
+            {
+                if(existing.Any(ex => ex.Id == item.Id))
+                {
+                    toBeUpdated.Add(item);
+                }
+                //else - Nothing happens!
+            }
+
+            //Delete ingredient - Identify ingredientLine to be deleted
+            //Type is not DTO, as we delete from the database
+            List<IngredientLine> toBeDeleted = new List<IngredientLine>();
+            foreach (var e in existing)
+            {
+                if(toBeCreated.Any(ex => ex.Id == e.Id) || toBeUpdated.Any(ex => ex.Id == e.Id))
+                {
+                    //Nothing happens!
+                }
+                else
+                {
+                    toBeDeleted.Add(e);
+                }
+            }
+
+            //Create new ingredientLine
+            foreach (var item in toBeCreated)
+            {
+                //Get or create the required ingredient
+                Ingredient ingredient = dbAccess.Ingredients.GetAll(nameof(Ingredient.Name), item.Ingredient.Name).FirstOrDefault();
+                if (ingredient == null)
+                {
+                    var ingredientToBeCreated = new Ingredient();
+                    ingredientToBeCreated.Id = 0;
+                    ingredientToBeCreated.Name = item.Ingredient.Name;
+
+                    ingredient = dbAccess.Ingredients.Create(ingredientToBeCreated);
+                }
+
+                //Create new ingredientLine
+                IngredientLine il = new IngredientLine();
+                il.Id = 0;
+                il.RecipeId = dto.Id;
+                il.IngredientId = ingredient.Id;
+                il.Amount = item.Amount;
+                il.MeasureUnit = item.MeasureUnit;
+
+                //Send to DB
+                dbAccess.IngredientLines.Create(il);
+            }
+
+            //Update existing ingredientLine
+            foreach (var item in toBeUpdated)
+            {
+                IngredientLine il = dbAccess.IngredientLines.Get(item.Id);
+
+                il.Amount = item.Amount;
+                il.MeasureUnit = item.MeasureUnit;
+
+                //Send to DB
+                dbAccess.IngredientLines.Update(il);
+            }
+
+            //Delete existing ingredientLine
+            foreach (var item in toBeDeleted)
+            {
+                dbAccess.IngredientLines.Delete(item.Id);
+            }
+        }
+
+        private void UpdateImage(RecipeDTO dto, List<Image> existing)
+        {
+            //Add image - Identify images to be created
+            List<ImageDTO> toBeCreated = new List<ImageDTO>();
+            foreach (var item in dto.Images)
+            {
+                if(existing.Any(ex => ex.Id == item.Id))
+                {
+                    //Nothing happens!
+                }
+                else
+                {
+                    toBeCreated.Add(item);
+                }
+            }
+
+            //Remaining image - Identify images to remain as is
+            List<ImageDTO> toRemain = new List<ImageDTO>();
+            foreach (var item in dto.Images)
+            {
+                if(existing.Any(ex => ex.Id == item.Id))
+                {
+                    toRemain.Add(item);
+                }
+                //else - Nothing happens!
+            }
+
+            //Delete image - Identify images to be deleted
+            List<Image> toBeDeleted = new List<Image>();
+            foreach (var e in existing)
+            {
+                if(toBeCreated.Any(ex => ex.Id == e.Id) || toRemain.Any(ex => ex.Id == e.Id))
+                {
+                    //Nothing happens
+                }
+                else
+                {
+                    toBeDeleted.Add(e);
+                }
+            }
+
+            //Create new image
+            foreach (var item in toBeCreated)
+            {
+                //Create new image
+                Image image = new Image();
+                image.Id = 0;
+                image.RecipeId = dto.Id;
+                image.FileName = item.FileName;
+
+                //Send to DB
+                dbAccess.Images.Create(image);
+            }
+
+            //Delete image
+            foreach (var item in toBeDeleted)
+            {
+                dbAccess.Images.Delete(item.Id);
             }
         }
     }
