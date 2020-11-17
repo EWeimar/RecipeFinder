@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using RecipeFinder.DevTools.Commands.DummyRecipes.ApiHelpers;
+using RestSharp;
 
 namespace RecipeFinder.DevTools.Commands
 {
     public class DummyRecipesCommand
     {
+
         public static void RunCommand()
         {
-            Console.WriteLine("Hello from DummyRecipes");
+            var client = new RestClient("https://jsonplaceholder.typicode.com/");
+            var request = new RestRequest("posts", Method.GET);
+            var queryResult = client.Execute<List<Recipe>>(request).Data;
 
-            // get a list of film from API
-            RecipeCaller recipesCaller = new RecipeCaller("https://jsonplaceholder.typicode.com/");
-            var listOfRecipes = recipesCaller.GetRecipes();
-            foreach (var recipe in listOfRecipes)
+
+            foreach (Recipe recipe in queryResult)
             {
-                Console.WriteLine("name: " + recipe.title);
-                Console.WriteLine("body: " + recipe.body);
+                Console.WriteLine("Item Title: " + recipe.title);
             }
         }
     }
