@@ -28,7 +28,7 @@ namespace RecipeFinder.DataLayer.Repositories
 
                 string sql = "INSERT INTO Users(Username, Email, Password, IsAdmin, CreatedAt) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin, @CreatedAt)";
 
-                return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin }).Single();
+                return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, CreatedAt = entity.CreatedAt }).Single();
             }
         }
 
