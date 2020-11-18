@@ -31,5 +31,20 @@ namespace RecipeFinder.Desktop
             create.Show();
             this.Close();
         }
+
+        private void btnLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            LoginScreen Login = new LoginScreen();
+            Login.Show();
+            this.Close();
+        }
+
+        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        {
+            EditRecipe Rlist = new EditRecipe();
+            Rlist.Show();
+            this.Close();
+
+        }
     }
 }

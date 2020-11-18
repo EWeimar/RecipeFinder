@@ -7,25 +7,33 @@
         mc:Ignorable="d"
         Title="Create Recipe" Height="450" Width="800" Background="#61892F">
     <Grid >
-        <StackPanel >
-            <Label Name="lblTitle" Content="Title" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
-            <TextBox Name="txtTitle" HorizontalAlignment="Left" Width="200"/>
-            
-            <Label Name="lblIngredients" Content="Search Ingredient" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
-            <TextBox Name="txtIngredients" HorizontalAlignment="Left" Width="200"/>
+        <StackPanel HorizontalAlignment="Left" Width="384" VerticalAlignment="Center" Height="368" Margin="0,10,0,42">
+            <Label x:Name="lblTitle" Content="Title" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="170,0" RenderTransformOrigin="0.648,5.375"/>
+            <TextBox x:Name="txtTitle" HorizontalAlignment="Center" Width="200" Margin="92,0"/>
 
-            <Label Name="lblChosenIngredients" Content="Added Ingredients" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
-            <TextBox Name="txtChosenIngredients" HorizontalAlignment="Left" Height="50" Width="200"/>
+            <Label x:Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="141,0"/>
+            <TextBox x:Name="txtInstructions" HorizontalAlignment="Center" Height="220" Width="200" Margin="92,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
 
-            <Label Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
-            <TextBox Name="txtInstructions" HorizontalAlignment="Left" Height="75" Width="200"/>
-            
-            <Label Name="lblImage" Content="Images*" Foreground="White" FontSize="18" HorizontalAlignment="Left"/>
-            <Button Name="btnSelectImage" Content="Select Image from folder" Background="#222629" Foreground="White" HorizontalAlignment="Left" Width="200" Margin="10"/>
-            
-            <Button Name="btnCreate" Content="Create Recipe" Background="#86C232" Foreground="White" Width="100" Margin="0,0,0,0"/>
-            <Button Name="btnBack" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="0,0"/>
+            <Button x:Name="btnCreate" Content="Create Recipe" Background="#86C232" Foreground="White" Width="100" Margin="142,10"/>
+            <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="157,0" VerticalAlignment="Bottom"/>
         </StackPanel>
-            
+
+        <StackPanel HorizontalAlignment="Right" Margin="0,0,-0.4,0" Width="366">
+            <Label Name="lblIngredientname" Content="Ingredient" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox Name="txtIngredientname" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,0"/>
+
+            <Label Name="lblAmount" Content="Amount" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox Name="txtAmount" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,0"/>
+
+            <Label Name="lblUnit" Content="Unit" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <ComboBox Name="txtUnit" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,10"/>
+            <Button Name="btnAddIngr" Content="Add Ingredient" HorizontalAlignment="Center"/>
+
+            <TextBlock x:Name="AddedIngredients" HorizontalAlignment="Center" Margin="87,10,83.4,5" Height="167" Background="White" Foreground="Black" RenderTransformOrigin="0.5,0.5" Width="195">
+             Ingredient | Amount | Unit                
+            </TextBlock>
+
+        </StackPanel>
+
     </Grid>
 </Window>

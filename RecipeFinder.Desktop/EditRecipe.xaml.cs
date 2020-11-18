@@ -15,25 +15,33 @@ using System.Windows.Shapes;
 namespace RecipeFinder.Desktop
 {
     /// <summary>
-    /// Interaction logic for CreateRecipe.xaml
+    /// Interaction logic for EditRecipe.xaml
     /// </summary>
-    public partial class CreateRecipe : Window
+    public partial class EditRecipe : Window
     {
-        public CreateRecipe()
+        public EditRecipe()
         {
             InitializeComponent();
         }
 
-        private void lblIngredients_TouchEnter(object sender, TouchEventArgs e)
+        private void btnNext_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void btnBack_Click(object sender, RoutedEventArgs e)
+        private void btnLast_Click(object sender, RoutedEventArgs e)
         {
-            AdminWindow admin = new AdminWindow();
-            admin.Show();
-            this.Close();
+
+        }
+
+        private void btnFirst_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnPrev_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
