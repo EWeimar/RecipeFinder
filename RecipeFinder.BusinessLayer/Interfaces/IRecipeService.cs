@@ -12,6 +12,7 @@ namespace RecipeFinder.BusinessLayer.Interfaces
     {
         void Create(RecipeDTO recipe);
         RecipeDTO Get(int id);
+        List<RecipeDTO> GetAll();
         void Update(RecipeDTO recipe);
         void Delete(RecipeDTO recipe);
     }

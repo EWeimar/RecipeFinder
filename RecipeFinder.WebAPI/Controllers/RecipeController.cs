@@ -21,7 +21,7 @@ namespace RecipeFinder.WebAPI.Controllers
         
         public void CreateRecipe(RecipeDTO recipe)
         {
-
+            RecipeService.Create(recipe);
         }
 
         public RecipeDTO GetRecipe(int id)
@@ -31,7 +31,7 @@ namespace RecipeFinder.WebAPI.Controllers
 
         public void UpdateRecipe(RecipeDTO recipe)
         {
-
+            RecipeService.Update(recipe);
         }
 
         public void DeleteRecipe(int id)

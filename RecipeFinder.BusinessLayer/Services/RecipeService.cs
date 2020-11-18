@@ -84,6 +84,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Convert user info to DTO
             var user = dbAccess.Users.Get(getRecipe.UserId);
             UserDTO uResult = new UserDTO();
+            uResult.Id = user.Id;
             uResult.Username = user.Username;
 
             //Create list for ingredientlines
@@ -94,10 +95,11 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var il in ingredientLines)
             {
                 IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                var ingredients = dbAccess.Ingredients.Get(il.IngredientId);
+                var ingredient = dbAccess.Ingredients.Get(il.IngredientId);
 
                 IngredientDTO ingredientDTO = new IngredientDTO();
-                ingredientDTO.Name = ingredients.Name;
+                ingredientDTO.Id = ingredient.Id;
+                ingredientDTO.Name = ingredient.Name;
                 ingredientLineDTO.Ingredient = ingredientDTO;
                 ingredientLineDTO.Amount = il.Amount;
                 ingredientLineDTO.MeasureUnit = il.MeasureUnit;
@@ -113,6 +115,7 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var im in images)
             {
                 ImageDTO imageDTO = new ImageDTO();
+                imageDTO.Id = im.Id;
                 imageDTO.FileName = im.FileName;
 
                 imResults.Add(imageDTO);
@@ -121,6 +124,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Convert recipe to DTO and return result
             RecipeDTO result = new RecipeDTO();
             result.User = uResult;
+            result.Id = getRecipe.Id;
             result.Title = getRecipe.Title;
             result.Instruction = getRecipe.Instruction;
             result.CreatedAt = getRecipe.CreatedAt;
@@ -128,6 +132,76 @@ namespace RecipeFinder.BusinessLayer.Services
             result.Images = imResults;
 
             return result;
+        }
+
+        public List<RecipeDTO> GetAll()
+        {
+
+            List<RecipeDTO> recipeList = new List<RecipeDTO>();
+            var resultSet = dbAccess.Recipes.GetAll();
+
+            if(resultSet == null)
+            {
+                throw new ArgumentNullException("No recipes were found!");
+            }
+
+            foreach (var item in resultSet)
+            {
+                //Convert user info to DTO
+                var user = dbAccess.Users.Get(item.UserId);
+                UserDTO uResult = new UserDTO();
+                uResult.Id = user.Id;
+                uResult.Username = user.Username;
+
+                //Create list for ingredientlines
+                List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
+                //Fetch ingredientlines in DB based on recipeId
+                var ingredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), item.Id);
+                //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
+                foreach (var il in ingredientLines)
+                {
+                    IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
+                    var ingredient = dbAccess.Ingredients.Get(il.IngredientId);
+
+                    IngredientDTO ingredientDTO = new IngredientDTO();
+                    ingredientDTO.Name = ingredient.Name;
+                    ingredientDTO.Id = ingredient.Id;
+                    ingredientLineDTO.Id = il.Id;
+                    ingredientLineDTO.Ingredient = ingredientDTO;
+                    ingredientLineDTO.Amount = il.Amount;
+                    ingredientLineDTO.MeasureUnit = il.MeasureUnit;
+                    
+                    ilResults.Add(ingredientLineDTO);
+                }
+
+                //Create list for images
+                List<ImageDTO> imResults = new List<ImageDTO>();
+                //Fetch images in DB based on recipeId
+                var images = dbAccess.Images.GetAll(nameof(Image.RecipeId), item.Id);
+                //Loop over images in DB, convert to DTO and add to new list of images
+                foreach (var im in images)
+                {
+                    ImageDTO imageDTO = new ImageDTO();
+                    imageDTO.Id = im.Id;
+                    imageDTO.FileName = im.FileName;
+
+                    imResults.Add(imageDTO);
+                }
+
+                //Convert recipe to DTO and return result
+                RecipeDTO result = new RecipeDTO();
+                result.User = uResult;
+                result.Id = item.Id;
+                result.Title = item.Title;
+                result.Instruction = item.Instruction;
+                result.CreatedAt = item.CreatedAt;
+                result.IngredientLines = ilResults;
+                result.Images = imResults;
+
+                recipeList.Add(result);
+            }
+            return recipeList;
+
         }
 
         public void Update(RecipeDTO input)
@@ -167,10 +241,48 @@ namespace RecipeFinder.BusinessLayer.Services
 
         public void Delete(RecipeDTO recipe)
         {
-            throw new NotImplementedException();
             //Delete from the bottom and up. 
             //Images > IngredientLine > Recipe due to foreign key constraints in DB
 
+            var deleteRecipe = dbAccess.Recipes.Get(recipe.Id);
+            //Check if recipe exists
+            if(deleteRecipe == null)
+            {
+                throw new ArgumentNullException("The recipe could not be found!");
+            }
+
+            //Fetch images in DB based on recipeId
+            var deleteImages = dbAccess.Images.GetAll(nameof(Image.RecipeId), deleteRecipe.Id);
+            //Delete images
+            foreach (var item in deleteImages)
+            {
+                dbAccess.Images.Delete(item.Id);
+            }
+
+            //Fetch ingredientLines in DB based on recipeId
+            var deleteIngredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), deleteRecipe.Id);
+            //Delete ingredientLines
+            foreach (var item in deleteIngredientLines)
+            {
+                dbAccess.IngredientLines.Delete(item.Id);
+            }
+
+            //Check if images and ingredientlines has been deleted, then delete or error message
+            if(deleteImages.Count() == 0 && deleteIngredientLines.Count() == 0)
+            {
+                dbAccess.Recipes.Delete(deleteRecipe.Id);
+                
+            }
+            else
+            {
+                Console.WriteLine("Delete all images and ingredientlines before deleting a recipe!");
+            }
+
+            //Check if recipe has been deleted
+            if (dbAccess.Recipes.Get(deleteRecipe.Id) == null)
+            {
+                Console.WriteLine("Recipe has been deleted!");
+            }
         }
 
 
@@ -394,5 +506,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 dbAccess.Images.Delete(item.Id);
             }
         }
+
+        
     }
 }
