@@ -112,10 +112,17 @@
     <Content Include="DatabaseScripts\scripts3.sql" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RecipeFinder.BusinessLayer\RecipeFinder.BusinessLayer.csproj">
+      <Project>{95f78f55-ed82-404a-96fa-d95c336f3008}</Project>
+      <Name>RecipeFinder.BusinessLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RecipeFinder.DataLayer\RecipeFinder.DataLayer.csproj">
       <Project>{01932993-D77E-4A48-9732-20D73D73B2D4}</Project>
       <Name>RecipeFinder.DataLayer</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

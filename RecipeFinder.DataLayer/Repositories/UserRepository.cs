@@ -21,7 +21,12 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using(var db = new SqlConnection(connString))
             {
-                string sql = "INSERT INTO Users(Username, Email, Password, IsAdmin) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin)";
+                if (entity.CreatedAt == DateTime.MinValue)
+                {
+                    entity.CreatedAt = DateTime.Now;
+                }
+
+                string sql = "INSERT INTO Users(Username, Email, Password, IsAdmin, CreatedAt) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin, @CreatedAt)";
 
                 return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin }).Single();
             }
