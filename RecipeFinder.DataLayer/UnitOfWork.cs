@@ -42,9 +42,8 @@ namespace RecipeFinder.DataLayer
             
         }
 
-
         public IRepository<Image> Images => imageRepository;
-
+        
         public IRepository<Ingredient> Ingredients => ingredientRepository;
 
         public IRepository<IngredientLine> IngredientLines => ingredientLineRepository;

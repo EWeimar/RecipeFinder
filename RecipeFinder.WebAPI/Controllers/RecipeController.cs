@@ -18,24 +18,25 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             RecipeService = new RecipeService();
         }
-        public List<IngredientLine> GetRecipes()
+        
+        public void CreateRecipe(RecipeDTO recipe)
         {
-            return new List<IngredientLine>()
-            {
-                new IngredientLine()
-                {
-                    //Name = "Pølser",
-                    //Description = "Dejlige store pølser",
-                    //Rating = 5,
-                    MeasureUnit = DataLayer.Models.MeasureUnit.None
 
-                }
-            };
         }
 
         public RecipeDTO GetRecipe(int id)
         {
             return RecipeService.Get(id);
+        }
+
+        public void UpdateRecipe(RecipeDTO recipe)
+        {
+
+        }
+
+        public void DeleteRecipe(int id)
+        {
+
         }
     }
 }
