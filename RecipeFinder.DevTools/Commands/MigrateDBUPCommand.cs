@@ -12,7 +12,7 @@ namespace RecipeFinder.DevTools.Commands
     public class MigrateDBUPCommand
     {
         public static void RunCommand() {
-            var connectionString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinder;Integrated Security=True;";
+            var connectionString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
 
             EnsureDatabase.For.SqlDatabase(connectionString);
 

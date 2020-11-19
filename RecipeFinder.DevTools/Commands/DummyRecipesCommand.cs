@@ -4,18 +4,68 @@ using RestSharp;
 using RecipeFinder.DataLayer.Repositories;
 using RecipeFinder.DevTools.Commands.MealDB;
 using RecipeFinder.DTO;
+using System.Collections.Generic;
+using RecipeFinder.BusinessLayer.Services;
+using RecipeFinder.BusinessLayer.Interfaces;
+using RecipeFinder.DataLayer;
 
 namespace RecipeFinder.DevTools.Commands
 {
     public class DummyRecipesCommand
     {
-        private static string connString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinder;Integrated Security=True;";
+        private static string connString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
 
         public static void RunCommand()
         {
+
+            EnLilleTest();
+
             //InsertDummyIngredients();
             //GenerateDummyUser();
-            GenerateRandomDummyRecipe();
+            //GenerateRandomDummyRecipe();
+        }
+
+        private static void EnLilleTest()
+        {
+
+            RecipeService rs = new RecipeService();
+
+            RecipeDTO obj = new RecipeDTO();
+            obj.Id = 0;
+            obj.User = new UserDTO() { Id = 1 };
+            obj.Title = "Sandwich";
+            obj.Slug = "Sandwich-Slug";
+            obj.Instruction = "Lav en sandwich";
+            obj.IngredientLines = new List<IngredientLineDTO>()
+            {
+                new IngredientLineDTO()
+                {
+                    Id = 0,
+                    Ingredient = new IngredientDTO()
+                    {
+                        Id = 0,
+                        Name = "Brød"
+                    },
+                    Amount = 1,
+                    MeasureUnit = MeasureUnit.Stk
+                }
+            };
+
+            obj.Images = new List<ImageDTO>()
+            {
+                new ImageDTO()
+                {
+                    Id = 0,
+                    FileName = "FlotSandwich.jpg"
+                },
+                new ImageDTO()
+                {
+                    Id = 0,
+                    FileName = "LækkerSandwich.png"
+                }
+            };
+
+            rs.Create(obj);
         }
 
         private static void GenerateDummyUser()
@@ -70,8 +120,6 @@ namespace RecipeFinder.DevTools.Commands
                 recipeRepository.Create(recipe);
 
                 Console.WriteLine("recipeId " + recipe.Id);
-
-
             }
         }
     }
