@@ -95,6 +95,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Update the user properties
             updateUser.Username = user.Username;
             updateUser.Email = user.Email;
+            updateUser.Password = user.Password;
             updateUser.IsAdmin = user.IsAdmin;
 
             //Update the user

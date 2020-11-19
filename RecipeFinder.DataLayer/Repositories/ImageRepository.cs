@@ -72,9 +72,9 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "UPDATE Image SET RecipeId = @RecipeId, FileName = @FileName";
+                string sql = "UPDATE Image SET FileName = @FileName WHERE Id = @Id";
 
-                db.Execute(sql, new { RecipeId = entity.RecipeId, FileName = entity.FileName });
+                db.Execute(sql, new { FileName = entity.FileName, Id = entity.Id });
             }
         }
     }

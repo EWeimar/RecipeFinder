@@ -1,11 +1,7 @@
 ﻿using RecipeFinder.BusinessLayer.Interfaces;
 using RecipeFinder.BusinessLayer.Services;
 using RecipeFinder.DTO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace RecipeFinder.WebAPI.Controllers
@@ -25,15 +21,14 @@ namespace RecipeFinder.WebAPI.Controllers
         }
         public UserDTO GetUser(int id)
         {
-            UserDTO obj = new UserDTO();
-            obj.Id = 2;
-            obj.Username = "Rasmus - Update";
-            obj.Email = "Rasmus@Mail.dk";
-            obj.Password = "4321";
-            obj.IsAdmin = true;
-            obj.CreatedAt = DateTime.Now;
+            //UserDTO obj = new UserDTO();
+            //obj.Id = 3;
+            //obj.Username = "Rasmus - Update";
+            //obj.Email = "UpdateRasmus@Mail.dk";
+            //obj.Password = "4321";
+            //obj.IsAdmin = true;
 
-            UserService.Update(obj);
+            //UserService.Update(obj);
             return UserService.Get(id);
         }
         public List<UserDTO> GetAll()

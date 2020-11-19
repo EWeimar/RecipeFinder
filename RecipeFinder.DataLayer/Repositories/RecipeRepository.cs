@@ -75,9 +75,9 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "UPDATE Recipe SET UserId = @UserId, Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt WHERE Id = @Id";
+                string sql = "UPDATE Recipe SET Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt WHERE Id = @Id";
 
-                db.Execute(sql, new { UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
+                db.Execute(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
             }
         }
     }

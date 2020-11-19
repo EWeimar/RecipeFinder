@@ -40,7 +40,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT FROM IngredientLine WHERE Id = @Id";
+                string sql = "SELECT * FROM IngredientLine WHERE Id = @Id";
 
                 return db.Query<IngredientLine>(sql, new { Id =  id }).FirstOrDefault();
             }
@@ -72,9 +72,9 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "UPDATE IngredientLine SET RecipeId = @RecipeId, IngredientId = @IngredientId, Amount = @Amount, MeasureUnit = @MeasureUnit";
+                string sql = "UPDATE IngredientLine SET IngredientId = @IngredientId, Amount = @Amount, MeasureUnit = @MeasureUnit WHERE Id = @Id";
 
-                db.Execute(sql, new { RecipeId = entity.RecipeId, IngredientId = entity.IngredientId, Amount = entity.Amount, MeasureUnit = entity.MeasureUnit });
+                db.Execute(sql, new { IngredientId = entity.IngredientId, Amount = entity.Amount, MeasureUnit = entity.MeasureUnit, Id = entity.Id });
             }
         }
     }
