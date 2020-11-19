@@ -26,7 +26,6 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             RecipeService.Create(recipe);
         }
-
         public RecipeDTO GetRecipe(int id)
         {
             //RecipeDTO obj = new RecipeDTO();
@@ -65,12 +64,14 @@ namespace RecipeFinder.WebAPI.Controllers
             //RecipeService.Create(obj);
             return RecipeService.Get(id);
         }
-
+        public List<RecipeDTO> GetAll()
+        {
+            return RecipeService.GetAll();
+        }
         public void UpdateRecipe(RecipeDTO recipe)
         {
             RecipeService.Update(recipe);
         }
-
         public void DeleteRecipe(RecipeDTO recipe)
         {
             RecipeService.Delete(recipe);

@@ -498,7 +498,5 @@ namespace RecipeFinder.BusinessLayer.Services
                 dbAccess.Images.Delete(item.Id);
             }
         }
-
-        
     }
 }
