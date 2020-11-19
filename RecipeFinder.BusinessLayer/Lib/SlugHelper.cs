@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
-namespace RecipeFinder.WebClient.Helpers
+namespace RecipeFinder.BusinessLayer.Lib
 {
     public static class SlugHelper
     {

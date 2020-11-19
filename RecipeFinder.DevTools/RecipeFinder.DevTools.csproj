@@ -127,12 +127,16 @@
       <Project>{C33F0C8E-B120-48EC-A151-B106D291CE86}</Project>
       <Name>RecipeFinder.DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RecipeFinder.WebClient\RecipeFinder.WebClient.csproj">
+      <Project>{ca90bf9e-ede7-4453-b4cb-bbdd8664c185}</Project>
+      <Name>RecipeFinder.WebClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScripts\scripts4.sql" />
+    <Content Include="DatabaseScripts\scripts5.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
