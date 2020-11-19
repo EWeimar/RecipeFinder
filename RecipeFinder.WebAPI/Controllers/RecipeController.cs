@@ -71,9 +71,9 @@ namespace RecipeFinder.WebAPI.Controllers
             RecipeService.Update(recipe);
         }
 
-        public void DeleteRecipe(int id)
+        public void DeleteRecipe(RecipeDTO recipe)
         {
-
+            RecipeService.Delete(recipe);
         }
     }
 }
