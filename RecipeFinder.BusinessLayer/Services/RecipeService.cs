@@ -267,17 +267,9 @@ namespace RecipeFinder.BusinessLayer.Services
                 dbAccess.IngredientLines.Delete(item.Id);
             }
 
-            //Check if images and ingredientlines has been deleted, then delete or error message
-            if(deleteImages.Count() == 0 && deleteIngredientLines.Count() == 0)
-            {
-                dbAccess.Recipes.Delete(deleteRecipe.Id);
+            //Delete recipe
+            dbAccess.Recipes.Delete(deleteRecipe.Id);
                 
-            }
-            else
-            {
-                Console.WriteLine("Delete all images and ingredientlines before deleting a recipe!");
-            }
-
             //Check if recipe has been deleted
             if (dbAccess.Recipes.Get(deleteRecipe.Id) == null)
             {
