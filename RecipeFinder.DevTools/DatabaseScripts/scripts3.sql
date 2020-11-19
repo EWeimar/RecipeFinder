@@ -15,7 +15,7 @@ CREATE TABLE Recipe (
     UserId INT NOT NULL,
     Title VARCHAR (155) NOT NULL,
     Slug VARCHAR (155) NOT NULL,
-    Instructions NVARCHAR(255) NOT NULL,
+    Instruction TEXT NOT NULL,
     CreatedAt DATETIME,
     FOREIGN KEY (UserId) REFERENCES Users (Id)
 );

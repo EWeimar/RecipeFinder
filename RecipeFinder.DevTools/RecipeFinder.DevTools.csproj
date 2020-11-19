@@ -102,6 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DummyRecipesCommand.cs" />
+    <Compile Include="Commands\MealDB\MealDBRecipeList.cs" />
+    <Compile Include="Commands\MealDB\MealDBRecipe.cs" />
     <Compile Include="Commands\MealDB\MealDBIngredientsList.cs" />
     <Compile Include="Commands\MigrateDBUPCommand.cs" />
     <Compile Include="Commands\MealDB\MealDBIngredient.cs" />
@@ -123,6 +125,10 @@
     <ProjectReference Include="..\RecipeFinder.DataLayer\RecipeFinder.DataLayer.csproj">
       <Project>{01932993-D77E-4A48-9732-20D73D73B2D4}</Project>
       <Name>RecipeFinder.DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RecipeFinder.DTO\RecipeFinder.DTO.csproj">
+      <Project>{C33F0C8E-B120-48EC-A151-B106D291CE86}</Project>
+      <Name>RecipeFinder.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
