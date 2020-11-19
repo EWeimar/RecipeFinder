@@ -102,6 +102,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\DummyRecipesCommand.cs" />
+    <Compile Include="Commands\MealDB\MealDBRecipeList.cs" />
+    <Compile Include="Commands\MealDB\MealDBRecipe.cs" />
     <Compile Include="Commands\MealDB\MealDBIngredientsList.cs" />
     <Compile Include="Commands\MigrateDBUPCommand.cs" />
     <Compile Include="Commands\MealDB\MealDBIngredient.cs" />
