@@ -115,9 +115,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DatabaseScripts\scripts3.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\RecipeFinder.BusinessLayer\RecipeFinder.BusinessLayer.csproj">
       <Project>{95f78f55-ed82-404a-96fa-d95c336f3008}</Project>
       <Name>RecipeFinder.BusinessLayer</Name>
@@ -133,6 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DatabaseScripts\scripts4.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

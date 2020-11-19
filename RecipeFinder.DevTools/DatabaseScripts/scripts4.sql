@@ -1,4 +1,3 @@
-
 /* Table user */
 CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY (1, 1),
@@ -15,7 +14,7 @@ CREATE TABLE Recipe (
     UserId INT NOT NULL,
     Title VARCHAR (155) NOT NULL,
     Slug VARCHAR (155) NOT NULL,
-    Instruction TEXT NOT NULL,
+    Instruction NVARCHAR(255) NOT NULL,
     CreatedAt DATETIME,
     FOREIGN KEY (UserId) REFERENCES Users (Id)
 );
@@ -23,22 +22,15 @@ CREATE TABLE Recipe (
 /* Table Image */
 CREATE TABLE Image (
     Id INT PRIMARY KEY IDENTITY (1, 1),
-    FileName VARCHAR (155) NOT NULL
+    RecipeId INT NOT NULL,
+    FileName VARCHAR (155) NOT NULL,
+    FOREIGN KEY (RecipeId) REFERENCES Recipe (Id)
 );
 
 /* Table Ingredient */
 CREATE TABLE Ingredient (
     Id INT PRIMARY KEY IDENTITY (1, 1),
     Name VARCHAR (155) NOT NULL
-);
-
-/* Table RecipeImage */
-CREATE TABLE RecipeImage (
-    Id INT PRIMARY KEY IDENTITY (1, 1),
-    RecipeId INT NOT NULL,
-    ImageId INT NOT NULL,
-    FOREIGN KEY (RecipeId) REFERENCES Recipe (Id),
-    FOREIGN KEY (ImageId) REFERENCES Image (Id)
 );
 
 /* Table RecipeComment */
