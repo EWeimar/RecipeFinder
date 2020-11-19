@@ -14,6 +14,9 @@ namespace RecipeFinder.WebAPI.Controllers
     public class RecipeController : ApiController
     {
         private IRecipeService RecipeService;
+
+        public IngredientLineDTO IngredientLines { get; private set; }
+
         public RecipeController()
         {
             RecipeService = new RecipeService();
@@ -26,6 +29,41 @@ namespace RecipeFinder.WebAPI.Controllers
 
         public RecipeDTO GetRecipe(int id)
         {
+            RecipeDTO obj = new RecipeDTO();
+            obj.Id = 0;
+            obj.User = new UserDTO() { Id = 1 };
+            obj.Title = "Sandwich";
+            obj.Slug = "Sandwich-Slug";
+            obj.Instruction = "Lav en sandwich";
+            obj.IngredientLines = new List<IngredientLineDTO>()
+            {
+                new IngredientLineDTO()
+                {
+                    Id = 0,
+                    Ingredient = new IngredientDTO()
+                    {
+                        Id = 0,
+                        Name = "Brød"
+                    },
+                    Amount = 1,
+                    MeasureUnit = MeasureUnit.Stk
+                }
+            };
+
+            obj.Images = new List<ImageDTO>()
+            {
+                new ImageDTO()
+                {
+                    Id = 0,
+                    FileName = "FlotSandwich.jpg"
+                },
+                new ImageDTO()
+                {
+                    Id = 0,
+                    FileName = "LækkerSandwich.png"
+                }
+            };
+            RecipeService.Create(obj);
             return RecipeService.Get(id);
         }
 
