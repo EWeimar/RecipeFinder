@@ -9,7 +9,7 @@ using Dapper;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository<User>, IRepository<User>
     {
         private readonly string connString;
 
@@ -84,16 +84,21 @@ namespace RecipeFinder.DataLayer.Repositories
             }
         }
 
-        public bool ValidLogin(string strUsername, string strPassword)
+        public bool ValidLogin(string username, string password)
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = $"SELECT * FROM Users WHERE Username = @username AND Password = @password";
 
-                //var res = db.Query<User>(sql, new { username = strUsername, password = strPassword }).ToList();
+                var res = db.Query<User>(sql, new { username = username, password = password }).ToList();
+                
+                if (res.Count == 1)
+                {
+                    return true;
+                }
             }
 
-            return true;
+            return false;
         }
     }
 }

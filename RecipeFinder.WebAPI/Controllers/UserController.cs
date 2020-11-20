@@ -18,6 +18,12 @@ namespace RecipeFinder.WebAPI.Controllers
         }
 
         [HttpGet]
+        public HttpResponseMessage MyTest()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "valid: " + UserService.ValidLogin("admin", "123"));
+        }
+
+        [HttpGet]
         public HttpResponseMessage ValidLogin(string username, string password)
         {
             if (UserService.ValidLogin(username, password))
@@ -26,7 +32,7 @@ namespace RecipeFinder.WebAPI.Controllers
             }
             else
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Username or password is invalid");
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "Username or password is invalid");
             }
         }
 

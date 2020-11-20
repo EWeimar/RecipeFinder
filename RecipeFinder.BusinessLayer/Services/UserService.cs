@@ -29,7 +29,6 @@ namespace RecipeFinder.BusinessLayer.Services
             u.CreatedAt = DateTime.Now;
 
             var newUser = dbAccess.Users.Create(u);
-
         }
 
         public UserDTO Get(int id)
@@ -57,15 +56,18 @@ namespace RecipeFinder.BusinessLayer.Services
             //Create list for users
             List<UserDTO> userList = new List<UserDTO>();
             var getAll = dbAccess.Users.GetAll();
+
             //Check for any users
             if(getAll == null)
             {
                 throw new ArgumentNullException("No users were found!");
             }
+
             //Loop over users in DB, convert to DTO and add to userList
             foreach (var item in getAll)
             {
                 var user = dbAccess.Users.Get(item.Id);
+
                 UserDTO uResult = new UserDTO();
                 uResult.Id = user.Id;
                 uResult.Username = user.Username;
@@ -118,9 +120,9 @@ namespace RecipeFinder.BusinessLayer.Services
             }
         }
 
-        public bool ValidLogin(string strUsername, string strPassword)
+        public bool ValidLogin(string username, string password)
         {
-            return strUsername == "admin" && strPassword == "123456";
+            return dbAccess.Users.ValidLogin(username, password);
         }
     }
 }
