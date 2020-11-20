@@ -34,7 +34,7 @@ namespace RecipeFinder.WebAPI.Controllers
         [RecipeFinderAuthenticationFilter]
         public HttpResponseMessage SecretArea()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area!");
+            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header!!");
         }
 
         public void CreateUser(UserDTO user)
