@@ -52,6 +52,7 @@ namespace RecipeFinder.DevTools.Commands
                 if (existingRecipeWithSameName.Any())
                 {
                     //GenerateRandomDummyRecipe();
+                    continue;
                 }
 
                 // ....

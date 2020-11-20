@@ -2,6 +2,8 @@
 using RecipeFinder.BusinessLayer.Services;
 using RecipeFinder.DTO;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http;
 
 namespace RecipeFinder.WebAPI.Controllers
@@ -13,6 +15,26 @@ namespace RecipeFinder.WebAPI.Controllers
         public UserController()
         {
             UserService = new UserService();
+        }
+
+        [HttpGet]
+        public HttpResponseMessage ValidLogin(string username, string password)
+        {
+            if (username == "admin" && password == "123456") // skal checkes i databasen
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, TokenManager.GenerateToken(username));
+            }
+            else
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadGateway, "Username or password is invalid");
+            }
+        }
+
+        [HttpGet]
+        [RecipeFinderAuthenticationFilter]
+        public HttpResponseMessage SecretArea()
+        {
+            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area!");
         }
 
         public void CreateUser(UserDTO user)
