@@ -83,5 +83,17 @@ namespace RecipeFinder.DataLayer.Repositories
                 db.Execute(sql, new { Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, Id = entity.Id });
             }
         }
+
+        public bool ValidLogin(string strUsername, string strPassword)
+        {
+            using (var db = new SqlConnection(connString))
+            {
+                string sql = $"SELECT * FROM Users WHERE Username = @username AND Password = @password";
+
+                //var res = db.Query<User>(sql, new { username = strUsername, password = strPassword }).ToList();
+            }
+
+            return true;
+        }
     }
 }

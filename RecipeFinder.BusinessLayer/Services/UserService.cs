@@ -17,7 +17,6 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             dbAccess = new UnitOfWork();
         }
-
         public void Create(UserDTO user)
         {
             //Create User in the DB
@@ -79,7 +78,6 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             return userList;
-
         }
 
         public void Update(UserDTO user)
@@ -118,6 +116,11 @@ namespace RecipeFinder.BusinessLayer.Services
             {
                 Console.WriteLine("User has been deleted");
             }
+        }
+
+        public bool ValidLogin(string strUsername, string strPassword)
+        {
+            return strUsername == "admin" && strPassword == "123456";
         }
     }
 }

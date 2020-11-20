@@ -20,7 +20,7 @@ namespace RecipeFinder.WebAPI.Controllers
         [HttpGet]
         public HttpResponseMessage ValidLogin(string username, string password)
         {
-            if (username == "admin" && password == "123456") // skal checkes i databasen
+            if (UserService.ValidLogin(username, password))
             {
                 return Request.CreateResponse(HttpStatusCode.OK, TokenManager.GenerateToken(username));
             }
@@ -30,7 +30,7 @@ namespace RecipeFinder.WebAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         [RecipeFinderAuthenticationFilter]
         public HttpResponseMessage SecretArea()
         {
@@ -41,6 +41,7 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             UserService.Create(user);
         }
+
         public UserDTO GetUser(int id)
         {
             //UserDTO obj = new UserDTO();

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
@@ -14,6 +10,5 @@ namespace RecipeFinder.DataLayer.Repositories
         IEnumerable<T> GetAll(string propertyName, object value);
         void Update(T entity);
         void Delete(int id);
-
     }
 }
