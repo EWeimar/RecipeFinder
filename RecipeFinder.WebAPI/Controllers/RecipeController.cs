@@ -11,7 +11,7 @@ using System.Web.Http;
 
 namespace RecipeFinder.WebAPI.Controllers
 {
-    public class RecipeController : ApiController
+    public class RecipeController : ApiBaseController
     {
         private IRecipeService RecipeService;
 

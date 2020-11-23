@@ -4,11 +4,12 @@ using RecipeFinder.DTO;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace RecipeFinder.WebAPI.Controllers
 {
-    public class UserController : ApiController
+    public class UserController : ApiBaseController
     {
         private IUserService UserService;
 
@@ -17,30 +18,30 @@ namespace RecipeFinder.WebAPI.Controllers
             UserService = new UserService();
         }
 
-        [HttpGet]
-        public HttpResponseMessage MyTest()
+        [HttpPost]
+        public HttpResponseMessage ValidLogin()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, "valid: " + UserService.ValidLogin("admin", "123"));
-        }
+            string username = HttpContext.Current.Request.Form["username"].ToString();
+            string password = HttpContext.Current.Request.Form["password"].ToString();
 
-        [HttpGet]
-        public HttpResponseMessage ValidLogin(string username, string password)
-        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.OK, "Please fill both username and password");
+            }
+
             if (UserService.ValidLogin(username, password))
             {
                 return Request.CreateResponse(HttpStatusCode.OK, TokenManager.GenerateToken(username));
             }
-            else
-            {
-                return Request.CreateErrorResponse(HttpStatusCode.OK, "Username or password is invalid");
-            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.OK, "Username or password is invalid");
         }
 
         [HttpPost]
         [RecipeFinderAuthenticationFilter]
         public HttpResponseMessage SecretArea()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header!!");
+            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + AuthenticatedUser().Email); ;
         }
 
         public void CreateUser(UserDTO user)
