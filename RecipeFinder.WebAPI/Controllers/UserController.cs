@@ -37,7 +37,7 @@ namespace RecipeFinder.WebAPI.Controllers
             return Request.CreateErrorResponse(HttpStatusCode.OK, "Username or password is invalid");
         }
 
-        [HttpPost]
+        [HttpGet]
         [RecipeFinderAuthenticationFilter]
         public HttpResponseMessage SecretArea()
         {
