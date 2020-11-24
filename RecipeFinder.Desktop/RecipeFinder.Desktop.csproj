@@ -118,5 +118,11 @@
   <ItemGroup>
     <Folder Include="ApiHelpers\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RecipeFinder.BusinessLayer\RecipeFinder.BusinessLayer.csproj">
+      <Project>{95F78F55-ED82-404A-96FA-D95C336F3008}</Project>
+      <Name>RecipeFinder.BusinessLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

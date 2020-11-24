@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecipeFinder.BusinessLayer.Services;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -21,6 +22,8 @@ namespace RecipeFinder.Desktop
     /// </summary>
     public partial class LoginScreen : Window
     {
+
+        private UserService userService = new UserService();
         public LoginScreen()
         {
             InitializeComponent();
@@ -28,6 +31,24 @@ namespace RecipeFinder.Desktop
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
+            //string username = txtUsername.Text.ToLower();
+            //string password = txtPassword.Password;
+
+            //if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            //{
+            //    MessageBox.Show("Please fill in both username and password");
+            //}
+            //if (userService.ValidLogin(username, password))
+            //{
+            //    AdminWindow admin = new AdminWindow();
+            //    admin.Show();
+            //    this.Close();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Username and/or password is incorrect");
+            //}
+
             //For Test Purpose
 
             if (txtUsername.Text.ToLower() == "test" && @txtPassword.Password == "123456")
@@ -40,6 +61,7 @@ namespace RecipeFinder.Desktop
             {
                 MessageBox.Show("Username or Password is incorrect");
             }
+
 
         }       
     }
