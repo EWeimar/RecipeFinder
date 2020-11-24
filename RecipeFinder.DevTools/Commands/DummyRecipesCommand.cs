@@ -19,18 +19,29 @@ namespace RecipeFinder.DevTools.Commands
         public static void RunCommand()
         {
 
-            Console.WriteLine("Starting seed..... Wait....");
-            //GenerateDummyUser();
-            Thread.Sleep(2000);
+            Console.WriteLine("How many dummy recipes do you desire?:");
+            var desiredRecipeCount = Console.ReadLine();
 
-            for (int i = 1; i <= 50; i++)
+            try
             {
-                GenerateRandomDummyRecipe();
-                Thread.Sleep(500);
+                int result = Int32.Parse(desiredRecipeCount);
+
+                Console.WriteLine("Starting seed..... Wait....");
+                GenerateDummyUser();
+                Thread.Sleep(2000);
+
+                for (int i = 1; i <= result; i++)
+                {
+                    GenerateRandomDummyRecipe();
+                    Thread.Sleep(500);
+                }
+
+                Console.WriteLine("Seed Complete");
             }
-
-            Console.WriteLine("Seed Complete");
-
+            catch (FormatException)
+            {
+                Console.WriteLine($"Unable to parse '{desiredRecipeCount}'");
+            }
         }
 
         private static void GenerateRandomDummyRecipe()
@@ -55,8 +66,6 @@ namespace RecipeFinder.DevTools.Commands
                     continue;
                 }
 
-                // ....
-
                 RecipeService rs = new RecipeService();
 
                 RecipeDTO obj = new RecipeDTO();
@@ -75,11 +84,21 @@ namespace RecipeFinder.DevTools.Commands
                     {
                         var ingredientStr = mealDbRecipe.GetType().GetProperty("strIngredient" + i);
 
+                        if (ingredientStr == null)
+                        {
+                            continue;
+                        }
+
                         if (ingredientStr != null)
                         {
                             try
                             {
-                                string ingredientStrValue = ingredientStr.GetValue(mealDbRecipe).ToString();
+                                if (ingredientStr.GetValue(mealDbRecipe, null) == null)
+                                {
+                                    continue;
+                                }
+
+                                string ingredientStrValue = ingredientStr.GetValue(mealDbRecipe, null).ToString();
 
                                 if (!string.IsNullOrEmpty(ingredientStrValue))
                                 {
@@ -96,11 +115,10 @@ namespace RecipeFinder.DevTools.Commands
                                     });
                                 }
 
-                            } catch (Exception)
+                            } catch (Exception e)
                             {
-                                Console.WriteLine("Hov hov!!!!!");
+                                Console.WriteLine("An exception was thrown: " + e.Message + "\nStack Trace:\n" + e.StackTrace + "\n");
                             }
-
                         }
                     }
                 }
@@ -166,6 +184,13 @@ namespace RecipeFinder.DevTools.Commands
         private static void GenerateDummyUser()
         {
             UserRepository userRepository = new UserRepository(connString);
+
+            // no need for creating the user if it already exists
+            if (userRepository.GetAll("id", 1).Any())
+            {
+                return;
+            }
+
             User user = new User();
 
             user.Username = "EvilEagle";
