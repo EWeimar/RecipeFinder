@@ -35,5 +35,11 @@ namespace RecipeFinder.Desktop
             admin.Show();
             this.Close();
         }
-    }
+
+        private void btnAddIngr_Click(object sender, RoutedEventArgs e)
+        {
+
+           
+        }
+    }    
 }

@@ -1,4 +1,5 @@
 ﻿using RecipeFinder.BusinessLayer.Services;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,8 +23,8 @@ namespace RecipeFinder.Desktop
     /// </summary>
     public partial class LoginScreen : Window
     {
-
-        private UserService userService = new UserService();
+        //var client = new RestClient();
+        //private UserService userService = new UserService();
         public LoginScreen()
         {
             InitializeComponent();
@@ -61,8 +62,6 @@ namespace RecipeFinder.Desktop
             {
                 MessageBox.Show("Username or Password is incorrect");
             }
-
-
         }       
     }
 }
