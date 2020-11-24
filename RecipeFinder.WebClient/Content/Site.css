@@ -1,11 +1,12 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Goudy+Bookletter+1911&display=swap');
 /* Set a background image by replacing the URL below */
 body {
-    background: url('/Content/img/rachel-park-hrlvr2ZlUNk-unsplash.jpg') no-repeat center center fixed;
-    -webkit-background-size: cover;
+    background: url('/Content/images/stardust.png') no-repeat center center fixed;
+    background-size:cover;
+    /*-webkit-background-size: cover;
     -moz-background-size: cover;
     background-size: cover;
-    -o-background-size: cover;
+    -o-background-size: cover;*/
 }
 
 .logo-img {

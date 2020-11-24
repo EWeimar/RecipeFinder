@@ -6,12 +6,11 @@ using System.Web.Mvc;
 
 namespace RecipeFinder.WebClient.Controllers
 {
-    public class HomeController : ControllerBase
+    public class EmptyRefrigiatorController : Controller
     {
+        // GET: EmptyRefrigiator
         public ActionResult Index()
         {
-            //SetFlash(Models.FlashMessageType.Danger, "Hov hov mester.");
-
             return View();
         }
     }
