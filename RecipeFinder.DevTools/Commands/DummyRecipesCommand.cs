@@ -12,22 +12,23 @@ using System.Threading;
 
 namespace RecipeFinder.DevTools.Commands
 {
+
     public class DummyRecipesCommand
     {
         private static string connString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
+        private static List<string> testUsernames = new List<string>();
 
         public static void RunCommand()
         {
-
             Console.WriteLine("How many dummy recipes do you desire?:");
-            var desiredRecipeCount = Console.ReadLine();
+            var desiredRecipesCount = Console.ReadLine();
 
             try
             {
-                int result = Int32.Parse(desiredRecipeCount);
+                int result = Int32.Parse(desiredRecipesCount);
 
                 Console.WriteLine("Starting seed..... Wait....");
-                GenerateDummyUser();
+                GenerateDummyUsers();
                 Thread.Sleep(2000);
 
                 for (int i = 1; i <= result; i++)
@@ -40,7 +41,7 @@ namespace RecipeFinder.DevTools.Commands
             }
             catch (FormatException)
             {
-                Console.WriteLine($"Unable to parse '{desiredRecipeCount}'");
+                Console.WriteLine($"Unable to parse '{desiredRecipesCount}'");
             }
         }
 
@@ -52,29 +53,32 @@ namespace RecipeFinder.DevTools.Commands
 
             RecipeRepository recipeRepository = new RecipeRepository(connString);
             IngredientLineRepository ingredientLineRepository = new IngredientLineRepository(connString);
+            UserRepository userRepository = new UserRepository(connString);
 
             foreach (MealDBRecipe mealDbRecipe in queryResult.meals)
             {
-                // checking wether the "random" recipe already exists
-                RecipeRepository rr = new RecipeRepository(connString);
-                IEnumerable<Recipe> existingRecipeWithSameName = rr.GetAll(nameof(Recipe.Title), mealDbRecipe.strMeal);
+                IEnumerable<Recipe> existingRecipeWithSameName = recipeRepository.GetAll(nameof(Recipe.Title), mealDbRecipe.strMeal);
 
-                // if it is already existing, we try to get a new random recipe to replace it
+                // if it is already existing, skip
                 if (existingRecipeWithSameName.Any())
                 {
-                    //GenerateRandomDummyRecipe();
                     continue;
                 }
 
                 RecipeService rs = new RecipeService();
 
-                RecipeDTO obj = new RecipeDTO();
-                obj.Id = 0;
-                obj.User = new UserDTO() { Id = 1 };
-                obj.Title = mealDbRecipe.strMeal;
-                obj.Slug = SlugHelper.GenerateSlug(mealDbRecipe.strMeal);
-                obj.Instruction = mealDbRecipe.strInstructions;
+                string randomUserName = testUsernames[new Random().Next(0, testUsernames.Count - 1)];
+                User randomUser = userRepository.GetAll("username", randomUserName).FirstOrDefault();
 
+                RecipeDTO obj = new RecipeDTO()
+                {
+                    Id = 0,
+                    User = new UserDTO() { Id = randomUser.Id },
+                    Title = mealDbRecipe.strMeal,
+                    Slug = SlugHelper.GenerateSlug(mealDbRecipe.strMeal),
+                    Instruction = mealDbRecipe.strInstructions
+                };
+                
                 obj.IngredientLines = new List<IngredientLineDTO>();
                 obj.Images = new List<ImageDTO>();
 
@@ -123,8 +127,6 @@ namespace RecipeFinder.DevTools.Commands
                     }
                 }
 
-
-
                 if (!string.IsNullOrEmpty(mealDbRecipe.strMealThumb))
                 {
                     obj.Images.Add(new ImageDTO()
@@ -138,109 +140,36 @@ namespace RecipeFinder.DevTools.Commands
             }
         }
 
-        private static void EnLilleTest()
+        private static void GenerateDummyUsers()
         {
-            RecipeService rs = new RecipeService();
-
-            RecipeDTO obj = new RecipeDTO();
-            obj.Id = 0;
-            obj.User = new UserDTO() { Id = 1 };
-            obj.Title = "Sandwich";
-            obj.Slug = "Sandwich-Slug";
-            obj.Instruction = "Lav en sandwich";
-
-            obj.IngredientLines = new List<IngredientLineDTO>()
-            {
-                new IngredientLineDTO()
-                {
-                    Id = 0,
-                    Ingredient = new IngredientDTO()
-                    {
-                        Id = 0,
-                        Name = "Brød"
-                    },
-                    Amount = 1,
-                    MeasureUnit = MeasureUnit.Stk
-                }
-            };
-
-            obj.Images = new List<ImageDTO>()
-            {
-                new ImageDTO()
-                {
-                    Id = 0,
-                    FileName = "FlotSandwich.jpg"
-                },
-                new ImageDTO()
-                {
-                    Id = 0,
-                    FileName = "LækkerSandwich.png"
-                }
-            };
-
-            rs.Create(obj);
+            GenerateOneUser("EvilEagle", "evil.eagle@mail.local", "123456", false);
+            GenerateOneUser("GastroFreak", "gastrofreak@mail.local", "123456", false);
+            GenerateOneUser("FoodMaster27", "food.master27@mail.local", "123456", false);
+            GenerateOneUser("MeatEater1985", "MeatEater1985@mail.local", "123456", false);
+            GenerateOneUser("Goofy222", "goofy222@mail.local", "123456", false);
         }
 
-        private static void GenerateDummyUser()
+        private static void GenerateOneUser(string username, string email, string password, bool isAdmin)
         {
             UserRepository userRepository = new UserRepository(connString);
 
+            testUsernames.Add(username);
+
             // no need for creating the user if it already exists
-            if (userRepository.GetAll("id", 1).Any())
+            if (userRepository.GetAll("username", username).Any())
             {
                 return;
             }
 
-            User user = new User();
-
-            user.Username = "EvilEagle";
-            user.Email = "evil.eagle@mail.local";
-            user.Password = "123456";
-            user.IsAdmin = false;
+            User user = new User()
+            {
+                Username = username,
+                Email = email,
+                Password = password,
+                IsAdmin = false
+            };
 
             userRepository.Create(user);
-        }
-
-        private static void InsertDummyIngredients()
-        {
-            var client = new RestClient("https://www.themealdb.com/api/json/v1/1/");
-            var request = new RestRequest("list.php?i=list", Method.GET);
-            var queryResult = client.Execute<MealDBIngredientsList>(request).Data;
-
-            IngredientRepository ingredientRepository = new IngredientRepository(connString);
-
-            foreach (MealDBIngredient mealDbIngredient in queryResult.meals)
-            {
-                Ingredient newIngredientEntity = new Ingredient();
-                newIngredientEntity.Name = mealDbIngredient.strIngredient;
-                ingredientRepository.Create(newIngredientEntity);
-            }
-        }
-
-        private static void OldGenerateRandomDummyRecipe()
-        {
-            var client = new RestClient("https://www.themealdb.com/api/json/v1/1/");
-            var request = new RestRequest("random.php", Method.GET);
-            var queryResult = client.Execute<MealDBRecipeList>(request).Data;
-
-            RecipeRepository recipeRepository = new RecipeRepository(connString);
-            IngredientLineRepository ingredientLineRepository = new IngredientLineRepository(connString);
-
-            foreach (MealDBRecipe mealDbRecipe in queryResult.meals)
-            {
-                Console.WriteLine("Recipe Name: " + mealDbRecipe.strMeal);
-
-                Recipe recipe = new Recipe();
-                recipe.Title = mealDbRecipe.strMeal;
-                recipe.UserId = 1;
-                recipe.Slug = SlugHelper.GenerateSlug(mealDbRecipe.strMeal);
-                recipe.Instruction = mealDbRecipe.strInstructions;
-                recipe.CreatedAt = DateTime.Now;
-
-                recipeRepository.Create(recipe);
-
-                Console.WriteLine("recipeId " + recipe.Id);
-            }
         }
     }
 }
