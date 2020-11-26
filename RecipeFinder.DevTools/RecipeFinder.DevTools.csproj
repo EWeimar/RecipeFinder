@@ -101,6 +101,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\HashPasswordCommand.cs" />
     <Compile Include="Commands\DummyRecipesCommand.cs" />
     <Compile Include="Commands\MealDB\MealDBRecipeList.cs" />
     <Compile Include="Commands\MealDB\MealDBRecipe.cs" />

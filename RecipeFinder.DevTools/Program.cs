@@ -26,7 +26,7 @@ namespace RecipeFinder.DevTools
                     DummyRecipesCommand.RunCommand();
                     break;
                 case "3":
-                    //DummyRecipesCommand.RunCommand();
+                    HashPasswordCommand.RunCommand();
                     break;
                 case "q":
                     Environment.Exit(0);
