@@ -133,7 +133,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
-    <Compile Include="Controllers\EmptyRefrigiatorController.cs" />
+    <Compile Include="Controllers\EmptyRefrigeratorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -248,7 +248,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\RecipeFinder\EmptyRefrigiator\index.js" />
+    <Content Include="Scripts\RecipeFinder\EmptyRefrigerator\index.js" />
     <Content Include="Scripts\RecipeFinder\Home\index.js" />
     <Content Include="Scripts\src\index.js" />
     <Content Include="Scripts\src\methods\defaults.js" />
@@ -340,7 +340,7 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Shared\FlashMessage.cshtml" />
-    <Content Include="Views\EmptyRefrigiator\Index.cshtml" />
+    <Content Include="Views\EmptyRefrigerator\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

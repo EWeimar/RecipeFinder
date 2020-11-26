@@ -61,19 +61,18 @@
     </ApplicationDefinition>
     <Compile Include="ApiHelpers\IRecipeCaller.cs" />
     <Compile Include="ApiHelpers\RecipeCaller.cs" />
-    <Compile Include="Desktop-Ingredient.cs" />
-    <Compile Include="EditRecipe.xaml.cs">
+    <Compile Include="Windows\EditRecipe.xaml.cs">
       <DependentUpon>EditRecipe.xaml</DependentUpon>
     </Compile>
-    <Page Include="CreateRecipe.xaml">
+    <Page Include="Windows\CreateRecipe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginScreen.xaml">
+    <Page Include="Windows\LoginScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AdminScreen.xaml">
+    <Page Include="Windows\AdminScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -81,17 +80,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="CreateRecipe.xaml.cs">
+    <Compile Include="Windows\CreateRecipe.xaml.cs">
       <DependentUpon>CreateRecipe.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginScreen.xaml.cs">
+    <Compile Include="Windows\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AdminScreen.xaml.cs">
+    <Compile Include="Windows\AdminScreen.xaml.cs">
       <DependentUpon>AdminScreen.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="EditRecipe.xaml">
+    <Page Include="Windows\EditRecipe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
