@@ -146,6 +146,10 @@
       <Project>{01932993-D77E-4A48-9732-20D73D73B2D4}</Project>
       <Name>RecipeFinder.DataLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RecipeFinder.DevTools\RecipeFinder.DevTools.csproj">
+      <Project>{4F34B7E8-6862-45F4-834D-7BEED32D4E9E}</Project>
+      <Name>RecipeFinder.DevTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RecipeFinder.DTO\RecipeFinder.DTO.csproj">
       <Project>{C33F0C8E-B120-48EC-A151-B106D291CE86}</Project>
       <Name>RecipeFinder.DTO</Name>

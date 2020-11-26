@@ -27,6 +27,12 @@ namespace RecipeFinder.WebAPI
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
 
             config.Routes.MapHttpRoute(
+                name: "someTest",
+                routeTemplate: "api/user/SomeDatabaseTest",
+                defaults: new { controller = "User", action = "SomeDatabaseTest" }
+            );
+
+            config.Routes.MapHttpRoute(
                 name: "login",
                 routeTemplate: "api/user/ValidLogin",
                 defaults: new { controller = "User", action = "ValidLogin" }

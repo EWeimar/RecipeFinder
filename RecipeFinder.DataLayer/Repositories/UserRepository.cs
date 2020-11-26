@@ -84,21 +84,21 @@ namespace RecipeFinder.DataLayer.Repositories
             }
         }
 
-        public bool ValidLogin(string username, string password)
+        public string GetUserHashedPassword(string username)
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = $"SELECT * FROM Users WHERE Username = @username AND Password = @password";
+                string sql = $"SELECT * FROM Users WHERE Username = @username";
 
-                var res = db.Query<User>(sql, new { username = username, password = password }).ToList();
+                var res = db.Query<User>(sql, new { username = username }).ToList();
                 
                 if (res.Count == 1)
                 {
-                    return true;
+                    return res.FirstOrDefault().Password;
                 }
             }
 
-            return false;
+            return string.Empty;
         }
     }
 }

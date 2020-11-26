@@ -1,11 +1,5 @@
 ﻿using RecipeFinder.DevTools.Commands;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipeFinder.DevTools
 {
@@ -17,6 +11,7 @@ namespace RecipeFinder.DevTools
             Console.WriteLine("Choose an option:");
             Console.WriteLine("1) Migrate with DbUp");
             Console.WriteLine("2) Seed dummy data");
+            Console.WriteLine("3) Hash password");
             Console.WriteLine("q) Exit");
             Console.Write("\r\nSelect an option: ");
 
@@ -29,6 +24,9 @@ namespace RecipeFinder.DevTools
                     break;
                 case "2":
                     DummyRecipesCommand.RunCommand();
+                    break;
+                case "3":
+                    //DummyRecipesCommand.RunCommand();
                     break;
                 case "q":
                     Environment.Exit(0);

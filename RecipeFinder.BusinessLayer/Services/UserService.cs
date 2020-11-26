@@ -1,12 +1,10 @@
 ﻿using RecipeFinder.BusinessLayer.Interfaces;
+using RecipeFinder.BusinessLayer.Lib;
 using RecipeFinder.DataLayer;
 using RecipeFinder.DataLayer.Models;
 using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
@@ -24,7 +22,7 @@ namespace RecipeFinder.BusinessLayer.Services
             u.Id = 0;
             u.Username = user.Username;
             u.Email = user.Email;
-            u.Password = user.Password;
+            u.Password = SecurePasswordHasher.Hash(user.Password);
             u.IsAdmin = user.IsAdmin;
             u.CreatedAt = DateTime.Now;
 
@@ -122,7 +120,19 @@ namespace RecipeFinder.BusinessLayer.Services
 
         public bool ValidLogin(string username, string password)
         {
-            return dbAccess.Users.ValidLogin(username, password);
+            bool res = false;
+
+            string hashedPassword = dbAccess.Users.GetUserHashedPassword(username);
+
+            if (!string.IsNullOrEmpty(hashedPassword))
+            {
+                if (SecurePasswordHasher.Verify(password, hashedPassword))
+                {
+                    res = true;
+                }
+            }
+
+            return res;
         }
     }
 }

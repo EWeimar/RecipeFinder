@@ -6,9 +6,9 @@ using RecipeFinder.DevTools.Commands.MealDB;
 using RecipeFinder.DTO;
 using System.Collections.Generic;
 using RecipeFinder.BusinessLayer.Services;
-using RecipeFinder.BusinessLayer.Lib;
 using System.Linq;
 using System.Threading;
+using RecipeFinder.BusinessLayer.Lib;
 
 namespace RecipeFinder.DevTools.Commands
 {
@@ -75,7 +75,6 @@ namespace RecipeFinder.DevTools.Commands
                     Id = 0,
                     User = new UserDTO() { Id = randomUser.Id },
                     Title = mealDbRecipe.strMeal,
-                    Slug = SlugHelper.GenerateSlug(mealDbRecipe.strMeal),
                     Instruction = mealDbRecipe.strInstructions
                 };
                 
@@ -165,7 +164,7 @@ namespace RecipeFinder.DevTools.Commands
             {
                 Username = username,
                 Email = email,
-                Password = password,
+                Password = SecurePasswordHasher.Hash(password),
                 IsAdmin = false
             };
 

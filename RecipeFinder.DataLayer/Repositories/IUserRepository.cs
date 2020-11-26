@@ -5,6 +5,6 @@ namespace RecipeFinder.DataLayer.Repositories
 {
     public interface IUserRepository<User> : IRepository<User>
     {
-        bool ValidLogin(string username, string password);
+        string GetUserHashedPassword(string username);
     }
 }

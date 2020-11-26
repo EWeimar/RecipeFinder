@@ -1,13 +1,11 @@
 ﻿using RecipeFinder.BusinessLayer.Interfaces;
+using RecipeFinder.BusinessLayer.Lib;
 using RecipeFinder.DataLayer;
 using RecipeFinder.DataLayer.Models;
-using RecipeFinder.DataLayer.Repositories;
 using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
@@ -28,7 +26,7 @@ namespace RecipeFinder.BusinessLayer.Services
             Recipe r = new Recipe();
             r.Id = 0;
             r.Title = recipe.Title;
-            r.Slug = recipe.Slug;
+            r.Slug = String.Format("{0}-{1}", recipe.User.Id, SlugHelper.GenerateSlug(recipe.Title));
             r.Instruction = recipe.Instruction;
             r.UserId = recipe.User.Id;
             r.CreatedAt = DateTime.Now;
@@ -233,10 +231,8 @@ namespace RecipeFinder.BusinessLayer.Services
             //Update images
             UpdateImage(input, updateImages.ToList());
 
-
             //Update the recipe
             dbAccess.Recipes.Update(updateRecipe);
- 
         }
 
         public void Delete(RecipeDTO recipe)
@@ -292,10 +288,6 @@ namespace RecipeFinder.BusinessLayer.Services
             else if(recipe.Title == null)
             {
                 throw new ArgumentNullException("Title cannot be null!");
-            }
-            else if(recipe.Slug == null)
-            {
-                throw new ArgumentNullException("Slug cannot be null!");
             }
             else if(recipe.Instruction == null)
             {
