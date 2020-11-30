@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository<User>, IRepository<User>
     {
         private readonly string connString;
 
@@ -97,7 +97,7 @@ namespace RecipeFinder.DataLayer.Repositories
 
                 if (res.Any())
                 {
-                    return res.Single().Password;
+                    return res.Single().Password.ToString();
                 }
             }
 

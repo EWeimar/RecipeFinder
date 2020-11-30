@@ -27,12 +27,14 @@ namespace RecipeFinder.WebAPI.Controllers
             string username = HttpContext.Current.Request.Form["username"].ToString();
             string password = HttpContext.Current.Request.Form["password"].ToString();
 
+            //return Request.CreateErrorResponse(HttpStatusCode.OK, String.Format("{0} {1}", username, password));
+
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 return Request.CreateErrorResponse(HttpStatusCode.OK, "Please fill both username and password");
             }
 
-            if (UserService.ValidLogin(username, password))
+            if (UserService.ValidLogin(username, password).Result)
             {
                 return Request.CreateResponse(HttpStatusCode.OK, TokenManager.GenerateToken(username));
             }
@@ -51,13 +53,15 @@ namespace RecipeFinder.WebAPI.Controllers
 
                 //return Request.CreateResponse(HttpStatusCode.OK, { success = true, message = "some message"});
 
-            } catch (UserValidationException e)
+            }
+            catch (UserValidationException e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, e.Message);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Something horrobly went wrong");
-            } 
+            }
         }
 
         [HttpGet]

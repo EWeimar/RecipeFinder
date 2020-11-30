@@ -14,6 +14,6 @@ namespace RecipeFinder.BusinessLayer.Interfaces
         List<UserDTO> GetAll();
         void Update(UserDTO user);
         void Delete(UserDTO user);
-        bool ValidLogin(string strUsername, string strPassword);
+        Task<bool> ValidLogin(string strUsername, string strPassword);
     }
 }

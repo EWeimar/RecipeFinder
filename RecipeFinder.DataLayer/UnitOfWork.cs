@@ -20,7 +20,7 @@ namespace RecipeFinder.DataLayer
         private readonly IRepository<Recipe> recipeRepository;
         private readonly IRepository<RecipeReview> recipeReviewRepository;
         private readonly IRepository<UserFavorite> userFavoriteRepository;
-        private readonly IRepository<User> userRepository;
+        private readonly IUserRepository<User> userRepository;
 
         //Initialize repositories
         //1 default constructor for easy initialization (Using the default connection string)
@@ -54,6 +54,6 @@ namespace RecipeFinder.DataLayer
 
         public IRepository<UserFavorite> UserFavorites => userFavoriteRepository;
 
-        public IRepository<User> Users => userRepository;
+        public IUserRepository<User> Users => userRepository;
     }
 }

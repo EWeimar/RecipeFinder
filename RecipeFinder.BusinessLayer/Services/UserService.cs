@@ -5,6 +5,7 @@ using RecipeFinder.DataLayer.Models;
 using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
@@ -118,12 +119,11 @@ namespace RecipeFinder.BusinessLayer.Services
             }
         }
 
-        public bool ValidLogin(string username, string password)
+        public async Task<bool> ValidLogin(string username, string password)
         {
             bool res = false;
 
-            //string hashedPassword = dbAccess.Users.GetUserHashedPassword(username);
-            string hashedPassword = string.Empty;
+            string hashedPassword = await dbAccess.Users.GetUserHashedPassword(username);
 
             if (!string.IsNullOrEmpty(hashedPassword))
             {
