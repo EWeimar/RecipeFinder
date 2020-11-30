@@ -23,11 +23,11 @@ namespace RecipeFinder.WebAPI.Controllers
 
             if (!string.IsNullOrEmpty(RequestContext.Principal.Identity.Name))
             {
-                var queryResult = userRepository.GetAll("username", RequestContext.Principal.Identity.Name);
+                var queryResult = userRepository.FindByCondition("username", RequestContext.Principal.Identity.Name).Result;
 
-                if (queryResult.Count() == 1)
+                if (queryResult.Any())
                 {
-                    return queryResult.FirstOrDefault();
+                    return queryResult.Single();
                 }
             }
 

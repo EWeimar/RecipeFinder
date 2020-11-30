@@ -1,15 +1,15 @@
-﻿using RecipeFinder.DataLayer.Models;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using RecipeFinder.DataLayer.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
-using Dapper;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
-    public class UserRepository : IUserRepository<User>, IRepository<User>
+    public class UserRepository : IRepository<User>
     {
         private readonly string connString;
 
@@ -17,84 +17,87 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             this.connString = connString;
         }
-        public User Create(User entity)
+
+        public async Task<User> AddAsync(User entity)
         {
-            using(var db = new SqlConnection(connString))
+            using (var db = new SqlConnection(connString))
             {
+
+                // if the "CreatedAt" field is leaved empty, assign it with current timestamp
                 if (entity.CreatedAt == DateTime.MinValue)
                 {
                     entity.CreatedAt = DateTime.Now;
                 }
 
                 string sql = "INSERT INTO Users(Username, Email, Password, IsAdmin, CreatedAt) OUTPUT INSERTED.* values (@Username, @Email, @Password, @IsAdmin, @CreatedAt)";
+                var result = await db.QueryAsync<User>(sql, new { Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, CreatedAt = entity.CreatedAt });
 
-                return db.Query<User>(sql, new {Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, CreatedAt = entity.CreatedAt }).Single();
+                return result.Single();
             }
         }
 
-        public void Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "DELETE FROM Users where Id = @Id";
+                string sql = "DELETE FROM Users WHERE Id = @Id";
 
-                db.Execute(sql, new { Id = id });
+                return await db.ExecuteAsync(sql, new { Id = id });
             }
         }
 
-        public User Get(int id)
+        public async Task<IEnumerable<User>> FindByCondition(string propName, object value)
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT * FROM Users WHERE Id = @Id";
+                string sql = $"SELECT * FROM Users WHERE [{propName}] = @value";
 
-                return db.Query<User>(sql, new { Id = id }).FirstOrDefault();
+                return await db.QueryAsync<User>(sql, new { value = value });
             }
         }
-
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = "SELECT * FROM Users";
 
-                return db.Query<User>(sql).ToList();
-            } 
-        }
-
-        public IEnumerable<User> GetAll(string propertyName, object value)
-        {
-            using (var db = new SqlConnection(connString))
-            {
-                //Replace propertyName with e.g. Email and value with e.g. User@email.com
-                //Ex: GetAll(nameof(User.Email), "User@email.com")
-                string sql = $"SELECT * FROM Users WHERE [{propertyName}] = @value";
-
-                return db.Query<User>(sql, new { value = value }).ToList();
+                return await db.QueryAsync<User>(sql);
             }
         }
 
-        public void Update(User entity)
+        public async Task<User> GetByIdAsync(int id)
+        {
+            using (var db = new SqlConnection(connString))
+            {
+                string sql = "SELECT * FROM Users WHERE Id = @Id";
+
+                var result = await db.QueryAsync<User>(sql, new { Id = id });
+
+                return result.Single();
+            }
+        }
+
+        public async Task<int> UpdateAsync(User entity)
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = "UPDATE Users SET Username = @Username, Email = @Email, Password = @Password, IsAdmin = @IsAdmin WHERE Id = @Id";
 
-                db.Execute(sql, new { Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, Id = entity.Id });
+                return await db.ExecuteAsync(sql, new { Username = entity.Username, Email = entity.Email, Password = entity.Password, IsAdmin = entity.IsAdmin, Id = entity.Id });
             }
         }
 
-        public string GetUserHashedPassword(string username)
+        public async Task<string> GetUserHashedPassword(string username)
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = $"SELECT * FROM Users WHERE Username = @username";
 
-                var res = db.Query<User>(sql, new { username = username }).ToList();
-                
-                if (res.Count == 1)
+                var res = await db.QueryAsync<User>(sql, new { username = username });
+
+                if (res.Any())
                 {
-                    return res.FirstOrDefault().Password;
+                    return res.Single().Password;
                 }
             }
 

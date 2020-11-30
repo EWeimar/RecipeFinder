@@ -16,6 +16,6 @@ namespace RecipeFinder.DataLayer
         IRepository<Recipe> Recipes { get; }
         IRepository<RecipeReview> RecipeReviews { get; }
         IRepository<UserFavorite> UserFavorites { get; }
-        IUserRepository<User> Users { get; }
+        IRepository<User> Users { get; }
     }
 }

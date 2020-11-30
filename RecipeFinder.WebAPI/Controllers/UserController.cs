@@ -66,35 +66,5 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + AuthenticatedUser().Email);
         }
-
-        public void CreateUser(UserDTO user)
-        {
-            UserService.Create(user);
-        }
-
-        public UserDTO GetUser(int id)
-        {
-            //UserDTO obj = new UserDTO();
-            //obj.Id = 3;
-            //obj.Username = "Rasmus - Update";
-            //obj.Email = "UpdateRasmus@Mail.dk";
-            //obj.Password = "4321";
-            //obj.IsAdmin = true;
-
-            //UserService.Update(obj);
-            return UserService.Get(id);
-        }
-        public List<UserDTO> GetAll()
-        {
-            return UserService.GetAll();
-        }
-        public void UpdateUser(UserDTO user)
-        {
-            UserService.Update(user);
-        }
-        public void DeleteUser(UserDTO user)
-        {
-            UserService.Delete(user);
-        }
     }
 }

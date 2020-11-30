@@ -23,28 +23,27 @@ namespace RecipeFinder.BusinessLayer.Services
             Validation(recipe);
 
             //Create recipe in DB
-            Recipe r = new Recipe();
-            r.Id = 0;
-            r.Title = recipe.Title;
-            r.Slug = String.Format("{0}-{1}", recipe.User.Id, SlugHelper.GenerateSlug(recipe.Title));
-            r.Instruction = recipe.Instruction;
-            r.UserId = recipe.User.Id;
-            r.CreatedAt = DateTime.Now;
-            
-            var newRecipe = dbAccess.Recipes.Create(r);
+            var newRecipe = dbAccess.Recipes.AddAsync(new Recipe() {
+                Id = 0,
+                Title = recipe.Title,
+                Slug = String.Format("{0}-{1}", recipe.User.Id, SlugHelper.GenerateSlug(recipe.Title)),
+                Instruction = recipe.Instruction,
+                UserId = recipe.User.Id,
+                CreatedAt = DateTime.Now
+            });
 
             //Create ingredientlines
             foreach (var ing in recipe.IngredientLines)
             {
                 //Get or create the required ingredient
-                Ingredient ingredient = dbAccess.Ingredients.GetAll(nameof(ing.Ingredient.Name), ing.Ingredient.Name).FirstOrDefault();
+                Ingredient ingredient = dbAccess.Ingredients.FindByCondition(nameof(ing.Ingredient.Name), ing.Ingredient.Name).Result.FirstOrDefault();
                 if (ingredient == null)
                 {
                     var ingredientToBeCreated = new Ingredient();
                     ingredientToBeCreated.Id = 0;
                     ingredientToBeCreated.Name = ing.Ingredient.Name;
 
-                    ingredient = dbAccess.Ingredients.Create(ingredientToBeCreated);
+                    ingredient = dbAccess.Ingredients.AddAsync(ingredientToBeCreated).Result;
                 }
                 //Create the ingredientline
                 IngredientLine ingredientLine = new IngredientLine();
@@ -54,7 +53,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 ingredientLine.Amount = ing.Amount;
                 ingredientLine.MeasureUnit = ing.MeasureUnit;
 
-                var newIngredientLine = dbAccess.IngredientLines.Create(ingredientLine);
+                var newIngredientLine = dbAccess.IngredientLines.AddAsync(ingredientLine);
             }
             //Create images (if any)
             if (recipe.Images != null)
@@ -66,21 +65,21 @@ namespace RecipeFinder.BusinessLayer.Services
                     imageToBeCreated.RecipeId = newRecipe.Id;
                     imageToBeCreated.FileName = image.FileName;
 
-                    var newImage = dbAccess.Images.Create(imageToBeCreated);
+                    var newImage = dbAccess.Images.AddAsync(imageToBeCreated);
                 }
             }
         }
 
         public RecipeDTO Get(int id)
         {
-            var getRecipe = dbAccess.Recipes.Get(id);
+            var getRecipe = dbAccess.Recipes.GetByIdAsync(id).Result;
             //Check if recipe exists
             if(getRecipe == null)
             {
                 throw new ArgumentNullException("The recipe could not be found!");
             }
             //Convert user info to DTO
-            var user = dbAccess.Users.Get(getRecipe.UserId);
+            var user = dbAccess.Users.GetByIdAsync(getRecipe.UserId).Result;
             UserDTO uResult = new UserDTO();
             uResult.Id = user.Id;
             uResult.Username = user.Username;
@@ -88,12 +87,12 @@ namespace RecipeFinder.BusinessLayer.Services
             //Create list for ingredientlines
             List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
             //Fetch ingredientlines in DB based on recipeId
-            var ingredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), getRecipe.Id);
+            var ingredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), getRecipe.Id).Result.ToList();
             //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
             foreach (var il in ingredientLines)
             {
                 IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                var ingredient = dbAccess.Ingredients.Get(il.IngredientId);
+                var ingredient = dbAccess.Ingredients.GetByIdAsync(il.IngredientId).Result;
 
                 IngredientDTO ingredientDTO = new IngredientDTO();
                 ingredientDTO.Id = ingredient.Id;
@@ -108,7 +107,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Create list for images
             List<ImageDTO> imResults = new List<ImageDTO>();
             //Fetch images in DB based on recipeId
-            var images = dbAccess.Images.GetAll(nameof(Image.RecipeId), getRecipe.Id);
+            var images = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), getRecipe.Id).Result.ToList();
             //Loop over images in DB, convert to DTO and add to new list of images
             foreach (var im in images)
             {
@@ -136,7 +135,7 @@ namespace RecipeFinder.BusinessLayer.Services
         {
 
             List<RecipeDTO> recipeList = new List<RecipeDTO>();
-            var resultSet = dbAccess.Recipes.GetAll();
+            var resultSet = dbAccess.Recipes.GetAllAsync().Result.ToList();
 
             if(resultSet == null)
             {
@@ -146,7 +145,7 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var item in resultSet)
             {
                 //Convert user info to DTO
-                var user = dbAccess.Users.Get(item.UserId);
+                var user = dbAccess.Users.GetByIdAsync(item.UserId).Result;
                 UserDTO uResult = new UserDTO();
                 uResult.Id = user.Id;
                 uResult.Username = user.Username;
@@ -154,12 +153,12 @@ namespace RecipeFinder.BusinessLayer.Services
                 //Create list for ingredientlines
                 List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
                 //Fetch ingredientlines in DB based on recipeId
-                var ingredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), item.Id);
+                var ingredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), item.Id).Result.ToList();
                 //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
                 foreach (var il in ingredientLines)
                 {
                     IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                    var ingredient = dbAccess.Ingredients.Get(il.IngredientId);
+                    var ingredient = dbAccess.Ingredients.GetByIdAsync(il.IngredientId).Result;
 
                     IngredientDTO ingredientDTO = new IngredientDTO();
                     ingredientDTO.Name = ingredient.Name;
@@ -175,7 +174,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 //Create list for images
                 List<ImageDTO> imResults = new List<ImageDTO>();
                 //Fetch images in DB based on recipeId
-                var images = dbAccess.Images.GetAll(nameof(Image.RecipeId), item.Id);
+                var images = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), item.Id).Result.ToList();
                 //Loop over images in DB, convert to DTO and add to new list of images
                 foreach (var im in images)
                 {
@@ -206,7 +205,7 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             Validation(input);
 
-            var updateRecipe = dbAccess.Recipes.Get(input.Id);
+            var updateRecipe = dbAccess.Recipes.GetByIdAsync(input.Id).Result;
             
             //Check if recipe exists
             if(updateRecipe == null)
@@ -221,18 +220,18 @@ namespace RecipeFinder.BusinessLayer.Services
 
 
             //Fetch ingredientLines in DB based on recipeId
-            var updateIngredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), updateRecipe.Id);
+            var updateIngredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), updateRecipe.Id).Result.ToList();
 
             //Update ingredientLines
-            UpdateIngredientLine(input, updateIngredientLines.ToList());
+            UpdateIngredientLine(input, updateIngredientLines);
 
             //Fetch images in DB based on recipeId
-            var updateImages = dbAccess.Images.GetAll(nameof(Image.RecipeId), updateRecipe.Id);
+            var updateImages = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), updateRecipe.Id).Result.ToList();
             //Update images
-            UpdateImage(input, updateImages.ToList());
+            UpdateImage(input, updateImages);
 
             //Update the recipe
-            dbAccess.Recipes.Update(updateRecipe);
+            dbAccess.Recipes.UpdateAsync(updateRecipe);
         }
 
         public void Delete(RecipeDTO recipe)
@@ -240,7 +239,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Delete from the bottom and up. 
             //Images > IngredientLine > Recipe due to foreign key constraints in DB
 
-            var deleteRecipe = dbAccess.Recipes.Get(recipe.Id);
+            var deleteRecipe = dbAccess.Recipes.GetByIdAsync(recipe.Id).Result;
             //Check if recipe exists
             if(deleteRecipe == null)
             {
@@ -248,26 +247,26 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             //Fetch images in DB based on recipeId
-            var deleteImages = dbAccess.Images.GetAll(nameof(Image.RecipeId), deleteRecipe.Id);
+            var deleteImages = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), deleteRecipe.Id).Result.ToList();
             //Delete images
             foreach (var item in deleteImages)
             {
-                dbAccess.Images.Delete(item.Id);
+                dbAccess.Images.DeleteAsync(item.Id);
             }
 
             //Fetch ingredientLines in DB based on recipeId
-            var deleteIngredientLines = dbAccess.IngredientLines.GetAll(nameof(IngredientLine.RecipeId), deleteRecipe.Id);
+            var deleteIngredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), deleteRecipe.Id).Result.ToList();
             //Delete ingredientLines
             foreach (var item in deleteIngredientLines)
             {
-                dbAccess.IngredientLines.Delete(item.Id);
+                dbAccess.IngredientLines.DeleteAsync(item.Id);
             }
 
             //Delete recipe
-            dbAccess.Recipes.Delete(deleteRecipe.Id);
+            dbAccess.Recipes.DeleteAsync(deleteRecipe.Id);
                 
             //Check if recipe has been deleted
-            if (dbAccess.Recipes.Get(deleteRecipe.Id) == null)
+            if (dbAccess.Recipes.GetByIdAsync(deleteRecipe.Id) == null)
             {
                 Console.WriteLine("Recipe has been deleted!");
             }
@@ -337,7 +336,7 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             //Ensure users exists
-            if(dbAccess.Users.Get(recipe.User.Id) == null)
+            if(dbAccess.Users.GetByIdAsync(recipe.User.Id) == null)
             {
                 throw new ArgumentException("UserId does not exist!");
             }
@@ -389,14 +388,14 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var item in toBeCreated)
             {
                 //Get or create the required ingredient
-                Ingredient ingredient = dbAccess.Ingredients.GetAll(nameof(Ingredient.Name), item.Ingredient.Name).FirstOrDefault();
+                Ingredient ingredient = dbAccess.Ingredients.FindByCondition(nameof(Ingredient.Name), item.Ingredient.Name).Result.ToList().FirstOrDefault();
                 if (ingredient == null)
                 {
                     var ingredientToBeCreated = new Ingredient();
                     ingredientToBeCreated.Id = 0;
                     ingredientToBeCreated.Name = item.Ingredient.Name;
 
-                    ingredient = dbAccess.Ingredients.Create(ingredientToBeCreated);
+                    ingredient = dbAccess.Ingredients.AddAsync(ingredientToBeCreated).Result;
                 }
 
                 //Create new ingredientLine
@@ -408,25 +407,25 @@ namespace RecipeFinder.BusinessLayer.Services
                 il.MeasureUnit = item.MeasureUnit;
 
                 //Send to DB
-                dbAccess.IngredientLines.Create(il);
+                dbAccess.IngredientLines.AddAsync(il);
             }
 
             //Update existing ingredientLine
             foreach (var item in toBeUpdated)
             {
-                IngredientLine il = dbAccess.IngredientLines.Get(item.Id);
+                IngredientLine il = dbAccess.IngredientLines.GetByIdAsync(item.Id).Result;
 
                 il.Amount = item.Amount;
                 il.MeasureUnit = item.MeasureUnit;
 
                 //Send to DB
-                dbAccess.IngredientLines.Update(il);
+                dbAccess.IngredientLines.UpdateAsync(il);
             }
 
             //Delete existing ingredientLine
             foreach (var item in toBeDeleted)
             {
-                dbAccess.IngredientLines.Delete(item.Id);
+                dbAccess.IngredientLines.DeleteAsync(item.Id);
             }
         }
 
@@ -481,13 +480,13 @@ namespace RecipeFinder.BusinessLayer.Services
                 image.FileName = item.FileName;
 
                 //Send to DB
-                dbAccess.Images.Create(image);
+                dbAccess.Images.AddAsync(image);
             }
 
             //Delete image
             foreach (var item in toBeDeleted)
             {
-                dbAccess.Images.Delete(item.Id);
+                dbAccess.Images.DeleteAsync(item.Id);
             }
         }
     }

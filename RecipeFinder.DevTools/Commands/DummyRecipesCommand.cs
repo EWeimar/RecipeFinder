@@ -57,7 +57,7 @@ namespace RecipeFinder.DevTools.Commands
 
             foreach (MealDBRecipe mealDbRecipe in queryResult.meals)
             {
-                IEnumerable<Recipe> existingRecipeWithSameName = recipeRepository.GetAll(nameof(Recipe.Title), mealDbRecipe.strMeal);
+                IEnumerable<Recipe> existingRecipeWithSameName = recipeRepository.FindByCondition(nameof(Recipe.Title), mealDbRecipe.strMeal).Result.ToList();
 
                 // if it is already existing, skip
                 if (existingRecipeWithSameName.Any())
@@ -68,7 +68,7 @@ namespace RecipeFinder.DevTools.Commands
                 RecipeService rs = new RecipeService();
 
                 string randomUserName = testUsernames[new Random().Next(0, testUsernames.Count - 1)];
-                User randomUser = userRepository.GetAll("username", randomUserName).FirstOrDefault();
+                User randomUser = userRepository.FindByCondition("username", randomUserName).Result.Single();
 
                 RecipeDTO obj = new RecipeDTO()
                 {
@@ -155,7 +155,7 @@ namespace RecipeFinder.DevTools.Commands
             testUsernames.Add(username);
 
             // no need for creating the user if it already exists
-            if (userRepository.GetAll("username", username).Any())
+            if (userRepository.FindByCondition("username", username).Result.Any())
             {
                 return;
             }
@@ -168,7 +168,13 @@ namespace RecipeFinder.DevTools.Commands
                 IsAdmin = false
             };
 
-            userRepository.Create(user);
+            var addResult = userRepository.AddAsync(user);
+
+            if (addResult.Result != null)
+            {
+                Console.WriteLine("A user could not be created");
+            }
+
         }
     }
 }

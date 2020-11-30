@@ -5,6 +5,7 @@ namespace RecipeFinder.DevTools
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             Console.Clear();

@@ -26,12 +26,12 @@ namespace RecipeFinder.BusinessLayer.Services
             u.IsAdmin = user.IsAdmin;
             u.CreatedAt = DateTime.Now;
 
-            var newUser = dbAccess.Users.Create(u);
+            var newUser = dbAccess.Users.AddAsync(u);
         }
 
         public UserDTO Get(int id)
         {
-            var getUser = dbAccess.Users.Get(id);
+            var getUser = dbAccess.Users.GetByIdAsync(id).Result;
             //Check if user exists
             if(getUser == null)
             {
@@ -53,7 +53,7 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             //Create list for users
             List<UserDTO> userList = new List<UserDTO>();
-            var getAll = dbAccess.Users.GetAll();
+            var getAll = dbAccess.Users.GetAllAsync().Result;
 
             //Check for any users
             if(getAll == null)
@@ -64,7 +64,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Loop over users in DB, convert to DTO and add to userList
             foreach (var item in getAll)
             {
-                var user = dbAccess.Users.Get(item.Id);
+                var user = dbAccess.Users.GetByIdAsync(item.Id).Result;
 
                 UserDTO uResult = new UserDTO();
                 uResult.Id = user.Id;
@@ -80,28 +80,28 @@ namespace RecipeFinder.BusinessLayer.Services
             return userList;
         }
 
-        public void Update(UserDTO user)
+        public void Update(UserDTO updatedUser)
         {
-            var updateUser = dbAccess.Users.Get(user.Id);
+            var user = dbAccess.Users.GetByIdAsync(updatedUser.Id).Result;
 
             //Check if user exists
-            if(updateUser == null)
+            if(user == null)
             {
                 throw new ArgumentNullException("The user could not be found!");
             }
 
             //Update the user properties
-            updateUser.Username = user.Username;
-            updateUser.Email = user.Email;
-            updateUser.Password = user.Password;
-            updateUser.IsAdmin = user.IsAdmin;
+            user.Username = user.Username;
+            user.Email = user.Email;
+            user.Password = user.Password;
+            user.IsAdmin = user.IsAdmin;
 
             //Update the user
-            dbAccess.Users.Update(updateUser);
+            dbAccess.Users.UpdateAsync(user);
         }
         public void Delete(UserDTO user)
         {
-            var deleteUser = dbAccess.Users.Get(user.Id);
+            var deleteUser = dbAccess.Users.GetByIdAsync(user.Id);
             //Check if user exists
             if(deleteUser == null)
             {
@@ -109,10 +109,10 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             //Delete the user
-            dbAccess.Users.Delete(deleteUser.Id);
+            dbAccess.Users.DeleteAsync(deleteUser.Id);
 
             //Check if the user has been deleted
-            if(dbAccess.Users.Get(deleteUser.Id) == null)
+            if(dbAccess.Users.GetByIdAsync(deleteUser.Id) == null)
             {
                 Console.WriteLine("User has been deleted");
             }
@@ -122,7 +122,8 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             bool res = false;
 
-            string hashedPassword = dbAccess.Users.GetUserHashedPassword(username);
+            //string hashedPassword = dbAccess.Users.GetUserHashedPassword(username);
+            string hashedPassword = string.Empty;
 
             if (!string.IsNullOrEmpty(hashedPassword))
             {

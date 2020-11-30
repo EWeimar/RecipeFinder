@@ -1,83 +1,86 @@
-﻿using RecipeFinder.DataLayer.Models;
+﻿using Dapper;
+using Microsoft.Extensions.Configuration;
+using RecipeFinder.DataLayer.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
-using Dapper;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
     public class RecipeRepository : IRepository<Recipe>
     {
         private readonly string connString;
-        public RecipeRepository(string connString)
+
+        public  RecipeRepository(string connString)
         {
             this.connString = connString;
         }
 
-        public Recipe Create(Recipe entity)
+        public async Task<Recipe> AddAsync(Recipe entity)
         {
-            using(var db = new SqlConnection(connString))
+            using (var db = new SqlConnection(connString))
             {
                 string sql = "INSERT INTO Recipe(UserId, Title, Slug, Instruction, CreatedAt) OUTPUT INSERTED.* values (@UserId, @Title, @Slug, @Instruction, @CreatedAt)";
 
-                return db.Query<Recipe>(sql, new { UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt }).Single();
+                var result = await db.QueryAsync<Recipe>(sql, new { UserId = entity.UserId, Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt });
+
+                return result.Single();
             }
         }
 
-        public void Delete(int id)
+        public async Task<int> DeleteAsync(int id)
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = "DELETE FROM Recipe WHERE Id = @Id";
 
-                db.Execute(sql, new { Id = id });
+                return await db.ExecuteAsync(sql, new { Id = id });
             }
-            
         }
 
-        public Recipe Get(int id)
+        public async Task<IEnumerable<Recipe>> FindByCondition(string propName, object value)
         {
-            using(var db = new SqlConnection(connString))
+            using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT * FROM Recipe WHERE Id = @Id";
+                string sql = $"SELECT * FROM Recipe WHERE [{propName}] = @value";
 
-                return db.Query<Recipe>(sql, new { Id = id }).FirstOrDefault();        
+                var result = await db.QueryAsync<Recipe>(sql, new { value = value });
+
+                return result;
             }
         }
 
-        public IEnumerable<Recipe> GetAll()
+        public async Task<IEnumerable<Recipe>> GetAllAsync()
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = "SELECT * FROM Recipe";
 
-                return db.Query<Recipe>(sql).ToList();
+                return await db.QueryAsync<Recipe>(sql);
             }
         }
 
-        
-        public IEnumerable<Recipe> GetAll(string propertyName, object value)
+        public async Task<Recipe> GetByIdAsync(int id)
         {
-            using(var db = new SqlConnection(connString))
+            using (var db = new SqlConnection(connString))
             {
-                //Replace propertyName with e.g. Title and value with e.g. Flæskesteg
-                //Ex: GetAll(nameof(Recipe.Title), "Flæskesteg")
-                string sql = $"SELECT * FROM Recipe WHERE [{propertyName}] = @value";
+                string sql = "SELECT * FROM Recipe WHERE Id = @Id";
 
-                return db.Query<Recipe>(sql, new { value = value }).ToList();
+                var result = await db.QueryAsync<Recipe>(sql, new { Id = id });
+
+                return result.Single();
             }
         }
 
-        public void Update(Recipe entity)
+        public async Task<int> UpdateAsync(Recipe entity)
         {
             using (var db = new SqlConnection(connString))
             {
                 string sql = "UPDATE Recipe SET Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt WHERE Id = @Id";
 
-                db.Execute(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
+                return await db.ExecuteAsync(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
             }
         }
     }
