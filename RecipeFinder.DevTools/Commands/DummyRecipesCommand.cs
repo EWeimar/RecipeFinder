@@ -170,7 +170,7 @@ namespace RecipeFinder.DevTools.Commands
 
             var addResult = userRepository.AddAsync(user);
 
-            if (addResult.Result != null)
+            if (addResult.Result == null)
             {
                 Console.WriteLine("A user could not be created");
             }
