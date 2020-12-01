@@ -48,9 +48,10 @@ namespace RecipeFinder.WebAPI.Controllers
 
         [HttpGet]
         [RecipeFinderAuthenticationFilter]
-        public HttpResponseMessage SecretArea()
+        public async Task<HttpResponseMessage> SecretArea()
         {
-            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + AuthenticatedUser().Email);
+            //var au = await AuthenticatedUserAsync();
+            return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + au.Email);
         }
     }
 }

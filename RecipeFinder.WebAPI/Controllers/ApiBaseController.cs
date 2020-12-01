@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace RecipeFinder.WebAPI.Controllers
@@ -17,17 +18,19 @@ namespace RecipeFinder.WebAPI.Controllers
             userRepository = new UserRepository(ConfigurationManager.ConnectionStrings["ConnectionString"].ToString());
         }
 
-        public User AuthenticatedUser()
+        public async Task<User> AuthenticatedUser()
         {
             User res = null;
 
             if (!string.IsNullOrEmpty(RequestContext.Principal.Identity.Name))
             {
-                var queryResult = userRepository.FindByCondition("username", RequestContext.Principal.Identity.Name).Result;
+                var userExists = await userRepository.FindByCondition("username", RequestContext.Principal.Identity.Name);
 
-                if (queryResult.Any())
+                User user = userExists.Single();
+
+                if (user != null)
                 {
-                    return queryResult.Single();
+                    return user;
                 }
             }
 
