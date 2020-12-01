@@ -2,11 +2,11 @@
 using RecipeFinder.BusinessLayer.Lib;
 using RecipeFinder.DataLayer;
 using RecipeFinder.DataLayer.Models;
-using RecipeFinder.DataLayer.Repositories;
 using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
@@ -137,7 +137,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 }
             }
 
-            return true;
+            return res;
         }
     }
 }

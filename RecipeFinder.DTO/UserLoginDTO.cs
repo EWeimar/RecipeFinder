@@ -3,14 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RecipeFinder.DTO
 {
-    public class UserDTO
+    public class UserLoginDTO
     {
-        public int Id { get; set; }
+        [Required(ErrorMessage = "The username is required")]
         public string Username { get; set; }
 
-        public string Email { get; set; }
+        [Required(ErrorMessage = "The password is required")]
         public string Password { get; set; }
-        public bool IsAdmin { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }
