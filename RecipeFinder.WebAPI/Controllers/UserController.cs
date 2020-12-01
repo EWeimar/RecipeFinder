@@ -20,6 +20,22 @@ namespace RecipeFinder.WebAPI.Controllers
             UserService = new UserService();
         }
 
+        [HttpPut]
+        public async Task<HttpResponseMessage> Create([FromBody] UserDTO userDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+            }
+
+            if(await UserService.AddAsync(userDTO) != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, "User was succesfully created!");                
+            }
+
+            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Something went wrong!");
+        }
+
         [HttpPost]
         [Route("api/user/login")]
         public async Task<HttpResponseMessage> ValidLogin([FromBody] UserLoginDTO userLoginDTO)

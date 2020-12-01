@@ -108,6 +108,8 @@
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\RecipeRepository.cs" />
     <Compile Include="UnitOfWork.cs" />
+    <Compile Include="Validators\UniqueEmailValidation.cs" />
+    <Compile Include="Validators\UniqueUsernameValidation.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
