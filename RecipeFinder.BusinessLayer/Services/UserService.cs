@@ -29,6 +29,8 @@ namespace RecipeFinder.BusinessLayer.Services
             u.CreatedAt = DateTime.Now;
 
             var newUser = dbAccess.Users.AddAsync(u);
+
+            //....
         }
 
         public UserDTO Get(int id)
