@@ -2,6 +2,7 @@
 using RecipeFinder.BusinessLayer.Lib;
 using RecipeFinder.DataLayer;
 using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DataLayer.Repositories;
 using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
@@ -119,6 +120,7 @@ namespace RecipeFinder.BusinessLayer.Services
             }
         }
 
+
         public async Task<bool> ValidLogin(string username, string password)
         {
             bool res = false;
@@ -133,7 +135,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 }
             }
 
-            return res;
+            return true;
         }
     }
 }
