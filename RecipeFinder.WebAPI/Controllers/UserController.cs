@@ -20,14 +20,8 @@ namespace RecipeFinder.WebAPI.Controllers
             UserService = new UserService();
         }
 
-        /*[HttpPost]
-        public async Task<HttpResponseMessage> ValidLogin([FromBody] UserDTO user)
-        {
-            await Task.Delay(1000);
-            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Email: " + user.Email);
-        }*/
-
         [HttpPost]
+        [Route("api/user/login")]
         public async Task<HttpResponseMessage> ValidLogin([FromBody] UserLoginDTO userLoginDTO)
         {
             string username = userLoginDTO.Username;
@@ -43,15 +37,26 @@ namespace RecipeFinder.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, TokenManager.GenerateToken(username));
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.OK, "Username or password is invalid");
+            return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Username or password is invalid");
         }
 
         [HttpGet]
         [RecipeFinderAuthenticationFilter]
+        [Route("api/user/secret-area")]
         public async Task<HttpResponseMessage> SecretArea()
         {
-            //var au = await AuthenticatedUserAsync();
+            //var au = await AuthenticatedUser(); // how to get current auth user
+            var au = AuthUser(); // how to get current auth user
+
             return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + au.Email);
+        }
+
+        [HttpGet]
+        [Route("api/user/tester321")]
+        public async Task<HttpResponseMessage> ALongNameButTestingRoutes()
+        {
+            Task.Delay(100);
+            return Request.CreateResponse(HttpStatusCode.OK, "Hey It Works!");
         }
     }
 }

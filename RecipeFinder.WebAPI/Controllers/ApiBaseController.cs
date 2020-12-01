@@ -1,5 +1,7 @@
 ﻿using RecipeFinder.DataLayer.Models;
 using RecipeFinder.DataLayer.Repositories;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
@@ -35,6 +37,12 @@ namespace RecipeFinder.WebAPI.Controllers
             }
 
             return res;
+        }
+
+        public User AuthUser() {
+            IEnumerable<User> user = Task.Run<IEnumerable<User>>(() => userRepository.FindByCondition("username", RequestContext.Principal.Identity.Name)).GetAwaiter().GetResult();
+
+            return user.Single();
         }
 
         public bool IsAuthenticated()

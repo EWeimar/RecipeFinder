@@ -17,6 +17,7 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             dbAccess = new UnitOfWork();
         }
+
         public async Task<User> AddAsync(UserDTO userDTO)
         {
             //Convert UserDTO to User
@@ -29,7 +30,6 @@ namespace RecipeFinder.BusinessLayer.Services
             user.CreatedAt = DateTime.Now;
 
             return await dbAccess.Users.AddAsync(user);
-
         }
 
         public async Task<User> GetByIdAsync(int id)
@@ -62,7 +62,6 @@ namespace RecipeFinder.BusinessLayer.Services
             return await dbAccess.Users.DeleteAsync(user.Id);
 
         }
-
 
         public async Task<bool> ValidLogin(string username, string password)
         {
