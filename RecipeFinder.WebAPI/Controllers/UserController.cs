@@ -2,12 +2,12 @@
 using RecipeFinder.BusinessLayer.Interfaces;
 using RecipeFinder.BusinessLayer.Services;
 using RecipeFinder.DTO;
-using System;
+using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace RecipeFinder.WebAPI.Controllers
 {
@@ -20,21 +20,31 @@ namespace RecipeFinder.WebAPI.Controllers
             UserService = new UserService();
         }
 
-        [HttpPut]
+        [HttpPost]
         [Route("api/user/create")]
         public async Task<HttpResponseMessage> Create([FromBody] UserDTO userDTO)
         {
             if (!ModelState.IsValid)
             {
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, ModelState);
+                string errorMessage = string.Empty;
+
+                foreach (ModelState keyValuePairs in ModelState.Values)
+                {
+                    foreach (ModelError modelError in keyValuePairs.Errors)
+                    {
+                        errorMessage += " - " + modelError.ErrorMessage;
+                    }
+                }
+
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
-            if(await UserService.AddAsync(userDTO) != null)
+            if (await UserService.AddAsync(userDTO) != null)
             {
-                return Request.CreateResponse(HttpStatusCode.OK, "User was succesfully created!");                
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "User was succesfully created" });
             }
 
-            return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Something went wrong!");
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horribly went wrong." });
         }
 
         [HttpPost]
@@ -62,8 +72,7 @@ namespace RecipeFinder.WebAPI.Controllers
         [Route("api/user/secret-area")]
         public async Task<HttpResponseMessage> SecretArea()
         {
-            //var au = await AuthenticatedUser(); // how to get current auth user
-            var au = AuthUser(); // how to get current auth user
+            var au = await AuthenticatedUser(); // how to get current auth user
 
             return Request.CreateResponse(HttpStatusCode.OK, "You've got access to the secret area cause you've sent the right auth token in the HTTP header. Authenticated Success: " + IsAuthenticated().ToString() + " Authenticated email: " + au.Email);
         }

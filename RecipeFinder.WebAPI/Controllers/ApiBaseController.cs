@@ -39,15 +39,10 @@ namespace RecipeFinder.WebAPI.Controllers
             return res;
         }
 
-        public User AuthUser() {
-            IEnumerable<User> user = Task.Run<IEnumerable<User>>(() => userRepository.FindByCondition("username", RequestContext.Principal.Identity.Name)).GetAwaiter().GetResult();
-
-            return user.Single();
-        }
-
         public bool IsAuthenticated()
         {
             return !string.IsNullOrEmpty(RequestContext.Principal.Identity.Name) ? true : false;
         }
+
     }
 }

@@ -1,0 +1,28 @@
+﻿@model RecipeFinder.WebClient.ViewModels.CreateUserViewModel
+
+@{
+    ViewBag.Title = "Create New User";
+}
+
+<h2>Create New User</h2>
+
+<form method="post" action="@Url.Action("SubmitCreate", "User")" class="row">
+    <div class="col-12">
+        <label>Username</label>
+        <input type="text" name="Username" class="form-control" />
+    </div>
+
+    <div class="col-12">
+        <label>Email</label>
+        <input type="email" name="Email" class="form-control" />
+    </div>
+
+    <div class="col-12">
+        <label>Password</label>
+        <input type="password" name="Password" class="form-control" />
+    </div>
+
+    <div class="col-12 py-1">
+        <button class="btn btn-success">Create My User</button>
+    </div>
+</form>
