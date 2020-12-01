@@ -21,6 +21,7 @@ namespace RecipeFinder.WebAPI.Controllers
         }
 
         [HttpPut]
+        [Route("api/user/create")]
         public async Task<HttpResponseMessage> Create([FromBody] UserDTO userDTO)
         {
             if (!ModelState.IsValid)

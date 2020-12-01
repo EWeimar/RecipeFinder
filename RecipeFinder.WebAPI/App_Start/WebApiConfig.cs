@@ -24,25 +24,6 @@ namespace RecipeFinder.WebAPI
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(new StringEnumConverter());
 
             config.Routes.MapHttpRoute(
-                name: "createUser",
-                routeTemplate: "api/user/create",
-                defaults: new { controller = "User", action = "Create" }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "login",
-                routeTemplate: "api/user/ValidLogin",
-                defaults: new { controller = "User", action = "ValidLogin" }
-            );
-
-            config.Routes.MapHttpRoute(
-                name: "secretArea",
-                routeTemplate: "api/user/SecretArea",
-                defaults: new { controller = "User", action = "SecretArea" }
-            );
-
-
-            config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
