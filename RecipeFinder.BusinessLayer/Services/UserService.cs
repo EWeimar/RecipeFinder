@@ -17,82 +17,34 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             dbAccess = new UnitOfWork();
         }
-        public void Create(UserDTO user)
+        public async Task<User> AddAsync(UserDTO userDTO)
         {
-            //Create User in the DB
-            User u = new User();
-            u.Id = 0;
-            u.Username = user.Username;
-            u.Email = user.Email;
-            u.Password = SecurePasswordHasher.Hash(user.Password);
-            u.IsAdmin = user.IsAdmin;
-            u.CreatedAt = DateTime.Now;
+            //Convert UserDTO to User
+            User user = new User();
+            user.Id = 0;
+            user.Username = userDTO.Username;
+            user.Email = userDTO.Email;
+            user.Password = SecurePasswordHasher.Hash(userDTO.Password);
+            user.IsAdmin = userDTO.IsAdmin;
+            user.CreatedAt = DateTime.Now;
 
-            var newUser = dbAccess.Users.AddAsync(u);
+            return await dbAccess.Users.AddAsync(user);
 
-            //....
         }
 
-        public UserDTO Get(int id)
+        public async Task<User> GetByIdAsync(int id)
         {
-            var getUser = dbAccess.Users.GetByIdAsync(id).Result;
-            //Check if user exists
-            if(getUser == null)
-            {
-                throw new ArgumentNullException("The user could not be found!");
-            }
-
-            UserDTO result = new UserDTO();
-            result.Id = getUser.Id;
-            result.Username = getUser.Username;
-            result.Email = getUser.Email;
-            result.Password = getUser.Password;
-            result.IsAdmin = getUser.IsAdmin;
-            result.CreatedAt = getUser.CreatedAt;
-
-            return result;
+            return await dbAccess.Users.GetByIdAsync(id);
         }
 
-        public List<UserDTO> GetAll()
+        public async Task<IEnumerable<User>> GetAllAsync()
         {
-            //Create list for users
-            List<UserDTO> userList = new List<UserDTO>();
-            var getAll = dbAccess.Users.GetAllAsync().Result;
-
-            //Check for any users
-            if(getAll == null)
-            {
-                throw new ArgumentNullException("No users were found!");
-            }
-
-            //Loop over users in DB, convert to DTO and add to userList
-            foreach (var item in getAll)
-            {
-                var user = dbAccess.Users.GetByIdAsync(item.Id).Result;
-
-                UserDTO uResult = new UserDTO();
-                uResult.Id = user.Id;
-                uResult.Username = user.Username;
-                uResult.Email = user.Email;
-                uResult.Password = user.Password;
-                uResult.IsAdmin = user.IsAdmin;
-                uResult.CreatedAt = user.CreatedAt;
-
-                userList.Add(uResult);
-            }
-
-            return userList;
+            return await dbAccess.Users.GetAllAsync();
         }
 
-        public void Update(UserDTO updatedUser)
+        public async Task<int> UpdateAsync(UserDTO updatedUser)
         {
-            var user = dbAccess.Users.GetByIdAsync(updatedUser.Id).Result;
-
-            //Check if user exists
-            if(user == null)
-            {
-                throw new ArgumentNullException("The user could not be found!");
-            }
+            var user = await dbAccess.Users.GetByIdAsync(updatedUser.Id);
 
             //Update the user properties
             user.Username = user.Username;
@@ -101,25 +53,14 @@ namespace RecipeFinder.BusinessLayer.Services
             user.IsAdmin = user.IsAdmin;
 
             //Update the user
-            dbAccess.Users.UpdateAsync(user);
+            return await dbAccess.Users.UpdateAsync(user);
         }
-        public void Delete(UserDTO user)
+
+        public async Task<int> DeleteAsync(UserDTO user)
         {
-            var deleteUser = dbAccess.Users.GetByIdAsync(user.Id);
-            //Check if user exists
-            if(deleteUser == null)
-            {
-                throw new ArgumentNullException("The user could not be found!");
-            }
-
             //Delete the user
-            dbAccess.Users.DeleteAsync(deleteUser.Id);
+            return await dbAccess.Users.DeleteAsync(user.Id);
 
-            //Check if the user has been deleted
-            if(dbAccess.Users.GetByIdAsync(deleteUser.Id) == null)
-            {
-                Console.WriteLine("User has been deleted");
-            }
         }
 
 
@@ -138,6 +79,11 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             return res;
+        }
+
+        public async Task<IEnumerable<User>> FindByCondition(string propName, object value)
+        {
+            return await dbAccess.Users.FindByCondition(propName, value);
         }
     }
 }
