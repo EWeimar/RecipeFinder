@@ -29,15 +29,17 @@ namespace RecipeFinder.WebClient.Controllers
 
             if (response.Success)
             {
-                SetFlash(Models.FlashMessageType.Success, response.Message);
+                SetFlash(Models.FlashMessageType.Success, "Tillykke din bruger blev oprettet.");
+                //SetFlash(Models.FlashMessageType.Success, response.Message);
             } else
             {
-                SetFlash(Models.FlashMessageType.Danger, response.Message);
+                SetFlash(Models.FlashMessageType.Danger, "Der skete en fejl.");
+
+                //SetFlash(Models.FlashMessageType.Danger, response.Message);
             }
 
             //return View("Create");
 
-            SetFlash(Models.FlashMessageType.Success, "Tillykke din bruger blev oprettet.");
             return Redirect(Url.Action("Create", "User"));
         }
     }
