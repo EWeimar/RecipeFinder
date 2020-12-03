@@ -14,5 +14,6 @@ namespace RecipeFinder.DataLayer.Models
         public string Slug { get; set; }
         public string Instruction { get; set; }
         public DateTime CreatedAt { get; set; }
+        public byte[] RowVer { get; set; }
     }
 }

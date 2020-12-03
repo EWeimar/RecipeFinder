@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using RecipeFinder.DataLayer.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,11 +77,20 @@ namespace RecipeFinder.DataLayer.Repositories
 
         public async Task<int> UpdateAsync(Recipe entity)
         {
+            byte[] rowVersion;
             using (var db = new SqlConnection(connString))
             {
-                string sql = "UPDATE Recipe SET Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt WHERE Id = @Id";
+                string sql = "UPDATE Recipe SET Title = @Title, Slug = @Slug, Instruction = @Instruction, CreatedAt = @CreatedAt OUTPUT INSERTED.RowVer WHERE Id = @Id AND RowVer = @RowVer";
 
-                return await db.ExecuteAsync(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id });
+                rowVersion = await db.ExecuteScalarAsync<byte[]>(sql, entity);
+
+                if(rowVersion == null)
+                {
+                    throw new DBConcurrencyException("The entity you were trying to edit has changed. Reload the entity and try again.");
+                }
+
+                //Er usikker på om denne skal være her. Uanset skal der returneres et eller andet.
+                return await db.ExecuteAsync(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id, entity.RowVer });
             }
         }
     }
