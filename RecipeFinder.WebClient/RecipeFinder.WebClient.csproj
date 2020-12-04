@@ -161,6 +161,8 @@
   <ItemGroup>
     <Compile Include="ApiHelpers\IRecipeCaller.cs" />
     <Compile Include="ApiHelpers\RecipeCaller.cs" />
+    <Compile Include="Controllers\RecipeController.cs" />
+    <Compile Include="Models\RecipeModel.cs" />
     <Compile Include="Models\RFApiResult.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ApiHelpers\UserCaller.cs" />
@@ -382,6 +384,8 @@
     <Content Include="Views\EmptyRefrigerator\Index.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
+    <Content Include="Views\Recipe\Create.cshtml" />
+    <Content Include="Views\Recipe\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
