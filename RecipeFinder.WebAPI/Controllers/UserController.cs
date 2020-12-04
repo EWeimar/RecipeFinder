@@ -44,7 +44,7 @@ namespace RecipeFinder.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, new { message = "User was succesfully created" });
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horribly went wrong." });
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horrible went wrong." });
         }
 
         [HttpPost]

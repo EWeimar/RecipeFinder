@@ -135,7 +135,7 @@ namespace RecipeFinder.DevTools.Commands
                     });
                 }
 
-                rs.Create(obj);
+                rs.AddAsync(obj);
             }
         }
 

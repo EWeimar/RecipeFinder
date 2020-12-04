@@ -159,6 +159,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiHelpers\IRecipeCaller.cs" />
+    <Compile Include="ApiHelpers\RecipeCaller.cs" />
     <Compile Include="Models\RFApiResult.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ApiHelpers\UserCaller.cs" />
@@ -396,6 +398,10 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\RecipeFinder.DataLayer\RecipeFinder.DataLayer.csproj">
+      <Project>{01932993-D77E-4A48-9732-20D73D73B2D4}</Project>
+      <Name>RecipeFinder.DataLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\RecipeFinder.DTO\RecipeFinder.DTO.csproj">
       <Project>{C33F0C8E-B120-48EC-A151-B106D291CE86}</Project>
       <Name>RecipeFinder.DTO</Name>

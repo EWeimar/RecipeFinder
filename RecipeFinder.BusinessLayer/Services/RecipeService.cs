@@ -6,6 +6,7 @@ using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
@@ -17,13 +18,13 @@ namespace RecipeFinder.BusinessLayer.Services
             dbAccess = new UnitOfWork();
         }
 
-        public void Create(RecipeDTO recipe)
+        public async Task<RecipeDTO> AddAsync(RecipeDTO recipe)
         {
             //Validate recipe
             Validation(recipe);
 
             //Create recipe in DB
-            var newRecipe = dbAccess.Recipes.AddAsync(new Recipe() {
+            var newRecipe = await dbAccess.Recipes.AddAsync(new Recipe() {
                 Id = 0,
                 Title = recipe.Title,
                 Slug = String.Format("{0}-{1}", recipe.User.Id, SlugHelper.GenerateSlug(recipe.Title)),
@@ -36,14 +37,14 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var ing in recipe.IngredientLines)
             {
                 //Get or create the required ingredient
-                Ingredient ingredient = dbAccess.Ingredients.FindByCondition(nameof(ing.Ingredient.Name), ing.Ingredient.Name).Result.FirstOrDefault();
+                Ingredient ingredient = (await dbAccess.Ingredients.FindByCondition(nameof(ing.Ingredient.Name), ing.Ingredient.Name)).FirstOrDefault();
                 if (ingredient == null)
                 {
                     var ingredientToBeCreated = new Ingredient();
                     ingredientToBeCreated.Id = 0;
                     ingredientToBeCreated.Name = ing.Ingredient.Name;
 
-                    ingredient = dbAccess.Ingredients.AddAsync(ingredientToBeCreated).Result;
+                    ingredient = await dbAccess.Ingredients.AddAsync(ingredientToBeCreated);
                 }
                 //Create the ingredientline
                 IngredientLine ingredientLine = new IngredientLine();
@@ -53,7 +54,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 ingredientLine.Amount = ing.Amount;
                 ingredientLine.MeasureUnit = ing.MeasureUnit;
 
-                var newIngredientLine = dbAccess.IngredientLines.AddAsync(ingredientLine);
+                var newIngredientLine = await dbAccess.IngredientLines.AddAsync(ingredientLine);
             }
             //Create images (if any)
             if (recipe.Images != null)
@@ -65,21 +66,23 @@ namespace RecipeFinder.BusinessLayer.Services
                     imageToBeCreated.RecipeId = newRecipe.Id;
                     imageToBeCreated.FileName = image.FileName;
 
-                    var newImage = dbAccess.Images.AddAsync(imageToBeCreated);
+                    var newImage = await dbAccess.Images.AddAsync(imageToBeCreated);
                 }
             }
+
+            return await GetByIdAsync(newRecipe.Id);
         }
 
-        public RecipeDTO Get(int id)
+        public async Task<RecipeDTO> GetByIdAsync(int id)
         {
-            var getRecipe = dbAccess.Recipes.GetByIdAsync(id).Result;
+            var getRecipe = await dbAccess.Recipes.GetByIdAsync(id);
             //Check if recipe exists
             if(getRecipe == null)
             {
                 throw new ArgumentNullException("The recipe could not be found!");
             }
             //Convert user info to DTO
-            var user = dbAccess.Users.GetByIdAsync(getRecipe.UserId).Result;
+            var user = await dbAccess.Users.GetByIdAsync(getRecipe.UserId);
             UserDTO uResult = new UserDTO();
             uResult.Id = user.Id;
             uResult.Username = user.Username;
@@ -87,12 +90,12 @@ namespace RecipeFinder.BusinessLayer.Services
             //Create list for ingredientlines
             List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
             //Fetch ingredientlines in DB based on recipeId
-            var ingredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), getRecipe.Id).Result.ToList();
+            var ingredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), getRecipe.Id)).ToList();
             //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
             foreach (var il in ingredientLines)
             {
                 IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                var ingredient = dbAccess.Ingredients.GetByIdAsync(il.IngredientId).Result;
+                var ingredient = await dbAccess.Ingredients.GetByIdAsync(il.IngredientId);
 
                 IngredientDTO ingredientDTO = new IngredientDTO();
                 ingredientDTO.Id = ingredient.Id;
@@ -107,7 +110,7 @@ namespace RecipeFinder.BusinessLayer.Services
             //Create list for images
             List<ImageDTO> imResults = new List<ImageDTO>();
             //Fetch images in DB based on recipeId
-            var images = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), getRecipe.Id).Result.ToList();
+            var images =  (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), getRecipe.Id)).ToList();
             //Loop over images in DB, convert to DTO and add to new list of images
             foreach (var im in images)
             {
@@ -131,11 +134,11 @@ namespace RecipeFinder.BusinessLayer.Services
             return result;
         }
 
-        public List<RecipeDTO> GetAll()
+        public async Task<IEnumerable<RecipeDTO>> GetAllAsync()
         {
 
             List<RecipeDTO> recipeList = new List<RecipeDTO>();
-            var resultSet = dbAccess.Recipes.GetAllAsync().Result.ToList();
+            var resultSet = (await dbAccess.Recipes.GetAllAsync()).ToList();
 
             if(resultSet == null)
             {
@@ -145,7 +148,7 @@ namespace RecipeFinder.BusinessLayer.Services
             foreach (var item in resultSet)
             {
                 //Convert user info to DTO
-                var user = dbAccess.Users.GetByIdAsync(item.UserId).Result;
+                var user = await dbAccess.Users.GetByIdAsync(item.UserId);
                 UserDTO uResult = new UserDTO();
                 uResult.Id = user.Id;
                 uResult.Username = user.Username;
@@ -153,12 +156,12 @@ namespace RecipeFinder.BusinessLayer.Services
                 //Create list for ingredientlines
                 List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
                 //Fetch ingredientlines in DB based on recipeId
-                var ingredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), item.Id).Result.ToList();
+                var ingredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), item.Id)).ToList();
                 //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
                 foreach (var il in ingredientLines)
                 {
                     IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                    var ingredient = dbAccess.Ingredients.GetByIdAsync(il.IngredientId).Result;
+                    var ingredient = await dbAccess.Ingredients.GetByIdAsync(il.IngredientId);
 
                     IngredientDTO ingredientDTO = new IngredientDTO();
                     ingredientDTO.Name = ingredient.Name;
@@ -174,7 +177,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 //Create list for images
                 List<ImageDTO> imResults = new List<ImageDTO>();
                 //Fetch images in DB based on recipeId
-                var images = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), item.Id).Result.ToList();
+                var images = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), item.Id)).ToList();
                 //Loop over images in DB, convert to DTO and add to new list of images
                 foreach (var im in images)
                 {
@@ -201,11 +204,11 @@ namespace RecipeFinder.BusinessLayer.Services
 
         }
 
-        public void Update(RecipeDTO input)
+        public async Task<int> UpdateAsync(RecipeDTO input)
         {
             Validation(input);
 
-            var updateRecipe = dbAccess.Recipes.GetByIdAsync(input.Id).Result;
+            var updateRecipe = await dbAccess.Recipes.GetByIdAsync(input.Id);
             
             //Check if recipe exists
             if(updateRecipe == null)
@@ -220,57 +223,52 @@ namespace RecipeFinder.BusinessLayer.Services
 
 
             //Fetch ingredientLines in DB based on recipeId
-            var updateIngredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), updateRecipe.Id).Result.ToList();
+            var updateIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), updateRecipe.Id)).ToList();
 
             //Update ingredientLines
             UpdateIngredientLine(input, updateIngredientLines);
 
             //Fetch images in DB based on recipeId
-            var updateImages = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), updateRecipe.Id).Result.ToList();
+            var updateImages = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), updateRecipe.Id)).ToList();
             //Update images
             UpdateImage(input, updateImages);
 
             //Update the recipe
-            dbAccess.Recipes.UpdateAsync(updateRecipe);
+            return await dbAccess.Recipes.UpdateAsync(updateRecipe);
         }
 
-        public void Delete(RecipeDTO recipe)
+        public async Task<int> DeleteAsync(RecipeDTO recipe)
         {
             //Delete from the bottom and up. 
             //Images > IngredientLine > Recipe due to foreign key constraints in DB
 
-            var deleteRecipe = dbAccess.Recipes.GetByIdAsync(recipe.Id).Result;
+            var deleteRecipe = await dbAccess.Recipes.GetByIdAsync(recipe.Id);
             //Check if recipe exists
-            if(deleteRecipe == null)
+            if (deleteRecipe == null)
             {
                 throw new ArgumentNullException("The recipe could not be found!");
             }
 
             //Fetch images in DB based on recipeId
-            var deleteImages = dbAccess.Images.FindByCondition(nameof(Image.RecipeId), deleteRecipe.Id).Result.ToList();
+            var deleteImages = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), deleteRecipe.Id)).ToList();
             //Delete images
             foreach (var item in deleteImages)
             {
-                dbAccess.Images.DeleteAsync(item.Id);
+                await dbAccess.Images.DeleteAsync(item.Id);
             }
 
             //Fetch ingredientLines in DB based on recipeId
-            var deleteIngredientLines = dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), deleteRecipe.Id).Result.ToList();
+            var deleteIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), deleteRecipe.Id)).ToList();
             //Delete ingredientLines
             foreach (var item in deleteIngredientLines)
             {
-                dbAccess.IngredientLines.DeleteAsync(item.Id);
+                await dbAccess.IngredientLines.DeleteAsync(item.Id);
             }
 
             //Delete recipe
-            dbAccess.Recipes.DeleteAsync(deleteRecipe.Id);
-                
-            //Check if recipe has been deleted
-            if (dbAccess.Recipes.GetByIdAsync(deleteRecipe.Id) == null)
-            {
-                Console.WriteLine("Recipe has been deleted!");
-            }
-        }
+            return await dbAccess.Recipes.DeleteAsync(deleteRecipe.Id);
+
+        }   
 
 
         //Validation of inbound recipe(in DTO format)
