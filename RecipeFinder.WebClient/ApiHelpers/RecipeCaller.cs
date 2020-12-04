@@ -1,4 +1,5 @@
 ﻿using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DTO;
 using RecipeFinder.WebClient.Models;
 using RestSharp;
 using System;
@@ -16,11 +17,33 @@ namespace RecipeFinder.WebClient.ApiHelpers
             client = new RestClient(baseUrl);
         }
 
-        public RFApiResult CreateRecipe(Recipe recipe)
+        public RFApiResult CreateRecipe(RecipeDTO recipeDTO)
         {
             var request = new RestRequest("/recipe/create", Method.POST);
 
-            request.AddJsonBody(recipe);
+            request.AddJsonBody(recipeDTO);
+
+            IRestResponse<RFApiResult> response = client.Execute<RFApiResult>(request);
+
+            response.Data.StatusCode = response.StatusCode;
+
+            if (response.IsSuccessful)
+            {
+                response.Data.Success = true;
+            }
+            else
+            {
+                response.Data.Success = false;
+            }
+
+            return response.Data;
+        }
+
+        public RFApiResult UpdateRecipe(RecipeDTO recipeDTO)
+        {
+            var request = new RestRequest("/recipe/update", Method.PUT);
+
+            request.AddJsonBody(recipeDTO);
 
             IRestResponse<RFApiResult> response = client.Execute<RFApiResult>(request);
 

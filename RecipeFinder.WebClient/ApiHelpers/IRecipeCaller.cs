@@ -1,4 +1,5 @@
 ﻿using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DTO;
 using RecipeFinder.WebClient.Models;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,8 @@ namespace RecipeFinder.WebClient.ApiHelpers
 {
     public interface IRecipeCaller
     {
-        RFApiResult CreateRecipe(Recipe recipe);
+        RFApiResult CreateRecipe(RecipeDTO recipeDTO);
+
+        RFApiResult UpdateRecipe(RecipeDTO recipeDTO);
     }
 }
