@@ -51,5 +51,35 @@ namespace RecipeFinder.WebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horrible went wrong." });
         }
 
+        [HttpPut]
+        [Route("api/recipe/update")]
+        public async Task<HttpResponseMessage> Update([FromBody] RecipeDTO recipeDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                string errorMessage = string.Empty;
+
+                foreach (ModelState keyValuePairs in ModelState.Values)
+                {
+                    foreach (ModelError modelError in keyValuePairs.Errors)
+                    {
+                        errorMessage += " - " + modelError.ErrorMessage;
+                    }
+                }
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
+            }
+
+            if (await RecipeService.UpdateAsync(recipeDTO) != 0)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated" });
+            }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
+        }
+
+
+
     }
+
+    
 }
