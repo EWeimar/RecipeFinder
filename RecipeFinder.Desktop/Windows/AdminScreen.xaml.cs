@@ -23,13 +23,17 @@ namespace RecipeFinder.Desktop
         public AdminWindow()
         {
             InitializeComponent();
+            //FillDataGrids();
         }
 
-        private void btnCreate_Click(object sender, RoutedEventArgs e)
+        //private void FillDataGrids()
+        //{
+            //TODO
+        //}
+
+        private void btnCreateUser_Click(object sender, RoutedEventArgs e)
         {
-            CreateRecipe create = new CreateRecipe();
-            create.Show();
-            this.Close();
+            
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
@@ -39,11 +43,35 @@ namespace RecipeFinder.Desktop
             this.Close();
         }
 
-        private void btnEdit_Click(object sender, RoutedEventArgs e)
+        private void btnUpdateUser_Click(object sender, RoutedEventArgs e)
         {
-            EditRecipe Rlist = new EditRecipe();
-            Rlist.Show();
+           
+        }
+
+        private void btnDeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnCreateRecipe_Click(object sender, RoutedEventArgs e)
+        {
+            CreateRecipe create = new CreateRecipe();
+            create.Show();
             this.Close();
+        }
+
+        private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeleteRecipe_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void grdUsers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
+        {
 
         }
     }

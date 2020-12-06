@@ -5,11 +5,56 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeFinder.Desktop"
         mc:Ignorable="d"
-        Title="RecipeFinder" Height="450" Background="#61892F" Width="800">
-    <Grid>
-        <Label Name="lblAdmin" Content="  Admin Window" HorizontalAlignment="Center" FontSize="30" Foreground="White" Margin="278,20,269.6,20" Width="246"/>
-        <Button Name="btnCreate" Click="btnCreate_Click" Content="Create Recipe" Background="#474B4F" Foreground="White" FontSize="20" Margin="290,152,289.6,208"/>
-        <Button Name="btnEdit" Click="btnEdit_Click" Content="Edit Recipe" Background="#474B4F" Foreground="White" FontSize="20" Margin="290,232,289.6,128"/>
-        <Button Name="btnLogOut" Click="btnLogOut_Click" Content="Log Out" Background="#FC4445" Foreground="White" FontSize="20" Margin="326,320,321.6,40"/>
+        Title="RecipeFinder" Height="600" Background="#474B4F" Width="800">
+    <Grid Margin="0,0,-0.4,-20">
+        <Grid Grid.Column="1"/>
+        <Label x:Name="lblUsers" Content="Users" HorizontalAlignment="Right" FontSize="25" Foreground="White" Margin="0,57,653,471.4" Width="105"/>
+
+        <Grid/>
+
+        <Button Name="btnCreateUser" Click="btnCreateUser_Click" Content="Create" Background="#61892F" Foreground="White" FontSize="18" Width="120" Height="40" Margin="36,94,638,456.4"/>
+        <Button Name="btnUpdateUser" Click="btnUpdateUser_Click" Content="Update" Background="#61892F" Foreground="White" FontSize="18" Width="120" Height="40" Margin="36,411,638,139.4"/>
+        <Button Name="btnDeleteUser" Click="btnDeleteUser_Click" Content="Delete" Background="#FC4445" Foreground="White" FontSize="18" Width="120" Height="40" Margin="178,411,496,139.4"/>
+
+        <Grid Grid.Column="2"/>
+
+        <Label x:Name="lblRecipes" Content="Recipes" HorizontalAlignment="Center" FontSize="25" Foreground="White" Margin="502,57,187,471.4" Width="105"/>
+
+        <Grid Height="600" Width="800" Margin="0,0,0,0.4">
+
+            <DataGrid Name="grdRecipes" Margin="502,149,33,206" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}"/>
+
+                    <DataGridTextColumn Header="User ID" Width="50" Binding="{Binding UserId}"/>
+
+                    <DataGridTextColumn Header="Title" Width="100" Binding="{Binding Title}"/>
+
+                    <DataGridTextColumn Header="Created At" Width="100" Binding="{Binding CreatedAt}"/>
+
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid x:Name="grdUsers" Margin="36,149,501,206" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}"/>
+
+                    <DataGridTextColumn Header="Username" Width="70" Binding="{Binding Username}"/>
+
+                    <DataGridTextColumn Header="Email" Width="70" Binding="{Binding Email}"/>
+
+                    <DataGridTextColumn Header="Created At" Width="70" Binding="{Binding CreatedAt}"/>
+
+                </DataGrid.Columns>
+
+            </DataGrid>
+            <Button x:Name="btnLogOut" Click="btnLogOut_Click" Content="Log Out" Background="Black" Foreground="White" FontSize="18" Width="120" Height="30" Margin="331,497,349,73"/>
+
+        </Grid>
+
+        <Button Name="btnCreateRecipe" Click="btnCreateRecipe_Click" Content="Create" Background="#61892F" Foreground="White" Width="120" Height="40" FontSize="18" Margin="502,94,172,456.4" />
+        <Button Name="btnUpdateRecipe" Click="btnUpdateRecipe_Click" Content="Update" Background="#61892F" Foreground="White" Width="120" Height="40" FontSize="18" Margin="502,411,172,139.4"/>
+        <Button Name="btnDeleteRecipe" Click="btnDeleteRecipe_Click" Content="Delete" Background="#FC4445" Foreground="White" Width="120" Height="40" FontSize="18" Margin="650,411,24,139.4"/>
     </Grid>
 </Window>

@@ -52,7 +52,7 @@ namespace RecipeFinder.Desktop
 
             //For Test Purpose
 
-            if (txtUsername.Text.ToLower() == "test" && @txtPassword.Password == "123456")
+            if (txtUsername.Text.ToLower() == "test" && @txtPassword.Password == "123")
             {
                 AdminWindow admin = new AdminWindow();
                 admin.Show();

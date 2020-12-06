@@ -61,9 +61,6 @@
     </ApplicationDefinition>
     <Compile Include="ApiHelpers\IRecipeCaller.cs" />
     <Compile Include="ApiHelpers\RecipeCaller.cs" />
-    <Compile Include="Windows\EditRecipe.xaml.cs">
-      <DependentUpon>EditRecipe.xaml</DependentUpon>
-    </Compile>
     <Page Include="Windows\CreateRecipe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -90,10 +87,6 @@
       <DependentUpon>AdminScreen.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Windows\EditRecipe.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

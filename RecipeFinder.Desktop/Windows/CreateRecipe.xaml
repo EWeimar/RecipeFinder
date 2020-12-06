@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeFinder.Desktop"
         mc:Ignorable="d"
-        Title="Create Recipe" Height="450" Width="800" Background="#61892F">
+        Title="Create Recipe" Height="450" Width="800" Background="#474B4F">
     <Grid >
         <StackPanel HorizontalAlignment="Left" Width="384" VerticalAlignment="Center" Height="368" Margin="0,10,0,42">
             <Label x:Name="lblTitle" Content="Title" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="170,0" RenderTransformOrigin="0.648,5.375"/>
@@ -14,7 +14,7 @@
             <Label x:Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="141,0"/>
             <TextBox x:Name="txtInstructions" HorizontalAlignment="Center" Height="220" Width="200" Margin="92,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
 
-            <Button x:Name="btnCreate" Content="Create Recipe" Background="#86C232" Foreground="White" Width="100" Margin="142,10"/>
+            <Button x:Name="btnCreate" Content="Create Recipe" Background="#61892F" Foreground="White" Width="100" Margin="142,10"/>
             <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="157,0" VerticalAlignment="Bottom"/>
         </StackPanel>
 
