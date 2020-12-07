@@ -13,7 +13,7 @@ namespace RecipeFinder.WebClient.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         //public List<IngredientLineModel> IngredientLines { get; set; }
-        public string Insctructions { get; set; }
+        public string Instructions { get; set; }
         //public List<ImageDTO> Images { get; set; }
 
 
