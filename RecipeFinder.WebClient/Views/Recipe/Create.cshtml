@@ -10,85 +10,117 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>RecipeModel</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal">
+        <h4>RecipeModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group row">
-        <div class="col-2">
-            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+        <div class="form-group row">
+            <div class="col-2">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @id = "recipe_title" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
         </div>
-        <div class="col-10">
-            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control",  @id="recipe_title" } })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-        </div>
-    </div>
 
-    <h4>Add Ingredient</h4>
-    <div class="row my-2">
-        <div class="col-4">
-            <input class="form-control" placeholder="Ingredient" type="text" id="ingredient_add_name" />
-        </div>
-        <div class="col-4">
-            <input class="form-control" placeholder="Amount" type="number" min="0" id="ingredient_add_amount" />
-        </div>
-        <div class="col-4">
-            <select class="form-control" id="ingredient_add_measure_unit">
-                <option value="1">ml</option>
-                <option value="2">cl</option>
-            </select>
-        </div>
-    </div>
+        <h4>Add Ingredient</h4>
+        <div class="row my-2">
 
-    <div class="row my-2">
-        <div class="col">
-            <button type="button" class="btn btn-success btn-block" id="add_ingredient_btn">
-                Add
-            </button>
+            <div class="col-4">
+                <input class="form-control" placeholder="Ingredient" type="text" id="ingredient_add_name" />
+            </div>
+
+            <div class="col-4">
+                <input class="form-control" placeholder="Amount" type="number" min="0" id="ingredient_add_amount" />
+            </div>
+
+            <div class="col-4">
+                <select class="form-control" id="ingredient_add_measure_unit">
+                    <option value="1">ml</option>
+                    <option value="2">cl</option>
+                </select>
+            </div>
         </div>
-    </div>
+
+        <div class="row my-2">
+            <div class="col">
+                <button type="button" class="btn btn-success btn-block" id="add_ingredient_btn">
+                    Add
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ingredient</th>
+                                <th>Amount</th>
+                                <th>Measure Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ingredient_lines">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-2">
+                @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label" })
+            </div>
+            <div class="col-10">
+                @Html.TextAreaFor(model => model.Instructions, htmlAttributes: new { @class = "form-control", @rows = "10", @cols = "20", @id = "recipe_instructions" })
+                @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <h4>Add Image</h4>
+        <div class="row my-2">
+
+            <div class="col-4">
+                <input class="form-control" placeholder="Filename" type="text" id="image_add_name" />
+            </div>
+
+            <div class="col8">
+                <button type="button" class="btn btn-success btn-block" id="add_image_btn">
+                    Add
+                </button>
+            </div>
+
+        </div>
 
 
-    <div class="row">
-        <div class="col-12">
-            <div class="table">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Ingredient</th>
-                            <th>Amount</th>
-                            <th>Measure Unit</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ingredient_lines">
-                    </tbody>
-                </table>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Filename</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recipe_images">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </div>
     </div>
-
-
-
-
-
-
-    <div class="form-group row">
-        <div class="col-2">
-            @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label" })
-        </div>
-        <div class="col-10">
-            @Html.TextAreaFor(model => model.Instructions, htmlAttributes: new { @class = "form-control", @rows = "10", @cols = "20", @id = "recipe_instructions" })
-            @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Create" class="btn btn-success" />
-        </div>
-    </div>
-</div>
 }
 
 <div>
@@ -97,7 +129,7 @@
 
 @section scripts
 {
-    <script id="template" type="x-tmpl-mustache">
+    <script id="ingredientTemplate" type="x-tmpl-mustache">
         <tr id="ingredient_line_element_{{identifier}}}">
             <td>{{ingredient_name}}</td>
             <td>{{ingredient_amount}}</td>
@@ -109,6 +141,18 @@
             </td>
         </tr>
     </script>
+
+    <script id="imageTemplate" type="x-tmpl-mustache">
+        <tr id="image_element_{{identifier}}}">
+            <td>{{filename}}</td>
+            <td>
+                <button class="btn btn-danger btn-block" onclick="removeImage({{index}}, {{identifier}})">
+                    Remove
+                </button>
+            </td>
+        </tr>
+    </script>
+
     <script src="~/Scripts/mustache.js"></script>
     <script src="@Url.Content("~/Scripts/RecipeFinder/CreateRecipe/create.js")"></script>
 }

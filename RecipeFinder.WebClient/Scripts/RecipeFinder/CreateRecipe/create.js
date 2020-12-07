@@ -1,5 +1,7 @@
-﻿var template = document.getElementById('template').innerHTML;
-var lines = [];
+﻿var ingredientTemplate = document.getElementById('ingredientTemplate').innerHTML;
+var imageTemplate = document.getElementById('imageTemplate').innerHTML;
+var ingredientLines = [];
+var images = [];
 
 function addIngredientLine() {
     
@@ -25,8 +27,8 @@ function addIngredientLine() {
 
     var identifier = Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
 
-    lines.push({ name: ingredient_name, amount: ingredient_amount, unit: parseInt(ingredient_measure_unit), identifier: identifier });
-    console.log(lines);
+    ingredientLines.push({ name: ingredient_name, amount: ingredient_amount, unit: parseInt(ingredient_measure_unit), identifier: identifier });
+    console.log(ingredientLines);
 
     $('#ingredient_add_name').val("");
     $('#ingredient_add_amount').val("");
@@ -34,34 +36,75 @@ function addIngredientLine() {
     render();
 }
 
+function addImage() {
+    var filename = $('#image_add_name').val();
+    var identifier = Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));
+
+    images.push({ filename: filename, identifier: identifier });
+
+    $('#image_add_name').val();
+    console.log(images);
+
+    renderImage();
+}
+
+function renderImage() {
+    $('#recipe_images').html("");
+    if (images.length == 1) {
+        $('#recipe_images').html("");
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        var renderedImages = Mustache.render(imageTemplate, { index: i, filename: images[i].filename, identifier: images[i].identifier });
+        console.log("line: " + images[i].identifier);
+
+        $('#recipe_images').append(renderedImages);
+    }
+}
+
 function render() {
     console.log("Render method called!");
     $('#ingredient_lines').html("");
-    for (let i = 0; i < lines.length; i++) {
-        if (lines.length == 0) {
+    
+
+    for (let i = 0; i < ingredientLines.length; i++) {
+        if (ingredientLines.length == 0) {
             $('#ingredient_lines').html("<div class=\"p-5 text-center text-muted\">Please add some ingredients</div>");
         }
-        if (lines.length == 1) {
+        if (ingredientLines.length == 1) {
             $('#ingredient_lines').html("");
         }
 
-
-        var renderedIngredientLine = Mustache.render(template, { index: i, ingredient_name: lines[i].name, ingredient_amount: lines[i].amount, ingredient_unit: lines[i].unit, identifier: lines[i].identifier });
-        console.log("line: " + lines[i].identifier);
-        //if (!$('#ingredient_line_element_' + lines[i].identifier).length > 0) {
-            $('#ingredient_lines').append(renderedIngredientLine);
-        //}
+        var renderedIngredientLine = Mustache.render(ingredientTemplate, { index: i, ingredient_name: ingredientLines[i].name,
+                ingredient_amount: ingredientLines[i].amount, ingredient_unit: ingredientLines[i].unit, identifier: ingredientLines[i].identifier
+        });
+        console.log("line: " + ingredientLines[i].identifier);
+        
+        $('#ingredient_lines').append(renderedIngredientLine);
     }
-
 }
 
 function removeIngredientLine(index, identifier) {
     console.log("Removed ingredient: " + identifier);
-    console.log(lines);
-    lines.splice(index, 1);
+    console.log(ingredientLines);
+    ingredientLines.splice(index, 1);
     $("#ingredient_line_element_" + identifier).remove();
     render();
 }
+
+function removeImage(index, identifier) {
+    console.log("Removed image: " + identifier);
+    console.log(images);
+    images.splice(index, 1);
+    $("#image_element_" + identifier).remove();
+    render();
+}
+
+$('#add_image_btn').click(function () {
+    addImage();
+
+});
+
 
 $('#add_ingredient_btn').click(function () {
     addIngredientLine();
@@ -70,4 +113,5 @@ $('#add_ingredient_btn').click(function () {
 
 $(document).ready(function () {
     render();
+    renderImage();
 });
