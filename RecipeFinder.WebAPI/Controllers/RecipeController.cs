@@ -86,8 +86,8 @@ namespace RecipeFinder.WebAPI.Controllers
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { meesage = "Invalid ID" });
             }
 
-            Recipe recipe = await RecipeService.GetByIdAsync(id.Value);
-
+            RecipeDTO recipe = await RecipeService.GetByIdAsync(id.Value);
+          
             if(recipe == null)
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Recipe with this ID does not exist" });
@@ -100,8 +100,33 @@ namespace RecipeFinder.WebAPI.Controllers
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
         }
-        
 
+        [HttpGet]
+        [Route("api/recipe/slug/{slug}")]
+        public async Task<HttpResponseMessage> GetBySlug(string slug)
+        {
+            if (string.IsNullOrEmpty(slug))
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { meesage = "Invalid Slug" });
+            }
+
+            var result = await RecipeService.FindByCondition("slug", slug);
+            RecipeDTO recipe = result;
+
+            //RecipeDTO recipe = await RecipeService.GetByIdAsync(id.Value);
+
+            if (recipe == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Recipe with this Slug does not exist" });
+            }
+
+            if (recipe != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, recipe);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
+        }
 
     }
 

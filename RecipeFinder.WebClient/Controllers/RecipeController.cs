@@ -26,11 +26,11 @@ namespace RecipeFinder.WebClient.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update()
+        public ActionResult Update(string slug)
         {
-            ViewBag.Message = "Update Recipe";
-
+            ViewBag.slug = slug;
             return View();
+
         }
 
         [HttpPost]
