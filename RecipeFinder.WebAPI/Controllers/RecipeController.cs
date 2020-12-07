@@ -101,7 +101,14 @@ namespace RecipeFinder.WebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
         }
         
+        [HttpGet]
+        [Route("api/recipe/measureunits")]
+        public async Task<HttpResponseMessage> GetAllMeasureUnits()
+        {
+            var measureUnits = await RecipeService.GetAllMeasureUnits();
 
+            return Request.CreateResponse(HttpStatusCode.OK, measureUnits);
+        }
 
     }
 

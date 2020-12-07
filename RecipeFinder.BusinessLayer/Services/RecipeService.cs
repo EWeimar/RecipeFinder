@@ -214,6 +214,18 @@ namespace RecipeFinder.BusinessLayer.Services
 
         }   
 
+        public async Task<List<MeasureUnit>> GetAllMeasureUnits()
+        {
+            List<MeasureUnit> measureUnits = new List<MeasureUnit>();
+
+            foreach (var item in Enum.GetValues(typeof(MeasureUnit)))
+            {
+                measureUnits.Add((MeasureUnit)item);
+            }
+
+            return measureUnits;
+        }
+
 
         //Validation of inbound recipe(in DTO format)
         private void Validation(RecipeDTO recipe)
@@ -431,5 +443,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 dbAccess.Images.DeleteAsync(item.Id);
             }
         }
+
+        
     }
 }

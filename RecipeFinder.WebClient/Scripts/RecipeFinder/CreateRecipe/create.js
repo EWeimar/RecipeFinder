@@ -45,6 +45,8 @@ function addImage() {
     $('#image_add_name').val();
     console.log(images);
 
+    $('#image_add_name').val("");
+
     renderImage();
 }
 
@@ -97,7 +99,7 @@ function removeImage(index, identifier) {
     console.log(images);
     images.splice(index, 1);
     $("#image_element_" + identifier).remove();
-    render();
+    renderImage();
 }
 
 $('#add_image_btn').click(function () {
