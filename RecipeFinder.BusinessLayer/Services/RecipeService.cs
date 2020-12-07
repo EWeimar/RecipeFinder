@@ -18,7 +18,7 @@ namespace RecipeFinder.BusinessLayer.Services
             dbAccess = new UnitOfWork();
         }
 
-        public async Task<RecipeDTO> AddAsync(RecipeDTO recipe)
+        public async Task<Recipe> AddAsync(RecipeDTO recipe)
         {
             //Validate recipe
             Validation(recipe);
@@ -73,65 +73,9 @@ namespace RecipeFinder.BusinessLayer.Services
             return await GetByIdAsync(newRecipe.Id);
         }
 
-        public async Task<RecipeDTO> GetByIdAsync(int id)
+        public async Task<Recipe> GetByIdAsync(int id)
         {
-            var getRecipe = await dbAccess.Recipes.GetByIdAsync(id);
-            //Check if recipe exists
-            if(getRecipe == null)
-            {
-                throw new ArgumentNullException("The recipe could not be found!");
-            }
-            //Convert user info to DTO
-            var user = await dbAccess.Users.GetByIdAsync(getRecipe.UserId);
-            UserDTO uResult = new UserDTO();
-            uResult.Id = user.Id;
-            uResult.Username = user.Username;
-
-            //Create list for ingredientlines
-            List<IngredientLineDTO> ilResults = new List<IngredientLineDTO>();
-            //Fetch ingredientlines in DB based on recipeId
-            var ingredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), getRecipe.Id)).ToList();
-            //Loop over ingredientlines in DB, convert to DTO and add to new list of ingredientlines
-            foreach (var il in ingredientLines)
-            {
-                IngredientLineDTO ingredientLineDTO = new IngredientLineDTO();
-                var ingredient = await dbAccess.Ingredients.GetByIdAsync(il.IngredientId);
-
-                IngredientDTO ingredientDTO = new IngredientDTO();
-                ingredientDTO.Id = ingredient.Id;
-                ingredientDTO.Name = ingredient.Name;
-                ingredientLineDTO.Ingredient = ingredientDTO;
-                ingredientLineDTO.Amount = il.Amount;
-                ingredientLineDTO.MeasureUnit = il.MeasureUnit;
-
-                ilResults.Add(ingredientLineDTO);
-            }
-
-            //Create list for images
-            List<ImageDTO> imResults = new List<ImageDTO>();
-            //Fetch images in DB based on recipeId
-            var images =  (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), getRecipe.Id)).ToList();
-            //Loop over images in DB, convert to DTO and add to new list of images
-            foreach (var im in images)
-            {
-                ImageDTO imageDTO = new ImageDTO();
-                imageDTO.Id = im.Id;
-                imageDTO.FileName = im.FileName;
-
-                imResults.Add(imageDTO);
-            }
-
-            //Convert recipe to DTO and return result
-            RecipeDTO result = new RecipeDTO();
-            result.User = uResult;
-            result.Id = getRecipe.Id;
-            result.Title = getRecipe.Title;
-            result.Instruction = getRecipe.Instruction;
-            result.CreatedAt = getRecipe.CreatedAt;
-            result.IngredientLines = ilResults;
-            result.Images = imResults;
-
-            return result;
+            return await dbAccess.Recipes.GetByIdAsync(id);            
         }
 
         public async Task<IEnumerable<RecipeDTO>> GetAllAsync()

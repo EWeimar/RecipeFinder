@@ -77,6 +77,30 @@ namespace RecipeFinder.WebAPI.Controllers
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
         }
 
+        [HttpGet]
+        [Route("api/recipe/{id}")]
+        public async Task<HttpResponseMessage> Get(int? id)
+        {
+            if (!id.HasValue)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { meesage = "Invalid ID" });
+            }
+
+            Recipe recipe = await RecipeService.GetByIdAsync(id.Value);
+
+            if(recipe == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Recipe with this ID does not exist" });
+            }
+
+            if (recipe != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, recipe);
+            }
+
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
+        }
+        
 
 
     }

@@ -11,7 +11,7 @@ namespace RecipeFinder.Desktop.ApiHelpers
     //{
     //    List<Recipe> GetRecipes();
     //    Recipe GetRecipe(int id);
-    //    void Create(Recipe recipe);
+    //    void CreateRecipe(RecipeDTO recipeDTO);
     //    void Update(int id, Recipe recipe);
     //    void Delete(int id);
     //}

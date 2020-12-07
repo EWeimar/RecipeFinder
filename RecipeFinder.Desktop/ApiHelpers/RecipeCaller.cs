@@ -17,11 +17,11 @@ namespace RecipeFinder.Desktop.ApiHelpers
     //        client = new RestClient(baseUrl);
     //    }
 
-    //    // parameter-less constructor using default API URL from App.Config
-    //    //public RecipeCaller()
-    //    //{
-    //    //    client = new RestClient(ConfigurationManager.AppSettings["StarwarsApiURL"]);
-    //    //}
+    //    //parameter-less constructor using default API URL from App.Config
+    //    public RecipeCaller()
+    //{
+    //    client = new RestClient(ConfigurationManager.AppSettings["StarwarsApiURL"]);
+    //}
 
     //    public List<Recipe> GetRecipes()
     //    {
@@ -56,6 +56,6 @@ namespace RecipeFinder.Desktop.ApiHelpers
     //        var request = new RestRequest("recipe/" + id, Method.DELETE);
     //        client.Execute(request);
     //    }      
-        
+
     //}
 }
