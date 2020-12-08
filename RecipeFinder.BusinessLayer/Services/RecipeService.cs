@@ -6,13 +6,14 @@ using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Services
 {
     public class RecipeService : IRecipeService
     {
-        private readonly IUnitOfWork dbAccess;    
+        private readonly IUnitOfWork dbAccess;
         public RecipeService()
         {
             dbAccess = new UnitOfWork();
@@ -24,7 +25,8 @@ namespace RecipeFinder.BusinessLayer.Services
             Validation(recipe);
 
             //Create recipe in DB
-            var newRecipe = await dbAccess.Recipes.AddAsync(new Recipe() {
+            var newRecipe = await dbAccess.Recipes.AddAsync(new Recipe()
+            {
                 Id = 0,
                 Title = recipe.Title,
                 Slug = String.Format("{0}-{1}", recipe.User.Id, SlugHelper.GenerateSlug(recipe.Title)),
@@ -52,7 +54,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 ingredientLine.RecipeId = newRecipe.Id;
                 ingredientLine.IngredientId = ingredient.Id;
                 ingredientLine.Amount = ing.Amount;
-                ingredientLine.MeasureUnit = ing.MeasureUnit;
+                ingredientLine.MeasureUnit = ConvertToEnum(ing.MeasureUnitText);
 
                 var newIngredientLine = await dbAccess.IngredientLines.AddAsync(ingredientLine);
             }
@@ -141,7 +143,7 @@ namespace RecipeFinder.BusinessLayer.Services
             List<RecipeDTO> recipeList = new List<RecipeDTO>();
             var resultSet = (await dbAccess.Recipes.GetAllAsync()).ToList();
 
-            if(resultSet == null)
+            if (resultSet == null)
             {
                 throw new ArgumentNullException("No recipes were found!");
             }
@@ -171,7 +173,7 @@ namespace RecipeFinder.BusinessLayer.Services
                     ingredientLineDTO.Ingredient = ingredientDTO;
                     ingredientLineDTO.Amount = il.Amount;
                     ingredientLineDTO.MeasureUnit = il.MeasureUnit;
-                    
+
                     ilResults.Add(ingredientLineDTO);
                 }
 
@@ -210,9 +212,9 @@ namespace RecipeFinder.BusinessLayer.Services
             Validation(input);
 
             var updateRecipe = await dbAccess.Recipes.GetByIdAsync(input.Id);
-            
+
             //Check if recipe exists
-            if(updateRecipe == null)
+            if (updateRecipe == null)
             {
                 throw new ArgumentNullException("The recipe could not be found!");
             }
@@ -295,43 +297,43 @@ namespace RecipeFinder.BusinessLayer.Services
         //Validation of inbound recipe(in DTO format)
         private void Validation(RecipeDTO recipe)
         {
-            if(recipe == null)
+            if (recipe == null)
             {
                 throw new ArgumentNullException("Recipe cannot be null!");
-            } 
-            else if(recipe.User == null)
+            }
+            else if (recipe.User == null)
             {
                 throw new ArgumentNullException("User cannot be null!");
             }
-            else if(recipe.Title == null)
+            else if (recipe.Title == null)
             {
                 throw new ArgumentNullException("Title cannot be null!");
             }
-            else if(recipe.Instruction == null)
+            else if (recipe.Instruction == null)
             {
                 throw new ArgumentNullException("Instruction cannot be null!");
             }
-            else if(recipe.User.Id <= 0)
+            else if (recipe.User.Id <= 0)
             {
                 throw new ArgumentException("UserId cannot be zero or less!");
             }
-            
-            if(recipe.Images != null && recipe.Images.Count > 0)
+
+            if (recipe.Images != null && recipe.Images.Count > 0)
             {
                 foreach (var i in recipe.Images)
                 {
-                    if(i.FileName == null)
+                    if (i.FileName == null)
                     {
                         throw new ArgumentNullException("FileName cannot be null!");
                     }
                 }
             }
 
-            if(recipe.IngredientLines == null)
+            if (recipe.IngredientLines == null)
             {
                 throw new ArgumentNullException("IngredientLines cannot be null!");
             }
-            else if(recipe.IngredientLines.Count == 0)
+            else if (recipe.IngredientLines.Count == 0)
             {
                 throw new ArgumentException("IngredientLines cannont be zero!");
             }
@@ -355,7 +357,7 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             //Ensure users exists
-            if(dbAccess.Users.GetByIdAsync(recipe.User.Id) == null)
+            if (dbAccess.Users.GetByIdAsync(recipe.User.Id) == null)
             {
                 throw new ArgumentException("UserId does not exist!");
             }
@@ -378,10 +380,10 @@ namespace RecipeFinder.BusinessLayer.Services
             }
 
             //Update ingredient - Identify ingredientLine to be updated
-            List<IngredientLineDTO> toBeUpdated = new List<IngredientLineDTO>(); 
+            List<IngredientLineDTO> toBeUpdated = new List<IngredientLineDTO>();
             foreach (var item in dto.IngredientLines)
             {
-                if(existing.Any(ex => ex.Id == item.Id))
+                if (existing.Any(ex => ex.Id == item.Id))
                 {
                     toBeUpdated.Add(item);
                 }
@@ -393,7 +395,7 @@ namespace RecipeFinder.BusinessLayer.Services
             List<IngredientLine> toBeDeleted = new List<IngredientLine>();
             foreach (var e in existing)
             {
-                if(toBeCreated.Any(ex => ex.Id == e.Id) || toBeUpdated.Any(ex => ex.Id == e.Id))
+                if (toBeCreated.Any(ex => ex.Id == e.Id) || toBeUpdated.Any(ex => ex.Id == e.Id))
                 {
                     //Nothing happens!
                 }
@@ -423,7 +425,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 il.RecipeId = dto.Id;
                 il.IngredientId = ingredient.Id;
                 il.Amount = item.Amount;
-                il.MeasureUnit = item.MeasureUnit;
+                il.MeasureUnit = ConvertToEnum(item.MeasureUnitText);
 
                 //Send to DB
                 dbAccess.IngredientLines.AddAsync(il);
@@ -435,7 +437,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 IngredientLine il = dbAccess.IngredientLines.GetByIdAsync(item.Id).Result;
 
                 il.Amount = item.Amount;
-                il.MeasureUnit = item.MeasureUnit;
+                il.MeasureUnit = ConvertToEnum(item.MeasureUnitText);
 
                 //Send to DB
                 dbAccess.IngredientLines.UpdateAsync(il);
@@ -454,7 +456,7 @@ namespace RecipeFinder.BusinessLayer.Services
             List<ImageDTO> toBeCreated = new List<ImageDTO>();
             foreach (var item in dto.Images)
             {
-                if(existing.Any(ex => ex.Id == item.Id))
+                if (existing.Any(ex => ex.Id == item.Id))
                 {
                     //Nothing happens!
                 }
@@ -468,7 +470,7 @@ namespace RecipeFinder.BusinessLayer.Services
             List<ImageDTO> toRemain = new List<ImageDTO>();
             foreach (var item in dto.Images)
             {
-                if(existing.Any(ex => ex.Id == item.Id))
+                if (existing.Any(ex => ex.Id == item.Id))
                 {
                     toRemain.Add(item);
                 }
@@ -479,7 +481,7 @@ namespace RecipeFinder.BusinessLayer.Services
             List<Image> toBeDeleted = new List<Image>();
             foreach (var e in existing)
             {
-                if(toBeCreated.Any(ex => ex.Id == e.Id) || toRemain.Any(ex => ex.Id == e.Id))
+                if (toBeCreated.Any(ex => ex.Id == e.Id) || toRemain.Any(ex => ex.Id == e.Id))
                 {
                     //Nothing happens
                 }
@@ -509,6 +511,52 @@ namespace RecipeFinder.BusinessLayer.Services
             }
         }
 
-        
+        private MeasureUnit ConvertToEnum(string input)
+        {
+            if (int.TryParse(input, out int result))
+            {
+                foreach (var item in Enum.GetValues(typeof(MeasureUnit)))
+                {
+                    if (result == (int)((MeasureUnit)item))
+                    {
+                        return (MeasureUnit)item;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var item in Enum.GetValues(typeof(MeasureUnit)))
+                {
+                    //Text will contain "-" for MeasureUnit.None
+                    //If enum member does not exist, it will return null
+                    string text = GetEnumMemberAttrValue<MeasureUnit>((MeasureUnit)item);
+
+                    if (input == text)
+                    {
+                        return (MeasureUnit)item;
+                    }
+                }
+            }
+            //If no enum member is found, returns 'None' as default.
+            return MeasureUnit.None;
+        }
+
+
+        //Taken from: https://stackoverflow.com/questions/27372816/how-to-read-the-value-for-an-enummember-attribute
+        //Gets enumMember annotation value
+        //If we want the enum value 'none' it will return "-" 
+        public string GetEnumMemberAttrValue<T>(T enumVal)
+        {
+            var enumType = typeof(T);
+            var memInfo = enumType.GetMember(enumVal.ToString());
+            var attr = memInfo.FirstOrDefault()?.GetCustomAttributes(false).OfType<EnumMemberAttribute>().FirstOrDefault();
+            if (attr != null)
+            {
+                return attr.Value;
+            }
+
+            return null;
+        }
+
     }
 }

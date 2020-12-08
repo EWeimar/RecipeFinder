@@ -1,4 +1,5 @@
-﻿@model RecipeFinder.WebClient.Models.RecipeModel
+﻿@using RecipeFinder.WebClient.Models
+@model RecipeFinder.WebClient.Models.RecipeModel
 
 @{
     ViewBag.Title = "Create";
@@ -38,8 +39,17 @@
 
             <div class="col-4">
                 <select class="form-control" id="ingredient_add_measure_unit">
+                    <option value="0">none</option>
                     <option value="1">ml</option>
                     <option value="2">cl</option>
+                    <option value="3">dl</option>
+                    <option value="4">l</option>
+                    <option value="5">g</option>
+                    <option value="6">kg</option>
+                    <option value="7">tsk</option>
+                    <option value="8">spsk</option>
+                    <option value="9">knsp</option>
+                    <option value="10">stk</option>
                 </select>
             </div>
         </div>
@@ -127,13 +137,29 @@
     @Html.ActionLink("Back to the future!", "Index", "Home")
 </div>
 
+@*Det html der skal indsættes i ingredientline tabellen for at blive mappet til recipemodel.ingredientlines
+    0 skal være et fortløbende 0-baseret indeks*@
+
 @section scripts
 {
     <script id="ingredientTemplate" type="x-tmpl-mustache">
         <tr id="ingredient_line_element_{{identifier}}}">
-            <td>{{ingredient_name}}</td>
-            <td>{{ingredient_amount}}</td>
-            <td>{{ingredient_unit}}</td>
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].Ingredient.Name" value="{{ingredient_name}}" />
+                {{ingredient_name}}
+            </td>
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].Amount" value="{{ingredient_amount}}" />
+                {{ingredient_amount}}
+            </td>
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].MeasureUnit" value="{{ingredient_unit}}" />
+                {{ingredient_unit_name}}
+            </td>
+
             <td>
                 <button class="btn btn-danger btn-block" onclick="removeIngredientLine({{index}}, {{identifier}})">
                     Remove
@@ -144,7 +170,10 @@
 
     <script id="imageTemplate" type="x-tmpl-mustache">
         <tr id="image_element_{{identifier}}}">
-            <td>{{filename}}</td>
+            <td>
+                <input type="hidden" name="Images[{{index}}].FileName" value="{{filename}}" />
+                {{filename}}
+            </td>
             <td>
                 <button class="btn btn-danger btn-block" onclick="removeImage({{index}}, {{identifier}})">
                     Remove
@@ -152,6 +181,7 @@
             </td>
         </tr>
     </script>
+
 
     <script src="~/Scripts/mustache.js"></script>
     <script src="@Url.Content("~/Scripts/RecipeFinder/CreateRecipe/create.js")"></script>

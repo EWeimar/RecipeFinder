@@ -5,9 +5,9 @@ using System.Web;
 
 namespace RecipeFinder.WebClient.Models
 {
-    public class ImageModel
+    public class IngredientModel
     {
         public int Id { get; set; }
-        public string FileName { get; set; }
+        public string Name { get; set; }
     }
 }

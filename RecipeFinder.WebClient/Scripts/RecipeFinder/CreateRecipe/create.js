@@ -8,6 +8,7 @@ function addIngredientLine() {
     var ingredient_name = $('#ingredient_add_name').val();
     var ingredient_amount = $('#ingredient_add_amount').val();
     var ingredient_measure_unit = $('#ingredient_add_measure_unit').children("option:selected").val();
+    var ingredient_measure_unit_name = $('#ingredient_add_measure_unit').children("option:selected").text();
     
 
     if (ingredient_name == "") {
@@ -27,7 +28,7 @@ function addIngredientLine() {
 
     var identifier = Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
 
-    ingredientLines.push({ name: ingredient_name, amount: ingredient_amount, unit: parseInt(ingredient_measure_unit), identifier: identifier });
+    ingredientLines.push({ name: ingredient_name, amount: ingredient_amount, unit: parseInt(ingredient_measure_unit), identifier: identifier, unit_name: ingredient_measure_unit_name });
     console.log(ingredientLines);
 
     $('#ingredient_add_name').val("");
@@ -78,7 +79,8 @@ function render() {
         }
 
         var renderedIngredientLine = Mustache.render(ingredientTemplate, { index: i, ingredient_name: ingredientLines[i].name,
-                ingredient_amount: ingredientLines[i].amount, ingredient_unit: ingredientLines[i].unit, identifier: ingredientLines[i].identifier
+            ingredient_amount: ingredientLines[i].amount, ingredient_unit: ingredientLines[i].unit, identifier: ingredientLines[i].identifier,
+            ingredient_unit_name: ingredientLines[i].unit_name
         });
         console.log("line: " + ingredientLines[i].identifier);
         

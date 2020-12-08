@@ -8,7 +8,7 @@ namespace RecipeFinder.WebClient.Models
     public class IngredientLineModel
     {
         public int Id { get; set; }
-        //public IngredientModel Ingredient { get; set; }
+        public IngredientModel Ingredient { get; set; }
         public decimal Amount { get; set; }
         public string MeasureUnit { get; set; }
     }
