@@ -117,7 +117,7 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             if (string.IsNullOrEmpty(slug))
             {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, new { meesage = "Invalid Slug" });
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "Invalid Slug" });
             }
 
             var result = await RecipeService.FindByCondition("slug", slug);
