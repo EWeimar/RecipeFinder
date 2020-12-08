@@ -3,6 +3,7 @@ using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace RecipeFinder.WebClient.Models
@@ -16,5 +17,6 @@ namespace RecipeFinder.WebClient.Models
         public List<IngredientLineModel> IngredientLines { get; set; }
         public string Instructions { get; set; }
         public List<ImageModel> Images { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
     }
 }

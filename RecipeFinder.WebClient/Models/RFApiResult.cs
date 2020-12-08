@@ -8,8 +8,8 @@ namespace RecipeFinder.WebClient.Models
 {
     public class RFApiResult
     {
-        public string Message;
-        public HttpStatusCode StatusCode;
-        public bool Success;
+        public string Message { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public bool Success { get; set; }
     }
 }

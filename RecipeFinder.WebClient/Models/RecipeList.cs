@@ -8,7 +8,7 @@ namespace RecipeFinder.WebClient.Models
 {
     public class RecipeList
     {
-        public List<RecipeModel> recipes;
-        public HttpStatusCode StatusCode;        
+        public List<RecipeModel> recipes { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
     }
 }

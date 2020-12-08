@@ -2,6 +2,7 @@
 using RecipeFinder.WebClient.ApiHelpers;
 using RecipeFinder.WebClient.Models;
 using System.Collections.Generic;
+using System.Net;
 using System.Web.Mvc;
 
 namespace RecipeFinder.WebClient.Controllers
@@ -62,11 +63,20 @@ namespace RecipeFinder.WebClient.Controllers
         }
 
         [HttpGet]
-        public ActionResult Update(string slug)
+        [Route("recipe/update/{id}")]
+        public ActionResult Update(string id)
         {
-            ViewBag.slug = slug;
-            return View();
+            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
 
+            RecipeModel recipe = rc.FindBySlug(id);
+
+            if (recipe.StatusCode == HttpStatusCode.OK)
+            {
+                ViewBag.recipe = recipe;
+                return View();
+            }
+
+            return HttpNotFound();
         }
 
         [HttpPost]
@@ -74,7 +84,6 @@ namespace RecipeFinder.WebClient.Controllers
         {
             return Redirect(Url.Action("Index", "Recipe"));
         }
-
 
     }
 }

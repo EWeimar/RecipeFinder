@@ -196,6 +196,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 result.User = uResult;
                 result.Id = item.Id;
                 result.Title = item.Title;
+                result.Slug = item.Slug;
                 result.Instruction = item.Instruction;
                 result.CreatedAt = item.CreatedAt;
                 result.IngredientLines = ilResults;

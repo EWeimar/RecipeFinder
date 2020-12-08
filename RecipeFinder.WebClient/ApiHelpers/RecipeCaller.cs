@@ -64,9 +64,19 @@ namespace RecipeFinder.WebClient.ApiHelpers
             var request = new RestRequest("/recipe/get_all", Method.GET);
 
             IRestResponse<RecipeList> response = client.Execute<RecipeList>(request);
-            //response.Data.StatusCode = response.StatusCode;
+            response.Data.StatusCode = response.StatusCode;
 
-           return response.Data;
+            return response.Data;
+        }
+
+        public RecipeModel FindBySlug(string slug)
+        {
+            var request = new RestRequest("/recipe/slug/" + slug, Method.GET);
+
+            IRestResponse<RecipeModel> response = client.Execute<RecipeModel>(request);
+            response.Data.StatusCode = response.StatusCode;
+
+            return response.Data;
         }
     }
 }
