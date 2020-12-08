@@ -1,5 +1,4 @@
-﻿using RecipeFinder.DataLayer.Models;
-using RecipeFinder.DTO;
+﻿using RecipeFinder.DTO;
 using RecipeFinder.WebClient.Models;
 using RestSharp;
 using System;
@@ -59,6 +58,15 @@ namespace RecipeFinder.WebClient.ApiHelpers
             }
 
             return response.Data;
+        }
+        public RecipeList GetAll()
+        {
+            var request = new RestRequest("/recipe/get_all", Method.GET);
+
+            IRestResponse<RecipeList> response = client.Execute<RecipeList>(request);
+            //response.Data.StatusCode = response.StatusCode;
+
+           return response.Data;
         }
     }
 }

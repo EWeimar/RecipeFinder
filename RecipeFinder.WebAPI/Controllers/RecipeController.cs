@@ -144,7 +144,7 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             var recipes = await RecipeService.GetAllAsync();
 
-            return Request.CreateResponse(HttpStatusCode.OK, recipes);
+            return Request.CreateResponse(HttpStatusCode.OK, new { recipes = recipes});
         }
 
     }

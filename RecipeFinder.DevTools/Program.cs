@@ -1,7 +1,6 @@
 ﻿using RecipeFinder.DevTools.Commands;
 using System;
 
-
 namespace RecipeFinder.DevTools
 {
     class Program
