@@ -105,6 +105,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 ingredientLineDTO.Ingredient = ingredientDTO;
                 ingredientLineDTO.Amount = il.Amount;
                 ingredientLineDTO.MeasureUnit = il.MeasureUnit;
+                ingredientLineDTO.MeasureUnitInt = (int) il.MeasureUnit;
 
                 ilResults.Add(ingredientLineDTO);
             }

@@ -1,10 +1,187 @@
-﻿
+﻿@using RecipeFinder.WebClient.Models
 @{
     ViewBag.Title = "Update";
+    RecipeModel recipe = ViewBag.recipe;
+
 }
 
 <h2>Update</h2>
 
-<p>
-    @ViewBag.recipe.Title
-</p>
+<div class="form-horizontal">
+    <h4>@recipe.Title</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group row">
+        <div class="col-2">
+            <label>Title</label>
+        </div>
+        <div class="col-10">
+            <input class="form-control" type="text" id="recipe_title" value="@recipe.Title" />
+        </div>
+    </div>
+
+    <h4>Add Ingredient</h4>
+    <div class="row my-2">
+
+        <div class="col-4">
+            <input class="form-control" placeholder="Ingredient" type="text" id="ingredient_add_name" />
+        </div>
+
+        <div class="col-4">
+            <input class="form-control" placeholder="Amount" type="number" min="0" id="ingredient_add_amount" />
+        </div>
+
+        <div class="col-4">
+            <select class="form-control" id="ingredient_add_measure_unit">
+                <option value="0">none</option>
+                <option value="1">ml</option>
+                <option value="2">cl</option>
+                <option value="3">dl</option>
+                <option value="4">l</option>
+                <option value="5">g</option>
+                <option value="6">kg</option>
+                <option value="7">tsk</option>
+                <option value="8">spsk</option>
+                <option value="9">knsp</option>
+                <option value="10">stk</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row my-2">
+        <div class="col">
+            <button type="button" class="btn btn-success btn-block" id="add_ingredient_btn">
+                Add
+            </button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Ingredient</th>
+                            <th>Amount</th>
+                            <th>Measure Unit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ingredient_lines">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-2">
+            <label>Instruction</label>
+        </div>
+        <div class="col-10">
+            <textarea class="form-control" rows="10">@recipe.Instruction</textarea>
+        </div>
+    </div>
+
+    <h4>Add Image</h4>
+    <div class="row my-2">
+
+        <div class="col-4">
+            <input class="form-control" placeholder="Filename" type="text" id="image_add_name" />
+        </div>
+
+        <div class="col8">
+            <button type="button" class="btn btn-success btn-block" id="add_image_btn">
+                Add
+            </button>
+        </div>
+
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="table">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recipe_images">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+
+
+<div>
+    @Html.ActionLink("Back to the future!", "Index", "Home")
+</div>
+
+
+@*Det html der skal indsættes i ingredientline tabellen for at blive mappet til recipemodel.ingredientlines
+    0 skal være et fortløbende 0-baseret indeks*@
+
+@section scripts
+{
+    <script id="ingredientTemplate" type="x-tmpl-mustache">
+        <tr id="ingredient_line_element_{{identifier}}}">
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].Ingredient.Name" value="{{ingredient_name}}" />
+                {{ingredient_name}}
+            </td>
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].Amount" value="{{ingredient_amount}}" />
+                {{ingredient_amount}}
+            </td>
+
+            <td>
+                <input type="hidden" name="IngredientLines[{{index}}].MeasureUnit" value="{{ingredient_unit}}" />
+                {{ingredient_unit_name}}
+            </td>
+
+            <td>
+                <button class="btn btn-danger btn-block" onclick="removeIngredientLine({{index}}, {{identifier}})">
+                    Remove
+                </button>
+            </td>
+        </tr>
+    </script>
+
+    <script id="imageTemplate" type="x-tmpl-mustache">
+        <tr id="image_element_{{identifier}}}">
+            <td>
+                <input type="hidden" name="Images[{{index}}].FileName" value="{{filename}}" />
+                {{filename}}
+            </td>
+            <td>
+                <button class="btn btn-danger btn-block" onclick="removeImage({{index}}, {{identifier}})">
+                    Remove
+                </button>
+            </td>
+        </tr>
+    </script>
+
+
+    <script src="~/Scripts/mustache.js"></script>
+    <script src="@Url.Content("~/Scripts/RecipeFinder/Recipe/update.js")"></script>
+
+    <script>
+        $(document).ready(function () {
+            getExistingIngredientLines(@recipe.Id);
+        });
+    </script>
+}

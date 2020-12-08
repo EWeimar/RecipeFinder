@@ -82,11 +82,11 @@
 
         <div class="form-group row">
             <div class="col-2">
-                @Html.LabelFor(model => model.Instructions, htmlAttributes: new { @class = "control-label" })
+                @Html.LabelFor(model => model.Instruction, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-10">
-                @Html.TextAreaFor(model => model.Instructions, htmlAttributes: new { @class = "form-control", @rows = "10", @cols = "20", @id = "recipe_instructions" })
-                @Html.ValidationMessageFor(model => model.Instructions, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(model => model.Instruction, htmlAttributes: new { @class = "form-control", @rows = "10", @cols = "20", @id = "recipe_instructions" })
+                @Html.ValidationMessageFor(model => model.Instruction, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -184,5 +184,5 @@
 
 
     <script src="~/Scripts/mustache.js"></script>
-    <script src="@Url.Content("~/Scripts/RecipeFinder/CreateRecipe/create.js")"></script>
+    <script src="@Url.Content("~/Scripts/RecipeFinder/Recipe/create.js")"></script>
 }

@@ -30,7 +30,7 @@ namespace RecipeFinder.WebClient.Controllers
             RecipeDTO recipeToBeCreated = new RecipeDTO();
             recipeToBeCreated.Title = rm.Title;
             recipeToBeCreated.User = new UserDTO() { Id = 1 };
-            recipeToBeCreated.Instruction = rm.Instructions;
+            recipeToBeCreated.Instruction = rm.Instruction;
             recipeToBeCreated.IngredientLines = new List<IngredientLineDTO>();
             recipeToBeCreated.Images = new List<ImageDTO>();
 

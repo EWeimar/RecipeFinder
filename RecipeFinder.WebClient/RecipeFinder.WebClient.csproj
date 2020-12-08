@@ -293,7 +293,8 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
-    <Content Include="Scripts\RecipeFinder\CreateRecipe\create.js" />
+    <Content Include="Scripts\RecipeFinder\Recipe\update.js" />
+    <Content Include="Scripts\RecipeFinder\Recipe\create.js" />
     <Content Include="Scripts\RecipeFinder\EmptyRefrigerator\index.js" />
     <Content Include="Scripts\RecipeFinder\Home\index.js" />
     <Content Include="Scripts\src\index.js" />
