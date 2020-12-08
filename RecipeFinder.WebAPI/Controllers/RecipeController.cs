@@ -136,7 +136,15 @@ namespace RecipeFinder.WebAPI.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
+        }
 
+        [HttpGet]
+        [Route("api/recipe/get_all")]
+        public async Task<HttpResponseMessage> GetAll()
+        {
+            var recipes = await RecipeService.GetAllAsync();
+
+            return Request.CreateResponse(HttpStatusCode.OK, recipes);
         }
 
     }
