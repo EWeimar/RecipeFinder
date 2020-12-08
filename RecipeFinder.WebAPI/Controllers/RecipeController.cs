@@ -55,6 +55,10 @@ namespace RecipeFinder.WebAPI.Controllers
         [Route("api/recipe/update")]
         public async Task<HttpResponseMessage> Update([FromBody] RecipeDTO recipeDTO)
         {
+            //return Request.CreateResponse(HttpStatusCode.OK, new { message = "Data: " + recipeDTO.Title.ToString() }); ;
+
+            //return Request.CreateResponse(HttpStatusCode.OK, new { message = "Data: " + recipeDTO.User.Id }); ;
+
             if (!ModelState.IsValid)
             {
                 string errorMessage = string.Empty;
@@ -66,15 +70,27 @@ namespace RecipeFinder.WebAPI.Controllers
                         errorMessage += " - " + modelError.ErrorMessage;
                     }
                 }
+
                 return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
-            if (await RecipeService.UpdateAsync(recipeDTO) != 0)
+            try
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated" });
+                int result = await RecipeService.UpdateAsync(recipeDTO);
+
+                if (result != 0)
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated" });
+                }
+
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." + result.ToString() });
+
+            } catch (Exception e)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "ExceptionMessage: "+e.Message });
             }
 
-            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
+            
         }
 
         [HttpGet]

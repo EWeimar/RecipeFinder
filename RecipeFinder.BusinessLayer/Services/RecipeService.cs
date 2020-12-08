@@ -209,7 +209,73 @@ namespace RecipeFinder.BusinessLayer.Services
 
         }
 
-        public async Task<int> UpdateAsync(RecipeDTO input)
+        public async Task<int> UpdateAsync(RecipeDTO recipeDTO)
+        {
+            Recipe recipe = await dbAccess.Recipes.GetByIdAsync(recipeDTO.Id);
+
+            var existingIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), recipeDTO.Id)).ToList();
+            var existingImages = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), recipeDTO.Id)).ToList();
+
+            // delete old ingredient lines on the recipe
+            foreach (IngredientLine existingIngredientLine in existingIngredientLines)
+            {
+                await dbAccess.IngredientLines.DeleteAsync(existingIngredientLine.Id);
+            }
+
+            // delete old images on the recipe
+            foreach (Image existingImage in existingImages)
+            {
+                await dbAccess.Images.DeleteAsync(existingImage.Id);
+            }
+
+            recipe.Title = recipeDTO.Title;
+            recipe.Instruction = recipeDTO.Instruction;
+
+            // loop thru the ingredient lines sent by the user to be inserted
+            foreach (IngredientLineDTO ingredientLineDTO in recipeDTO.IngredientLines)
+            {
+
+                // check ingredient name exists
+                var existingIngredientByName = await dbAccess.Ingredients.FindByCondition("Name", ingredientLineDTO.Ingredient.Name);
+
+                IngredientLine newIngredientLine = new IngredientLine();
+
+                if (existingIngredientByName.Any())
+                {
+                    // if the ingredient already exists by name, assign the existing ingredient to the ingredient line
+                    newIngredientLine.IngredientId = existingIngredientByName.Single().Id;
+                } else
+                {
+                    // the ingredient does not exist by name, we create it, get the new IngredientId and assign it to the ingredient line
+                    Ingredient newIngredient = new Ingredient();
+                    newIngredient.Name = ingredientLineDTO.Ingredient.Name;
+
+                    var res = await dbAccess.Ingredients.AddAsync(newIngredient);
+
+                    newIngredientLine.IngredientId = res.Id;
+                }
+
+                newIngredientLine.RecipeId = recipe.Id;
+                newIngredientLine.Amount = recipe.Id;
+                newIngredientLine.MeasureUnit = MeasureUnit.G;
+
+                // saves the data to database
+                await dbAccess.IngredientLines.AddAsync(newIngredientLine);
+            }
+
+            foreach (ImageDTO imageDTO in recipeDTO.Images)
+            {
+                Image image = new Image();
+                image.FileName = imageDTO.FileName;
+                image.RecipeId = recipe.Id;
+
+                await dbAccess.Images.AddAsync(image);
+            }
+            
+            return await dbAccess.Recipes.UpdateAsync(recipe);
+        }
+
+        public async Task<int> UpdateAsyncOld(RecipeDTO input)
         {
             Validation(input);
 
@@ -225,7 +291,6 @@ namespace RecipeFinder.BusinessLayer.Services
             updateRecipe.Title = input.Title;
             updateRecipe.Slug = input.Slug;
             updateRecipe.Instruction = input.Instruction;
-
 
             //Fetch ingredientLines in DB based on recipeId
             var updateIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), updateRecipe.Id)).ToList();

@@ -3,17 +3,63 @@ var imageTemplate = document.getElementById('imageTemplate').innerHTML;
 var ingredientLines = [];
 var images = [];
 
+var baseUrl = 'https://localhost:44320/api';
+
 function getExistingIngredientLines(id) {
     $.ajax({
-        url: "https://localhost:44320/api/recipe/" + id, success: function (recipe) {
-            console.log(recipe);
+        url: baseUrl+"/recipe/" + id, success: function (recipe) {
             Object.values(recipe.ingredientLines).forEach(ingredientLine => {
-                console.log(ingredientLine);
-                addIngredientLine(ingredientLine.ingredient.name, ingredientLine.amount, ingredientLine.measureUnit,ingredient.measureUnit );
+                addIngredientLine(ingredientLine.ingredient.name, ingredientLine.amount, ingredientLine.measureUnitInt, ingredientLine.measureUnit);
+            });
+
+            Object.values(recipe.images).forEach(image => {
+                addImage(image.fileName);
             });
         }
     });
+}
 
+function saveUpdatedRecipe() {
+
+    var recipe_id = parseInt($('#recipe_id').val());
+    var recipe_title = $('#recipe_title').val();
+    var recipe_instruction = $('#recipe_instruction').val();
+
+    var RecipeDTO = {
+        Id: recipe_id,
+        Title: recipe_title,
+        Instruction: recipe_instruction,
+        IngredientLines: [],
+        Images: [],
+        User: {
+            Id: 1
+        }
+    };
+
+    Object.values(ingredientLines).forEach(line => {
+        RecipeDTO.IngredientLines.push({
+            Ingredient: {
+                Name: line.name
+            },
+            Amount: line.amount,
+            MeasureUnit: line.unit,
+        });
+    });
+
+    Object.values(images).forEach(image => {
+        RecipeDTO.Images.push({
+            FileName: image.filename
+        });
+    });
+
+    console.log(JSON.stringify(RecipeDTO));
+
+    $.ajax({
+        type: "PUT",
+        url: baseUrl + "/recipe/update",
+        contentType: "application/json",
+        data: JSON.stringify(RecipeDTO)
+    });
 }
 
 function addIngredientLine(ingredient_name,ingredient_amount,ingredient_measure_unit,ingredient_measure_unit_name) {
@@ -44,14 +90,11 @@ function addIngredientLine(ingredient_name,ingredient_amount,ingredient_measure_
     render();
 }
 
-function addImage() {
-    var filename = $('#image_add_name').val();
+function addImage(filename) {
     var identifier = Math.floor(Math.random() * Math.floor(Math.random() * Date.now()));
 
     images.push({ filename: filename, identifier: identifier });
 
-    $('#image_add_name').val();
-    console.log(images);
 
     $('#image_add_name').val("");
 
@@ -112,8 +155,10 @@ function removeImage(index, identifier) {
 }
 
 $('#add_image_btn').click(function () {
-    addImage();
 
+    var filename = $('#image_add_name').val();
+
+    addImage(filename);
 });
 
 
@@ -124,8 +169,10 @@ $('#add_ingredient_btn').click(function () {
     var ingredient_measure_unit_name = $('#ingredient_add_measure_unit').children("option:selected").text();
 
     addIngredientLine(ingredient_name, ingredient_amount, ingredient_measure_unit, ingredient_measure_unit_name);
+});
 
-    
+$('#save_recipe_btn').click(function () {
+    saveUpdatedRecipe();
 });
 
 $(document).ready(function () {
