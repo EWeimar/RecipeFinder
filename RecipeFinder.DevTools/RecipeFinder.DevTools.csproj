@@ -138,10 +138,11 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DatabaseScripts\005_scripts.sql" />
+    <EmbeddedResource Include="DatabaseScripts\001_scripts.sql" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <EmbeddedResource Include="DatabaseScripts\002_scripts.sql" />
     <Content Include="Logs\debug.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

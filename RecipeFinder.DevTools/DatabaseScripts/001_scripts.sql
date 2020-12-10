@@ -19,8 +19,6 @@ CREATE TABLE Recipe (
     FOREIGN KEY (UserId) REFERENCES Users (Id)
 );
 
-/* Skal den bare ligge her eller skal vi bare lave endnu en række direkte i CREATE TABLE Recipe?*/ 
-ALTER TABLE Recipe ADD RowVer rowversion
 
 /* Table Image */
 CREATE TABLE Image (
