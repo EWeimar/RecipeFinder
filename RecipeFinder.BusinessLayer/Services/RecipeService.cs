@@ -105,7 +105,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 ingredientLineDTO.Ingredient = ingredientDTO;
                 ingredientLineDTO.Amount = il.Amount;
                 ingredientLineDTO.MeasureUnit = il.MeasureUnit;
-                ingredientLineDTO.MeasureUnitInt = (int) il.MeasureUnit;
+                ingredientLineDTO.MeasureUnitInt = (int)il.MeasureUnit;
 
                 ilResults.Add(ingredientLineDTO);
             }
@@ -244,7 +244,8 @@ namespace RecipeFinder.BusinessLayer.Services
                 {
                     // if the ingredient already exists by name, assign the existing ingredient to the ingredient line
                     newIngredientLine.IngredientId = existingIngredientByName.Single().Id;
-                } else
+                }
+                else
                 {
                     // the ingredient does not exist by name, we create it, get the new IngredientId and assign it to the ingredient line
                     Ingredient newIngredient = new Ingredient();
@@ -256,8 +257,8 @@ namespace RecipeFinder.BusinessLayer.Services
                 }
 
                 newIngredientLine.RecipeId = recipe.Id;
-                newIngredientLine.Amount = recipe.Id;
-                newIngredientLine.MeasureUnit = MeasureUnit.G;
+                newIngredientLine.Amount = ingredientLineDTO.Amount;
+                newIngredientLine.MeasureUnit = (MeasureUnit)ingredientLineDTO.MeasureUnit;
 
                 // saves the data to database
                 await dbAccess.IngredientLines.AddAsync(newIngredientLine);
@@ -271,7 +272,7 @@ namespace RecipeFinder.BusinessLayer.Services
 
                 await dbAccess.Images.AddAsync(image);
             }
-            
+
             return await dbAccess.Recipes.UpdateAsync(recipe);
         }
 
@@ -340,17 +341,25 @@ namespace RecipeFinder.BusinessLayer.Services
 
         }
 
-        public async Task<List<MeasureUnit>> GetAllMeasureUnits()
+        public async Task<List<object>> GetAllMeasureUnits()
         {
-            List<MeasureUnit> measureUnits = new List<MeasureUnit>();
+            List<object> res = new List<object>();
 
-            foreach (var item in Enum.GetValues(typeof(MeasureUnit)))
-            {
-                measureUnits.Add((MeasureUnit)item);
+            foreach (int i in Enum.GetValues(typeof(MeasureUnit)))
+            { 
+                String name = Enum.GetName(typeof(MeasureUnit), i);
+                res.Add(new
+                {
+                    Name = name,
+                    Number = i
+                });
             }
 
-            return measureUnits;
+            return res;
         }
+
+
+
 
 
         public async Task<RecipeDTO> FindByCondition(string propName, object value)

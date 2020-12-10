@@ -119,7 +119,7 @@ namespace RecipeFinder.WebAPI.Controllers
 
 
         [HttpGet]
-        [Route("api/recipe/measureunits")]
+        [Route("api/recipe/measure_units")]
         public async Task<HttpResponseMessage> GetAllMeasureUnits()
         {
             var measureUnits = await RecipeService.GetAllMeasureUnits();

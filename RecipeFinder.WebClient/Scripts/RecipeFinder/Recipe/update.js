@@ -2,14 +2,15 @@
 var imageTemplate = document.getElementById('imageTemplate').innerHTML;
 var ingredientLines = [];
 var images = [];
+var measureUnits = [];
 
 var baseUrl = 'https://localhost:44320/api';
 
 function getExistingIngredientLines(id) {
     $.ajax({
-        url: baseUrl+"/recipe/" + id, success: function (recipe) {
+        url: baseUrl + "/recipe/" + id, success: function (recipe) {
             Object.values(recipe.ingredientLines).forEach(ingredientLine => {
-                addIngredientLine(ingredientLine.ingredient.name, ingredientLine.amount, ingredientLine.measureUnitInt, ingredientLine.measureUnit);
+                addIngredientLine(ingredientLine.ingredient.name, ingredientLine.amount, ingredientLine.measureUnitInt, getNameForMeasureUnitIndex(ingredientLine.measureUnitInt));
             });
 
             Object.values(recipe.images).forEach(image => {
@@ -17,6 +18,27 @@ function getExistingIngredientLines(id) {
             });
         }
     });
+}
+
+function getMeasureUnits() {
+    $.ajax({
+        url: baseUrl + "/recipe/measure_units", success: function (units) {
+            Object.values(units).forEach(unit => {
+                measureUnits.push(unit);
+            });
+        }
+    });
+}
+
+function getNameForMeasureUnitIndex(index) {
+    var res;
+    Object.values(measureUnits).forEach(unit => {
+        if (index == unit.number) {
+            res = unit.name;
+        }
+    });
+
+    return res;
 }
 
 function saveUpdatedRecipe() {
@@ -42,7 +64,7 @@ function saveUpdatedRecipe() {
                 Name: line.name
             },
             Amount: line.amount,
-            MeasureUnit: line.unit,
+            MeasureUnit: parseInt(line.unit),
         });
     });
 
@@ -51,8 +73,6 @@ function saveUpdatedRecipe() {
             FileName: image.filename
         });
     });
-
-    console.log(JSON.stringify(RecipeDTO));
 
     $.ajax({
         type: "PUT",
@@ -82,7 +102,6 @@ function addIngredientLine(ingredient_name,ingredient_amount,ingredient_measure_
     var identifier = Math.floor(Math.random() * Math.floor(Math.random() * Date.now()))
 
     ingredientLines.push({ name: ingredient_name, amount: ingredient_amount, unit: parseInt(ingredient_measure_unit), identifier: identifier, unit_name: ingredient_measure_unit_name });
-    console.log(ingredientLines);
 
     $('#ingredient_add_name').val("");
     $('#ingredient_add_amount').val("");
@@ -109,14 +128,12 @@ function renderImage() {
 
     for (let i = 0; i < images.length; i++) {
         var renderedImages = Mustache.render(imageTemplate, { index: i, filename: images[i].filename, identifier: images[i].identifier });
-        console.log("line: " + images[i].identifier);
 
         $('#recipe_images').append(renderedImages);
     }
 }
 
 function render() {
-    console.log("Render method called!");
     $('#ingredient_lines').html("");
     
 
@@ -132,23 +149,18 @@ function render() {
             ingredient_amount: ingredientLines[i].amount, ingredient_unit: ingredientLines[i].unit, identifier: ingredientLines[i].identifier,
             ingredient_unit_name: ingredientLines[i].unit_name
         });
-        console.log("line: " + ingredientLines[i].identifier);
         
         $('#ingredient_lines').append(renderedIngredientLine);
     }
 }
 
 function removeIngredientLine(index, identifier) {
-    console.log("Removed ingredient: " + identifier);
-    console.log(ingredientLines);
     ingredientLines.splice(index, 1);
     $("#ingredient_line_element_" + identifier).remove();
     render();
 }
 
 function removeImage(index, identifier) {
-    console.log("Removed image: " + identifier);
-    console.log(images);
     images.splice(index, 1);
     $("#image_element_" + identifier).remove();
     renderImage();
@@ -178,4 +190,5 @@ $('#save_recipe_btn').click(function () {
 $(document).ready(function () {
     render();
     renderImage();
+    getMeasureUnits();
 });

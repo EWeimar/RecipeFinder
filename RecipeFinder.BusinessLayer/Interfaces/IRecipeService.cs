@@ -12,7 +12,7 @@ namespace RecipeFinder.BusinessLayer.Interfaces
         Task <IEnumerable<RecipeDTO>> GetAllAsync();
         Task<int> UpdateAsync(RecipeDTO recipe);
         Task<int> DeleteAsync(RecipeDTO recipe);
-        Task<List<MeasureUnit>> GetAllMeasureUnits();
+        Task<List<object>> GetAllMeasureUnits();
         Task<RecipeDTO> FindByCondition(string propName, object value);
     }
 }
