@@ -83,7 +83,7 @@ namespace RecipeFinder.WebAPI.Controllers
                     return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated" });
                 }
 
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." + result.ToString() });
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong." });
 
             } catch (Exception e)
             {
@@ -92,6 +92,36 @@ namespace RecipeFinder.WebAPI.Controllers
 
             
         }
+
+
+        [HttpPost]
+        [Route("api/recipe/find_by")]
+        public async Task<HttpResponseMessage> FindByCondition([FromBody]FindByDTO findByDTO)
+        {
+            if (string.IsNullOrEmpty(findByDTO.PropName) || findByDTO.Value == null)
+            {
+                return Request.CreateResponse(HttpStatusCode.BadRequest, new { message = "FindByDTO is incomplete! " });
+            }
+            
+            RecipeDTO res = await RecipeService.FindByCondition(findByDTO.PropName, findByDTO.Value);
+
+            if(res != null)
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, res);
+            }
+            
+            return Request.CreateResponse(HttpStatusCode.InternalServerError, new { meesage = "Something horrible went wrong."});
+
+
+        }
+
+
+
+
+
+
+
+
 
         [HttpGet]
         [Route("api/recipe/{id}")]

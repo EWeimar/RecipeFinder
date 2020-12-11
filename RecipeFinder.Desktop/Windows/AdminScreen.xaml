@@ -22,7 +22,7 @@
 
         <Grid Height="600" Width="800" Margin="0,0,0,0.4">
 
-            <DataGrid Name="grdRecipes" Margin="345,149,33,206" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" IsReadOnly="True">
+            <DataGrid Name="grdRecipes" Margin="345,149,33,206" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedRecipe, Mode=TwoWay}">
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="ID" Width="30" Binding="{Binding Id}"/>

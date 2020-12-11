@@ -78,5 +78,16 @@ namespace RecipeFinder.Desktop.ApiHelpers
 
             return response.Data;
         }
+
+        public RecipeModel FindByCondition(string propName, object value)
+        {
+            var request = new RestRequest("/recipe/find_by", Method.POST);
+
+            request.AddJsonBody(new { PropName = propName, Value = value });
+
+            IRestResponse<RecipeModel> response = client.Execute<RecipeModel>(request);
+
+            return response.Data;
+        }
     }
 }

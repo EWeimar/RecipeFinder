@@ -14,5 +14,6 @@ namespace RecipeFinder.Desktop.ApiHelpers
         RFApiResult UpdateRecipe(RecipeDTO recipeDTO);
 
         RecipeList GetAll();
+        RecipeModel FindByCondition(string propName, object value);
     }
 }

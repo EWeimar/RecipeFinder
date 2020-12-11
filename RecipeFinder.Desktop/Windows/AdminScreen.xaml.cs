@@ -78,9 +78,13 @@ namespace RecipeFinder.Desktop
 
         private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
         {
-            UpdateRecipe update = new UpdateRecipe();
+
+            RecipeModel selectedRecipe = grdRecipes.SelectedItem as RecipeModel;
+
+            UpdateRecipe update = new UpdateRecipe(selectedRecipe.Id);
             update.Show();
             this.Close();
+            
 
         }
 
