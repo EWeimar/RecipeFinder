@@ -5,17 +5,23 @@
 <div class="row">
     @foreach (RecipeModel recipe in ViewBag.recipes)
     {
-        <div class="col-lg-6 mb-4">
+        <div class="col-lg-4 mb-4">
             <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="/Content/images/1.jpg" alt=""></a>
+                <a href="@Url.Action("ViewRecipe", "Recipe", new {id=recipe.Slug})"><img class="card-img-top" src="@recipe.GetFirstImage().GetUrl()" alt=""></a>
                 <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">@recipe.Title</a>
+                    <h4 class="card-title m-0">
+                        <a href="@Url.Action("ViewRecipe", "Recipe", new {id=recipe.Slug})">@recipe.Title</a>
                     </h4>
-                    <p class="card-text">@recipe.Instruction</p>
-                    <a class="btn btn-primary" href="@Url.Action("Update", "Recipe", new {id=recipe.Slug})">
-                        Update
-                    </a> 
+
+                    <small class="text-muted">@recipe.CreatedAt</small>
+
+                    <p class="card-text">
+                        @String.Join(" ", recipe.Instruction.Split(' ').Take(48))...
+                    </p>
+
+                    <a class="btn btn-sm btn-primary" href="@Url.Action("Update", "Recipe", new {id=recipe.Slug})">
+                        <i data-feather="edit"></i> Edit recipe
+                    </a>
                 </div>
             </div>
         </div>

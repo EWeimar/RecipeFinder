@@ -14,9 +14,24 @@ namespace RecipeFinder.WebClient.Models
         public int UserId { get; set; }
         public string Title { get; set; }
         public string Slug { get; set; }
+        public string RowVer { get; set; }
         public List<IngredientLineModel> IngredientLines { get; set; }
         public string Instruction { get; set; }
+        public DateTime CreatedAt { get; set; }
         public List<ImageModel> Images { get; set; }
         public HttpStatusCode StatusCode { get; set; }
+
+        public ImageModel GetFirstImage()
+        {
+            ImageModel res = null;
+
+            if (Images.Any())
+            {
+                res = Images.FirstOrDefault();
+            }
+
+            return res;
+        }
+
     }
 }

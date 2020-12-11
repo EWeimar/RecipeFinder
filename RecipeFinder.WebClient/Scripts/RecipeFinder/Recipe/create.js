@@ -119,3 +119,14 @@ $(document).ready(function () {
     render();
     renderImage();
 });
+
+var form = $('#creat_recipe_form');
+
+form.submit(function (e) {
+    if (ingredientLines.length > 0) {
+        form.submit();
+    } else {
+        alert("Please add some ingredients!");
+        e.preventDefault();
+    }
+});

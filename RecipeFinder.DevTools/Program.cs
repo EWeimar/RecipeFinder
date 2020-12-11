@@ -1,4 +1,5 @@
-﻿using RecipeFinder.DevTools.Commands;
+﻿using RecipeFinder.DataLayer.Models;
+using RecipeFinder.DevTools.Commands;
 using System;
 
 namespace RecipeFinder.DevTools

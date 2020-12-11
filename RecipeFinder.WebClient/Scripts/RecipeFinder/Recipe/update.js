@@ -7,6 +7,7 @@ var measureUnits = [];
 var baseUrl = 'https://localhost:44320/api';
 
 function getExistingIngredientLines(id) {
+
     $.ajax({
         url: baseUrl + "/recipe/" + id, success: function (recipe) {
             Object.values(recipe.ingredientLines).forEach(ingredientLine => {
@@ -46,8 +47,10 @@ function saveUpdatedRecipe() {
     var recipe_id = parseInt($('#recipe_id').val());
     var recipe_title = $('#recipe_title').val();
     var recipe_instruction = $('#recipe_instruction').val();
+    var row_version = $('#row_version').val();
 
     var RecipeDTO = {
+        RowVer: row_version,
         Id: recipe_id,
         Title: recipe_title,
         Instruction: recipe_instruction,
@@ -184,7 +187,14 @@ $('#add_ingredient_btn').click(function () {
 });
 
 $('#save_recipe_btn').click(function () {
-    saveUpdatedRecipe();
+
+    if (ingredientLines.length > 0) {
+        saveUpdatedRecipe();
+    } else {
+        alert("Please add some ingredients");
+        e.preventDefault();
+    }
+
 });
 
 $(document).ready(function () {
@@ -192,3 +202,4 @@ $(document).ready(function () {
     renderImage();
     getMeasureUnits();
 });
+

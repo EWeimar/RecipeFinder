@@ -1,0 +1,56 @@
+﻿@using RecipeFinder.WebClient.Models;
+@{
+    RecipeModel recipe = ViewBag.recipe;
+    ViewBag.Title = recipe.Title;
+}
+
+<div class="container">
+
+    <h1 class="my-4">
+        @recipe.Title
+    </h1>
+
+    <div class="row">
+
+        <div class="col-md-7">
+            <img class="img-fluid" src="@recipe.GetFirstImage().GetUrl()" alt="">
+
+            <h3 class="my-4">Other Images</h3>
+
+            @if (recipe.Images.Count > 1)
+            {
+                <div class="row">
+                    @foreach (ImageModel image in recipe.Images.GetRange(1, (recipe.Images.Count - 1)))
+                    {
+                        <div class="col-md-3 col-sm-6 mb-4">
+                            <a href="#">
+                                <img class="img-fluid" src="@image.GetUrl()" alt="">
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p class="text-muted">No other images found.</p>
+            }
+        </div>
+
+        <div class="col-md-5">
+
+            <h3 class="my-3">Ingredients</h3>
+            <ul>
+                @foreach (IngredientLineModel ingredientLine in recipe.IngredientLines) 
+                {
+                    <li>@ingredientLine.Amount @ingredientLine.MeasureUnit @ingredientLine.Ingredient.Name</li>
+                }
+            </ul>
+
+            <h3 class="my-3">Instruction</h3>
+            <p>@recipe.Instruction</p>
+
+        </div>
+
+    </div>
+
+</div>

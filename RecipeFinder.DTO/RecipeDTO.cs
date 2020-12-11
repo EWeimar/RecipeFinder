@@ -25,5 +25,6 @@ namespace RecipeFinder.DTO
         [Required(ErrorMessage = "Ingredients are required")]
         public List<IngredientLineDTO> IngredientLines { get; set; }
         public List<ImageDTO> Images { get; set; } //Optional
+        public byte[] RowVer { get; set; }
     }
 }

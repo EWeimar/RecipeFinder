@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.DataLayer.Repositories
 {
-    public class RecipeRepository : IRepository<Recipe>
+    public class RecipeRepository : IRecipeRepository<Recipe>, IRepository<Recipe>
     {
         private readonly string connString;
 
@@ -57,7 +57,7 @@ namespace RecipeFinder.DataLayer.Repositories
         {
             using (var db = new SqlConnection(connString))
             {
-                string sql = "SELECT * FROM Recipe";
+                string sql = "SELECT * FROM Recipe ORDER BY CreatedAt DESC";
 
                 return await db.QueryAsync<Recipe>(sql);
             }

@@ -57,7 +57,7 @@ namespace RecipeFinder.WebAPI.Controllers
         {
             //return Request.CreateResponse(HttpStatusCode.OK, new { message = "Data: " + recipeDTO.Title.ToString() }); ;
 
-            //return Request.CreateResponse(HttpStatusCode.OK, new { message = "Data: " + recipeDTO.User.Id }); ;
+            //return Request.CreateResponse(HttpStatusCode.OK, new { message = "RowVer..: " + recipeDTO.RowVer.ToString() }); ;
 
             if (!ModelState.IsValid)
             {
@@ -137,9 +137,8 @@ namespace RecipeFinder.WebAPI.Controllers
             }
 
             var result = await RecipeService.FindByCondition("slug", slug);
-            RecipeDTO recipe = result;
 
-            //RecipeDTO recipe = await RecipeService.GetByIdAsync(id.Value);
+            RecipeDTO recipe = result;
 
             if (recipe == null)
             {

@@ -15,6 +15,23 @@ namespace RecipeFinder.WebClient.Controllers
         }
 
         [HttpGet]
+        [Route("recipe/view/{id}")]
+        public ActionResult ViewRecipe(string id)
+        {
+            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+
+            RecipeModel recipe = rc.FindBySlug(id);
+
+            if (recipe.StatusCode == HttpStatusCode.OK)
+            {
+                ViewBag.recipe = recipe;
+                return View();
+            }
+
+            return HttpNotFound();
+        }
+
+        [HttpGet]
         public ActionResult Create()
         {
             ViewBag.Message = "Create Recipe";

@@ -9,6 +9,7 @@ using RecipeFinder.BusinessLayer.Services;
 using System.Linq;
 using System.Threading;
 using RecipeFinder.BusinessLayer.Lib;
+using RecipeFinder.DevTools.Util;
 
 namespace RecipeFinder.DevTools.Commands
 {
@@ -45,11 +46,27 @@ namespace RecipeFinder.DevTools.Commands
             }
         }
 
-        private static void GenerateRandomDummyRecipe()
+        private static async void GenerateRandomDummyRecipe()
         {
             var client = new RestClient("https://www.themealdb.com/api/json/v1/1/");
             var request = new RestRequest("random.php", Method.GET);
             var queryResult = client.Execute<MealDBRecipeList>(request).Data;
+
+            /** Working around another hack :(((( made in RecipeService, due to CreateRecipe feature  **/
+            var rnd = new Random();
+            var measureUnitsMax = Enum.GetValues(typeof(MeasureUnit)).Length;
+            string[] measureUnits = new string[11];
+            measureUnits[0] = "-";
+            measureUnits[1] = "ml";
+            measureUnits[2] = "cl";
+            measureUnits[3] = "dl";
+            measureUnits[4] = "l";
+            measureUnits[5] = "g";
+            measureUnits[6] = "kg";
+            measureUnits[7] = "tsk";
+            measureUnits[8] = "spsk";
+            measureUnits[9] = "knsp";
+            measureUnits[10] = "stk";
 
             RecipeRepository recipeRepository = new RecipeRepository(connString);
             IngredientLineRepository ingredientLineRepository = new IngredientLineRepository(connString);
@@ -103,6 +120,8 @@ namespace RecipeFinder.DevTools.Commands
 
                                 string ingredientStrValue = ingredientStr.GetValue(mealDbRecipe, null).ToString();
 
+                                var _saffsaaf = measureUnits.GetValue(rnd.Next(Enum.GetNames(typeof(MeasureUnit)).Length));
+
                                 if (!string.IsNullOrEmpty(ingredientStrValue))
                                 {
                                     obj.IngredientLines.Add(new IngredientLineDTO()
@@ -113,12 +132,15 @@ namespace RecipeFinder.DevTools.Commands
                                             Id = 0,
                                             Name = ingredientStrValue
                                         },
-                                        Amount = 1,
-                                        MeasureUnit = (MeasureUnit)new Random().Next(Enum.GetNames(typeof(MeasureUnit)).Length)
+                                        Amount = rnd.Next(1, 11),
+                                        MeasureUnitText = measureUnits[rnd.Next(measureUnitsMax)]
                                     });
                                 }
 
-                            } catch (Exception e)
+                                //measureUnitsMax
+
+                            }
+                            catch (Exception e)
                             {
                                 Console.WriteLine("An exception was thrown: " + e.Message + "\nStack Trace:\n" + e.StackTrace + "\n");
                             }
@@ -135,7 +157,7 @@ namespace RecipeFinder.DevTools.Commands
                     });
                 }
 
-                rs.AddAsync(obj);
+                await rs.AddAsync(obj);
             }
         }
 

@@ -90,6 +90,7 @@
     <Compile Include="Models\UserNotification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IngredientLineRepository.cs" />
+    <Compile Include="Repositories\IRecipeRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ImageRepository.cs" />

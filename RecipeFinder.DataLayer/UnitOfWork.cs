@@ -17,7 +17,7 @@ namespace RecipeFinder.DataLayer
         private readonly IRepository<Image> imageRepository;
         private readonly IRepository<Ingredient> ingredientRepository;
         private readonly IRepository<IngredientLine> ingredientLineRepository;
-        private readonly IRepository<Recipe> recipeRepository;
+        private readonly IRecipeRepository<Recipe> recipeRepository;
         private readonly IRepository<RecipeReview> recipeReviewRepository;
         private readonly IRepository<UserFavorite> userFavoriteRepository;
         private readonly IUserRepository<User> userRepository;
@@ -48,7 +48,7 @@ namespace RecipeFinder.DataLayer
 
         public IRepository<IngredientLine> IngredientLines => ingredientLineRepository;
 
-        public IRepository<Recipe> Recipes => recipeRepository;
+        public IRecipeRepository<Recipe> Recipes => recipeRepository;
 
         public IRepository<RecipeReview> RecipeReviews => recipeReviewRepository;
 

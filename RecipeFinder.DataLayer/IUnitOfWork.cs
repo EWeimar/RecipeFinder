@@ -13,7 +13,7 @@ namespace RecipeFinder.DataLayer
         IRepository<Image> Images { get; }
         IRepository<Ingredient> Ingredients { get; }
         IRepository<IngredientLine> IngredientLines { get; }
-        IRepository<Recipe> Recipes { get; }
+        IRecipeRepository<Recipe> Recipes { get; }
         IRepository<RecipeReview> RecipeReviews { get; }
         IRepository<UserFavorite> UserFavorites { get; }
         IUserRepository<User> Users { get; }

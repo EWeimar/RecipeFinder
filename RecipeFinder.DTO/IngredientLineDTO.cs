@@ -11,6 +11,5 @@ namespace RecipeFinder.DTO
         public string MeasureUnitText { get; set; }
 
         public int MeasureUnitInt { get; set; }
-
     }
 }

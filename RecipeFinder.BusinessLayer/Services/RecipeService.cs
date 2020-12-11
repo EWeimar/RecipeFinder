@@ -83,6 +83,7 @@ namespace RecipeFinder.BusinessLayer.Services
             {
                 throw new ArgumentNullException("The recipe could not be found!");
             }
+
             //Convert user info to DTO
             var user = await dbAccess.Users.GetByIdAsync(getRecipe.UserId);
             UserDTO uResult = new UserDTO();
@@ -133,6 +134,7 @@ namespace RecipeFinder.BusinessLayer.Services
             result.Instruction = getRecipe.Instruction;
             result.CreatedAt = getRecipe.CreatedAt;
             result.IngredientLines = ilResults;
+            result.RowVer = getRecipe.RowVer;
             result.Images = imResults;
 
             return result;
@@ -202,6 +204,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 result.CreatedAt = item.CreatedAt;
                 result.IngredientLines = ilResults;
                 result.Images = imResults;
+                result.RowVer = item.RowVer;
 
                 recipeList.Add(result);
             }
@@ -230,6 +233,8 @@ namespace RecipeFinder.BusinessLayer.Services
 
             recipe.Title = recipeDTO.Title;
             recipe.Instruction = recipeDTO.Instruction;
+            //recipe.RowVer = System.Convert.FromBase64String(recipeDTO.RowVer); // convert to byte array
+            recipe.RowVer = recipeDTO.RowVer; // convert to byte array
 
             // loop thru the ingredient lines sent by the user to be inserted
             foreach (IngredientLineDTO ingredientLineDTO in recipeDTO.IngredientLines)
@@ -358,17 +363,13 @@ namespace RecipeFinder.BusinessLayer.Services
             return res;
         }
 
-
-
-
-
         public async Task<RecipeDTO> FindByCondition(string propName, object value)
         {
             var result = await dbAccess.Recipes.FindByCondition(propName, value);
             Recipe r = result.Single();
+
             return await GetByIdAsync(r.Id);
         }
-
 
         //Validation of inbound recipe(in DTO format)
         private void Validation(RecipeDTO recipe)
