@@ -84,6 +84,7 @@
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\IngredientLineModel.cs" />
     <Compile Include="Models\IngredientModel.cs" />
+    <Compile Include="Models\MeasureUnitModel.cs" />
     <Compile Include="Models\RecipeList.cs" />
     <Compile Include="Models\RecipeModel.cs" />
     <Compile Include="Models\RFApiResult.cs" />

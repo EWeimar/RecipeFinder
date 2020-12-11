@@ -11,5 +11,6 @@ namespace RecipeFinder.Desktop.Models
         public IngredientModel Ingredient { get; set; }
         public decimal Amount { get; set; }
         public string MeasureUnit { get; set; }
+        public int MeasureUnitInt { get; set; }
     }
 }

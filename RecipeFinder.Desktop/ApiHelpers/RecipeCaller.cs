@@ -89,5 +89,16 @@ namespace RecipeFinder.Desktop.ApiHelpers
 
             return response.Data;
         }
+
+        public List<MeasureUnitModel> GetMeasureUnits()
+        {
+            var request = new RestRequest("/recipe/measure_units", Method.GET);
+
+            IRestResponse<List<MeasureUnitModel>> response = client.Execute<List<MeasureUnitModel>>(request);
+
+            return response.Data;
+
+        }
+           
     }
 }
