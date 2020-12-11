@@ -1,61 +1,104 @@
-﻿using RecipeFinder.DataLayer.Models;
+﻿using RecipeFinder.DTO;
+using RecipeFinder.Desktop.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
 namespace RecipeFinder.Desktop.ApiHelpers
 {
-    //public class RecipeCaller : IRecipeCaller
-    //{
-    //    private RestClient client;
+    public class RecipeCaller : IRecipeCaller
+    {
+        private RestClient client;
+        public RecipeCaller(string baseUrl)
+        {
+            client = new RestClient(baseUrl);
+        }
 
-    //    public RecipeCaller(string baseUrl)
-    //    {
-    //        client = new RestClient(baseUrl);
-    //    }
+        public RFApiResult CreateRecipe(RecipeDTO recipeDTO)
+        {
+            var request = new RestRequest("/recipe/create", Method.POST);
 
-    //    //parameter-less constructor using default API URL from App.Config
-    //    public RecipeCaller()
-    //{
-    //    client = new RestClient(ConfigurationManager.AppSettings["StarwarsApiURL"]);
-    //}
+            request.AddJsonBody(recipeDTO);
 
-    //    public List<Recipe> GetRecipes()
-    //    {
-    //        var request = new RestRequest("recipe", Method.GET);
-    //        var response = client.Execute<RecipeList>(request);
-    //        return response.Data.results;
-    //    }
+            IRestResponse<RFApiResult> response = client.Execute<RFApiResult>(request);
 
-    //    public Recipe GetRecipe(int id)
-    //    {
-    //        var request = new RestRequest("recipe/" + id, Method.GET);
-    //        var response = client.Execute<Recipe>(request);
-    //        return response.Data;
-    //    }
+            response.Data.StatusCode = response.StatusCode;
 
-    //    public void Create(Recipe recipe)
-    //    {
-    //        var request = new RestRequest("recipe", Method.POST);
-    //        request.AddJsonBody(recipe);
-    //        var response = client.Execute(request);
-    //    }
+            if (response.IsSuccessful)
+            {
+                response.Data.Success = true;
+            }
+            else
+            {
+                response.Data.Success = false;
+            }
 
-    //    public void Update(int id, Recipe recipe)
-    //    {
-    //        var request = new RestRequest("recipe/" + id, Method.PUT);
-    //        request.AddJsonBody(recipe);
-    //        client.Execute(request);
-    //    }
+            return response.Data;
+        }
 
-    //    public void Delete(int id)
-    //    {
-    //        var request = new RestRequest("recipe/" + id, Method.DELETE);
-    //        client.Execute(request);
-    //    }      
+        public RFApiResult UpdateRecipe(RecipeDTO recipeDTO)
+        {
+            var request = new RestRequest("/recipe/update", Method.PUT);
 
-    //}
+            request.AddJsonBody(recipeDTO);
+
+            IRestResponse<RFApiResult> response = client.Execute<RFApiResult>(request);
+
+            response.Data.StatusCode = response.StatusCode;
+
+            if (response.IsSuccessful)
+            {
+                response.Data.Success = true;
+            }
+            else
+            {
+                response.Data.Success = false;
+            }
+
+            return response.Data;
+        }
+        public RecipeList GetAll()
+        {
+            var request = new RestRequest("/recipe/get_all", Method.GET);
+
+            IRestResponse<RecipeList> response = client.Execute<RecipeList>(request);
+            response.Data.StatusCode = response.StatusCode;
+
+            return response.Data;
+        }
+
+        public RecipeModel FindBySlug(string slug)
+        {
+            var request = new RestRequest("/recipe/slug/" + slug, Method.GET);
+
+            IRestResponse<RecipeModel> response = client.Execute<RecipeModel>(request);
+            response.Data.StatusCode = response.StatusCode;
+
+            return response.Data;
+        }
+
+        public RecipeModel FindByCondition(string propName, object value)
+        {
+            var request = new RestRequest("/recipe/find_by", Method.POST);
+
+            request.AddJsonBody(new { PropName = propName, Value = value });
+
+            IRestResponse<RecipeModel> response = client.Execute<RecipeModel>(request);
+
+            return response.Data;
+        }
+
+        public List<MeasureUnitModel> GetMeasureUnits()
+        {
+            var request = new RestRequest("/recipe/measure_units", Method.GET);
+
+            IRestResponse<List<MeasureUnitModel>> response = client.Execute<List<MeasureUnitModel>>(request);
+
+            return response.Data;
+
+        }
+           
+    }
 }

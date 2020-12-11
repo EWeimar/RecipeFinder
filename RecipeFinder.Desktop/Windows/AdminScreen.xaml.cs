@@ -1,5 +1,8 @@
-﻿using System;
+﻿using RecipeFinder.Desktop.ApiHelpers;
+using RecipeFinder.Desktop.Models;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,16 +23,29 @@ namespace RecipeFinder.Desktop
     /// </summary>
     public partial class AdminWindow : Window
     {
+        RecipeCaller recipeCaller = new RecipeCaller("https://localhost:44320/api");
         public AdminWindow()
         {
             InitializeComponent();
-            //FillDataGrids();
+            
+            FillDataGrid();
         }
 
-        //private void FillDataGrids()
-        //{
-            //TODO
-        //}
+        private void InsertRecipes()
+        {
+            grdRecipes.ItemsSource = recipeCaller.GetAll().recipes;
+        }
+
+        private void FillDataGrid()
+        {
+            InsertRecipes();
+        }
+
+        private List<RecipeModel> GetAllRecipes()
+        {
+            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+            return rc.GetAll().recipes;
+        }
 
         private void btnCreateUser_Click(object sender, RoutedEventArgs e)
         {
@@ -62,6 +78,13 @@ namespace RecipeFinder.Desktop
 
         private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
         {
+
+            RecipeModel selectedRecipe = grdRecipes.SelectedItem as RecipeModel;
+
+            UpdateRecipe update = new UpdateRecipe(selectedRecipe.Id);
+            update.Show();
+            this.Close();
+            
 
         }
 

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FindByDTO.cs" />
     <Compile Include="ImageDTO.cs" />
     <Compile Include="IngredientDTO.cs" />
     <Compile Include="IngredientLineDTO.cs" />
