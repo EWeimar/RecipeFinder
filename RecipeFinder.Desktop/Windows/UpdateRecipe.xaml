@@ -1,0 +1,42 @@
+﻿<Window x:Class="RecipeFinder.Desktop.UpdateRecipe"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RecipeFinder.Desktop"
+        mc:Ignorable="d"
+        Title="Update Recipe" Height="450" Width="800" Background="#474B4F">
+    <Grid >
+        <StackPanel HorizontalAlignment="Left" Width="384" VerticalAlignment="Center" Height="368" Margin="0,10,0,42">
+            <Label x:Name="lblTitle" Content="Title" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="170,0" RenderTransformOrigin="0.648,5.375"/>
+            <TextBox x:Name="txtTitle" HorizontalAlignment="Center" Width="200" Margin="92,0"/>
+
+            <Label x:Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="141,0"/>
+            <TextBox x:Name="txtInstructions" HorizontalAlignment="Center" Height="220" Width="200" Margin="92,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+
+            <Button x:Name="btnUpdate" Content="Update Recipe" Background="#61892F" Foreground="White" Width="100" Margin="142,10"/>
+            <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="157,0" VerticalAlignment="Bottom"/>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Right" Margin="0,0,-0.4,0" Width="366">
+            <Label Name="lblIngredientname" Content="Ingredient" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox Name="txtIngredientname" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,0"/>
+
+            <Label Name="lblAmount" Content="Amount" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <TextBox Name="txtAmount" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,0"/>
+
+            <Label Name="lblUnit" Content="Unit" Foreground="White" FontSize="18" HorizontalAlignment="Center"/>
+            <ComboBox Name="txtUnit" HorizontalAlignment="Center" Height="33" Width="199" Margin="84,0,83.4,10"/>
+            <Button Name="btnAddIngr" Click="btnAddIngr_Click" Content="Add Ingredient" HorizontalAlignment="Center"/>
+            
+            <ListBox Height="150" Width="199" Name="Ingredients" >   
+                    <GridView>
+                        <GridViewColumn Header="Ingredient" Width="70"></GridViewColumn>
+                        <GridViewColumn Header="Amount" Width="50"></GridViewColumn>
+                        <GridViewColumn Header="MeasureUnit" Width="79"></GridViewColumn>
+                    </GridView>
+            </ListBox>
+        </StackPanel>
+
+    </Grid>
+</Window>

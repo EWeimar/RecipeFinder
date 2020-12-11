@@ -59,8 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ApiHelpers\IRecipeCaller.cs" />
-    <Compile Include="ApiHelpers\RecipeCaller.cs" />
+    <Page Include="Windows\UpdateRecipe.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Windows\CreateRecipe.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -73,9 +75,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="ApiHelpers\IRecipeCaller.cs" />
+    <Compile Include="ApiHelpers\RecipeCaller.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ImageModel.cs" />
+    <Compile Include="Models\IngredientLineModel.cs" />
+    <Compile Include="Models\IngredientModel.cs" />
+    <Compile Include="Models\RecipeList.cs" />
+    <Compile Include="Models\RecipeModel.cs" />
+    <Compile Include="Models\RFApiResult.cs" />
+    <Compile Include="Models\UserModel.cs" />
+    <Compile Include="Windows\UpdateRecipe.xaml.cs">
+      <DependentUpon>UpdateRecipe.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\CreateRecipe.xaml.cs">
       <DependentUpon>CreateRecipe.xaml</DependentUpon>
@@ -124,6 +138,10 @@
     <ProjectReference Include="..\RecipeFinder.DataLayer\RecipeFinder.DataLayer.csproj">
       <Project>{01932993-D77E-4A48-9732-20D73D73B2D4}</Project>
       <Name>RecipeFinder.DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RecipeFinder.DTO\RecipeFinder.DTO.csproj">
+      <Project>{C33F0C8E-B120-48EC-A151-B106D291CE86}</Project>
+      <Name>RecipeFinder.DTO</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
