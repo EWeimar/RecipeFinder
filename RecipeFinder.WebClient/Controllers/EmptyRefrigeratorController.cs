@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace RecipeFinder.WebClient.Controllers
 {
-    public class EmptyRefrigeratorController : Controller
+    public class EmptyRefrigeratorController : ControllerBase
     {
         // GET: EmptyRefrigerator
         public ActionResult Index()

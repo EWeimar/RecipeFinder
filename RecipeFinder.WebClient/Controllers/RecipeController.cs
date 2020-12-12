@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace RecipeFinder.WebClient.Controllers
 {
-    public class RecipeController : Controller
+    public class RecipeController : ControllerBase
     {
         public ActionResult Index()
         {
@@ -76,7 +76,14 @@ namespace RecipeFinder.WebClient.Controllers
 
             RFApiResult response = rc.CreateRecipe(recipeToBeCreated);
 
-            return Redirect(Url.Action("Index", "Recipe"));
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                SetFlash(FlashMessageType.Success, response.Message);
+            } else {
+                SetFlash(FlashMessageType.Danger, response.Message);
+            }
+
+            return Redirect(Url.Action("Index", "Home"));
         }
 
         [HttpGet]
@@ -90,6 +97,7 @@ namespace RecipeFinder.WebClient.Controllers
             if (recipe.StatusCode == HttpStatusCode.OK)
             {
                 ViewBag.recipe = recipe;
+
                 return View();
             }
 

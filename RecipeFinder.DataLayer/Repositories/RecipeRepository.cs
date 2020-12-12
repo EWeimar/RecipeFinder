@@ -77,7 +77,7 @@ namespace RecipeFinder.DataLayer.Repositories
 
         public async Task<int> UpdateAsync(Recipe entity)
         {
-            var res = 0;
+            int res = 0;
 
             byte[] rowVersion;
             using (var db = new SqlConnection(connString))

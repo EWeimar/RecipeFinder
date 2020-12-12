@@ -77,12 +77,22 @@ function saveUpdatedRecipe() {
         });
     });
 
+    var valdtElm = $('#validationMsg');
+
     $.ajax({
         type: "PUT",
         url: baseUrl + "/recipe/update",
+        data: JSON.stringify(RecipeDTO),
         contentType: "application/json",
-        data: JSON.stringify(RecipeDTO)
+        success: function (response) {
+            valdtElm.html("<div class=\"alert alert-success\">The recipe was successfully updated.</div>");
+        },
+        error: function (response) {
+            valdtElm.html("<div class=\"alert alert-danger\">" + response.responseJSON.message+"</div>");
+        }
     });
+
+    window.scrollTo(0, 0);
 }
 
 function addIngredientLine(ingredient_name,ingredient_amount,ingredient_measure_unit,ingredient_measure_unit_name) {

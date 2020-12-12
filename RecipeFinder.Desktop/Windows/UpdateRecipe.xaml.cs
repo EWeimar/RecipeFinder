@@ -139,22 +139,23 @@ namespace RecipeFinder.Desktop
                     var IngredientLineDTO = new {
                         Ingredient = new { Name = line.Ingredient.Name},
                         Amount = line.Amount,
-                        MeasureUnit = cmbUnits.SelectedIndex                     
+                        MeasureUnit = line.MeasureUnitInt
                     };
-                    recipeDTO.IngredientLines.Add(IngredientLineDTO);                   
+                    recipeDTO.IngredientLines.Add(IngredientLineDTO);
+
                 } 
             }
 
-            foreach(ImageModel image in images)
+            foreach (ImageModel image in images)
             {
-                if (string.IsNullOrEmpty(image.FileName))
+                if (!string.IsNullOrEmpty(image.FileName))
                 {
                     recipeDTO.Images.Add(new { FileName = image.FileName });
                 }
             }
 
             RFApiResult result = rc.UpdateRecipe(recipeDTO);
-            MessageBox.Show("Statuscode: " + result.StatusCode);
+            MessageBox.Show("Something: " + result.StatusCode + "\nMessage:"+result.Message);
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)

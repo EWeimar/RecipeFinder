@@ -28,30 +28,13 @@ namespace RecipeFinder.Desktop
         public LoginScreen()
         {
             InitializeComponent();
+
+            txtUsername.Text = "test";
+            txtPassword.Password = "123";
         }
 
         private void btnEnter_Click(object sender, RoutedEventArgs e)
         {
-            //string username = txtUsername.Text.ToLower();
-            //string password = txtPassword.Password;
-
-            //if(string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            //{
-            //    MessageBox.Show("Please fill in both username and password");
-            //}
-            //if (userService.ValidLogin(username, password))
-            //{
-            //    AdminWindow admin = new AdminWindow();
-            //    admin.Show();
-            //    this.Close();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Username and/or password is incorrect");
-            //}
-
-            //For Test Purpose
-
             if (txtUsername.Text.ToLower() == "test" && @txtPassword.Password == "123")
             {
                 AdminWindow admin = new AdminWindow();
