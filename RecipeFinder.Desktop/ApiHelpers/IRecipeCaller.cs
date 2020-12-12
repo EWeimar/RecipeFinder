@@ -11,7 +11,7 @@ namespace RecipeFinder.Desktop.ApiHelpers
     {
         RFApiResult CreateRecipe(RecipeDTO recipeDTO);
 
-        RFApiResult UpdateRecipe(RecipeDTO recipeDTO);
+        RFApiResult UpdateRecipe(object recipeDTO);
 
         RecipeList GetAll();
         RecipeModel FindByCondition(string propName, object value);

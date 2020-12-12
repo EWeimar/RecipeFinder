@@ -38,7 +38,7 @@ namespace RecipeFinder.Desktop.ApiHelpers
             return response.Data;
         }
 
-        public RFApiResult UpdateRecipe(RecipeDTO recipeDTO)
+        public RFApiResult UpdateRecipe(object recipeDTO)
         {
             var request = new RestRequest("/recipe/update", Method.PUT);
 

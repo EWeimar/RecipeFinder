@@ -19,6 +19,7 @@ namespace RecipeFinder.Desktop.Models
         public List<ImageModel> Images { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public DateTime CreatedAt { get; set; }
+        public string rowVer  { get; set; }
 
     }
 }

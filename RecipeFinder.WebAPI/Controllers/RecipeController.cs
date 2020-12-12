@@ -56,8 +56,11 @@ namespace RecipeFinder.WebAPI.Controllers
         public async Task<HttpResponseMessage> Update([FromBody] RecipeDTO recipeDTO)
         {
             //return Request.CreateResponse(HttpStatusCode.OK, new { message = "Data: " + recipeDTO.Title.ToString() }); ;
+            string msg = "";
+            msg += "New Title: ";
 
-            //return Request.CreateResponse(HttpStatusCode.OK, new { message = "RowVer..: " + recipeDTO.RowVer.ToString() }); ;
+            //return Request.CreateResponse(HttpStatusCode.OK, new { message = msg}); ;
+
 
             if (!ModelState.IsValid)
             {

@@ -23,7 +23,7 @@ namespace RecipeFinder.WebClient.Models
 
         public ImageModel GetFirstImage()
         {
-            ImageModel res = null;
+            ImageModel res = new ImageModel() {FileName = "http://placehold.it/750x500" };
 
             if (Images.Any())
             {

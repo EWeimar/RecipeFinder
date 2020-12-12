@@ -39,16 +39,31 @@
 
                 <DataGridTextColumn Header="Name" Width="125" Binding="{Binding Ingredient.Name}"/>
 
-                <DataGridTextColumn Header="Amount" Width="70" Binding="{Binding Amount}"/>
+                <DataGridTextColumn Header="Amount" Width="60" Binding="{Binding Amount}"/>
 
-                <DataGridTextColumn Header="Measure Unit" Width="90" Binding="{Binding MeasureUnit}"/>
+                <DataGridTextColumn Header="Measure Unit" Width="110" Binding="{Binding MeasureUnit}"/>
 
             </DataGrid.Columns>
 
         </DataGrid>
-        <Button x:Name="btnUpdate" Click="btnUpdate_Click" Content="Update Recipe" Background="#61892F" Foreground="White" Margin="925,426,112.4,25.4"/>
-        <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Width="70" Margin="1043,0,25.4,25.4" VerticalAlignment="Bottom"/>
+        <Button x:Name="btnUpdate" Click="btnUpdate_Click" Content="Update Recipe" Background="#61892F" Foreground="White" Margin="736,408,260.4,36.4" RenderTransformOrigin="0.02,-0.326"/>
+        <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Margin="888,0,108.4,36.4" VerticalAlignment="Bottom" Height="26"/>
         <Button x:Name="btnRemove" Click="btnRemove_Click" Content="Remove Ingredient" Background="#FC4445" Foreground="White" Margin="391,0,453.4,25.4" VerticalAlignment="Bottom"/>
+
+        <Label x:Name="lblImage" Content="Image" Foreground="White" FontSize="18" Margin="736,0,25.4,419.4"/>
+        <TextBox x:Name="txtImage" HorizontalAlignment="Left" Height="33" Width="294" Margin="736,34,0,403.4"/>
+
+        <DataGrid Width="294" x:Name="grdImages" Visibility="Visible" Margin="736,137,108.4,168.4" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
+            <DataGrid.Columns>
+
+                <DataGridTextColumn Header="FileName" Binding="{Binding FileName}"/>
+
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <Button x:Name="btnAddImage" Click="btnAddImage_Click" Content="Add Image" Margin="736,87,108.4,354.4"/>
+        <Button x:Name="btnRemoveImage" Click="btnRemoveImage_Click" Content="Remove Image" Background="#FC4445" Foreground="White" Margin="736,0,108.4,144.4" VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>

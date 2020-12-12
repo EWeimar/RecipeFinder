@@ -1,5 +1,6 @@
 ﻿using RecipeFinder.Desktop.ApiHelpers;
 using RecipeFinder.Desktop.Models;
+using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +26,7 @@ namespace RecipeFinder.Desktop
         RecipeModel recipe = null;
 
         ObservableCollection<IngredientLineModel> lines;
+        ObservableCollection<ImageModel> images;
 
         RecipeCaller rc;
         public UpdateRecipe(int RecipeId)
@@ -32,7 +34,7 @@ namespace RecipeFinder.Desktop
             rc = new RecipeCaller("https://localhost:44320/api");
             InitializeComponent();
             recipe = GetRecipeById(RecipeId);
-            SetData();
+            SetData();         
 
         }
 
@@ -43,6 +45,9 @@ namespace RecipeFinder.Desktop
             AddMeasureUnits();
             lines = new ObservableCollection<IngredientLineModel>(recipe.IngredientLines);
             grdIngredientLines.ItemsSource = lines;
+
+            images = new ObservableCollection<ImageModel>(recipe.Images);
+            grdImages.ItemsSource = images;
         }
 
         private void AddMeasureUnits()
@@ -80,12 +85,12 @@ namespace RecipeFinder.Desktop
 
                 //MeasureUnitModel selectedMeasureUnitModel = cmbUnits.SelectedItem as MeasureUnitModel;
                 //MeasureUnitModel selectedMeasureUnit = cmbUnits.SelectedIndex;
-                MeasureUnitModel selectedMeasureUnit = cmbUnits.SelectedItem as MeasureUnitModel;
+                
                 lines.Add(new IngredientLineModel()
                 {
                     Amount = Decimal.Parse(txtAmount.Text),
-                    MeasureUnit = selectedMeasureUnit.Name,
-                    MeasureUnitInt = selectedMeasureUnit.Number,
+                    MeasureUnit = cmbUnits.Text,
+                    MeasureUnitInt = cmbUnits.SelectedIndex,
                     Ingredient = new IngredientModel(){ Name = txtIngredientname.Text }
                 });
                 
@@ -106,17 +111,90 @@ namespace RecipeFinder.Desktop
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if(lines.Count == 0)
+            {
+                MessageBox.Show("Remember to add Ingredients");
+                return;
+            }
+            if (string.IsNullOrEmpty(txtTitle.Text) || string.IsNullOrEmpty(txtInstructions.Text))
+            {
+                MessageBox.Show("Title and Instruction might not be empty"); 
+            }           
+
+            var recipeDTO = new
+            {
+                Id = recipe.Id,
+                Title = txtTitle.Text,
+                Instruction = txtInstructions.Text,
+                IngredientLines = new List<object>(),
+                Images = new List<object>(),
+                User = new {Id = recipe.User.Id},
+                RowVer = recipe.rowVer
+            };
+
+            foreach (IngredientLineModel line in lines)
+            {
+                if (!string.IsNullOrEmpty(line.Ingredient.Name) && line.Amount > 0)
+                {
+                    var IngredientLineDTO = new {
+                        Ingredient = new { Name = line.Ingredient.Name},
+                        Amount = line.Amount,
+                        MeasureUnit = cmbUnits.SelectedIndex                     
+                    };
+                    recipeDTO.IngredientLines.Add(IngredientLineDTO);                   
+                } 
+            }
+
+            foreach(ImageModel image in images)
+            {
+                if (string.IsNullOrEmpty(image.FileName))
+                {
+                    recipeDTO.Images.Add(new { FileName = image.FileName });
+                }
+            }
+
+            RFApiResult result = rc.UpdateRecipe(recipeDTO);
+            MessageBox.Show("Statuscode: " + result.StatusCode);
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            //Remove Selected Ingredient from the list
-            foreach (IngredientLineModel line in lines)
-            {
-                //if(line.Id ==)
-                //{
+            IngredientLineModel selectedIngredientLine = grdIngredientLines.SelectedItem as IngredientLineModel;
 
-                //}
+            if(lines.Count > 0) {
+                if (lines.Contains(selectedIngredientLine)) {
+                    lines.RemoveAt(grdIngredientLines.SelectedIndex);
+                    grdIngredientLines.ItemsSource = lines;
+                }                
+            }
+        }
+
+        private void btnAddImage_Click(object sender, RoutedEventArgs e)
+        {
+
+            images.Add(new ImageModel()
+            {
+                FileName = txtImage.Text
+            }) ;
+
+                //Setting the new list 
+                grdImages.ItemsSource = images;
+
+                //Emptying fields after insertion
+                txtImage.Text = string.Empty;          
+        }
+
+        private void btnRemoveImage_Click(object sender, RoutedEventArgs e)
+        {
+            ImageModel selectedImageModel = grdImages.SelectedItem as ImageModel;
+
+            if (images.Count > 0)
+            {
+                if (images.Contains(selectedImageModel))
+                {
+                    images.RemoveAt(grdImages.SelectedIndex);
+                    grdImages.ItemsSource = images;
+                }
             }
         }
     }    
