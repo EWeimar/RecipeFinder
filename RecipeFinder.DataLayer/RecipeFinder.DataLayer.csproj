@@ -95,15 +95,6 @@
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Repositories\ImageRepository.cs" />
     <Compile Include="Repositories\IngredientRepository.cs" />
-    <Compile Include="Repositories\OldRepos\ImageRepository.cs" />
-    <Compile Include="Repositories\OldRepos\IngredientLineRepository.cs" />
-    <Compile Include="Repositories\OldRepos\IngredientRepository.cs" />
-    <Compile Include="Repositories\OldRepos\IRepository.cs" />
-    <Compile Include="Repositories\OldRepos\IUserRepository.cs" />
-    <Compile Include="Repositories\OldRepos\RecipeRepository.cs" />
-    <Compile Include="Repositories\OldRepos\RecipeReviewRepository.cs" />
-    <Compile Include="Repositories\OldRepos\UserFavoriteRepository.cs" />
-    <Compile Include="Repositories\OldRepos\UserRepository.cs" />
     <Compile Include="Repositories\RecipeReviewRepository.cs" />
     <Compile Include="Repositories\UserFavoriteRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />

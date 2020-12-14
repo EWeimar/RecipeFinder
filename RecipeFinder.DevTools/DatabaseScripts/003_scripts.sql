@@ -1,0 +1,2 @@
+ALTER TABLE Recipe
+ADD UNIQUE (Slug);

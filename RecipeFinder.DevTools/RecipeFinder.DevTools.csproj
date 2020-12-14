@@ -143,6 +143,7 @@
   <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="DatabaseScripts\002_scripts.sql" />
+    <EmbeddedResource Include="DatabaseScripts\003_scripts.sql" />
     <Content Include="Logs\debug.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
