@@ -77,8 +77,6 @@ namespace RecipeFinder.DataLayer.Repositories
 
         public async Task<int> UpdateAsync(Recipe entity)
         {
-            int res = 0;
-
             byte[] rowVersion;
             using (var db = new SqlConnection(connString))
             {
@@ -91,9 +89,7 @@ namespace RecipeFinder.DataLayer.Repositories
                     throw new DBConcurrencyException("The entity you were trying to edit has changed. Reload the entity and try again.");
                 }
 
-                res = await db.ExecuteAsync(sql, new { Title = entity.Title, Slug = entity.Slug, Instruction = entity.Instruction, CreatedAt = entity.CreatedAt, Id = entity.Id, entity.RowVer });
-
-                return res;
+                return rowVersion != null ? 1 : 0;
             }
         }
     }

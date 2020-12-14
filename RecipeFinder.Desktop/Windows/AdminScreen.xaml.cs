@@ -2,6 +2,7 @@
 using RecipeFinder.Desktop.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace RecipeFinder.Desktop
     /// </summary>
     public partial class AdminWindow : Window
     {
-        RecipeCaller recipeCaller = new RecipeCaller("https://localhost:44320/api");
+        RecipeCaller recipeCaller = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
         public AdminWindow()
         {
             InitializeComponent();
@@ -43,7 +44,7 @@ namespace RecipeFinder.Desktop
 
         private List<RecipeModel> GetAllRecipes()
         {
-            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+            RecipeCaller rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
             return rc.GetAll().recipes;
         }
 

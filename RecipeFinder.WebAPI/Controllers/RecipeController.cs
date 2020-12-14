@@ -67,7 +67,7 @@ namespace RecipeFinder.WebAPI.Controllers
                     }
                 }
 
-                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Hej"+errorMessage);
+                return Request.CreateErrorResponse(HttpStatusCode.BadRequest, errorMessage);
             }
 
             try
@@ -76,10 +76,10 @@ namespace RecipeFinder.WebAPI.Controllers
 
                 if (result > 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated" });
+                    return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated " });
                 }
 
-                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horrible went wrong." });
+                return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horrible went wrong." + result });
 
             } catch (Exception e)
             {

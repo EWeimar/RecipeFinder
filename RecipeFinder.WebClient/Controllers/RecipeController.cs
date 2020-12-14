@@ -2,6 +2,7 @@
 using RecipeFinder.WebClient.ApiHelpers;
 using RecipeFinder.WebClient.Models;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Net;
 using System.Web.Mvc;
 
@@ -18,7 +19,7 @@ namespace RecipeFinder.WebClient.Controllers
         [Route("recipe/view/{id}")]
         public ActionResult ViewRecipe(string id)
         {
-            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+            RecipeCaller rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
 
             RecipeModel recipe = rc.FindBySlug(id);
 
@@ -42,7 +43,7 @@ namespace RecipeFinder.WebClient.Controllers
         [HttpPost]
         public ActionResult SubmitCreate(RecipeModel rm)
         {
-            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+            RecipeCaller rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
 
             RecipeDTO recipeToBeCreated = new RecipeDTO();
             recipeToBeCreated.Title = rm.Title;
@@ -90,7 +91,7 @@ namespace RecipeFinder.WebClient.Controllers
         [Route("recipe/update/{id}")]
         public ActionResult Update(string id)
         {
-            RecipeCaller rc = new RecipeCaller("https://localhost:44320/api");
+            RecipeCaller rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
 
             RecipeModel recipe = rc.FindBySlug(id);
 

@@ -3,6 +3,7 @@ using RecipeFinder.WebClient.Models;
 using RecipeFinder.WebClient.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -24,21 +25,16 @@ namespace RecipeFinder.WebClient.Controllers
         [HttpPost]
         public ActionResult SubmitCreate(CreateUserViewModel vm)
         {
-            UserCaller uc = new UserCaller("https://localhost:44320/api");
+            UserCaller uc = new UserCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
             RFApiResult response = uc.CreateUser(new User() { Username = vm.Username, Email = vm.Email, Password = vm.Password});
 
             if (response.Success)
             {
-                SetFlash(Models.FlashMessageType.Success, "Tillykke din bruger blev oprettet.");
-                //SetFlash(Models.FlashMessageType.Success, response.Message);
+                SetFlash(Models.FlashMessageType.Success, response.Message);
             } else
             {
-                SetFlash(Models.FlashMessageType.Danger, "Der skete en fejl.");
-
-                //SetFlash(Models.FlashMessageType.Danger, response.Message);
+                SetFlash(Models.FlashMessageType.Danger, response.Message);
             }
-
-            //return View("Create");
 
             return Redirect(Url.Action("Create", "User"));
         }

@@ -4,17 +4,9 @@ using RecipeFinder.DTO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Configuration;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace RecipeFinder.Desktop
 {
@@ -29,9 +21,10 @@ namespace RecipeFinder.Desktop
         ObservableCollection<ImageModel> images;
 
         RecipeCaller rc;
+
         public UpdateRecipe(int RecipeId)
         {
-            rc = new RecipeCaller("https://localhost:44320/api");
+            rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
             InitializeComponent();
             recipe = GetRecipeById(RecipeId);
             SetData();         
@@ -52,13 +45,10 @@ namespace RecipeFinder.Desktop
 
         private void AddMeasureUnits()
         {
-            
-            
             foreach (MeasureUnitModel measureUnit in rc.GetMeasureUnits())
             {
                 cmbUnits.Items.Add(new { MeasureUnit = measureUnit.Name, MeasureUnitInt = measureUnit.Number});
             }
-
         }
 
         public RecipeModel GetRecipeById(int RecipeId)
@@ -80,12 +70,8 @@ namespace RecipeFinder.Desktop
 
         private void AddIngredientLine()
         {
-
             if (cmbUnits.SelectedItem != null) {
 
-                //MeasureUnitModel selectedMeasureUnitModel = cmbUnits.SelectedItem as MeasureUnitModel;
-                //MeasureUnitModel selectedMeasureUnit = cmbUnits.SelectedIndex;
-                
                 lines.Add(new IngredientLineModel()
                 {
                     Amount = Decimal.Parse(txtAmount.Text),
@@ -155,7 +141,8 @@ namespace RecipeFinder.Desktop
             }
 
             RFApiResult result = rc.UpdateRecipe(recipeDTO);
-            MessageBox.Show("Something: " + result.StatusCode + "\nMessage:"+result.Message);
+
+            MessageBox.Show(result.Message);
         }
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
