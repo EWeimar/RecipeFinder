@@ -5,25 +5,25 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RecipeFinder.Desktop"
         mc:Ignorable="d"
-        Title="Update Recipe" Height="500" Width="1144.472" Background="#474B4F">
+        Title="Update Recipe" Height="500" Width="1200" Background="#474B4F">
     <Grid >
-        <StackPanel HorizontalAlignment="Left" Width="384" VerticalAlignment="Center" Height="445" Margin="0,0,0,25.4">
-            <Label x:Name="lblTitle" Content="Title" Foreground="White" FontSize="18" Margin="92,0,0,0" RenderTransformOrigin="0.648,5.375"/>
-            <TextBox x:Name="txtTitle"  HorizontalAlignment="Center" Width="200" Height="33" Margin="92,0"/>
-            <Label x:Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="92,0,141,0" Width="151"/>
-            <TextBox x:Name="txtInstructions" HorizontalAlignment="Center" Height="285" Width="200" Margin="92,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
+        <StackPanel HorizontalAlignment="Left" Width="400" VerticalAlignment="Top" Height="445" Margin="0,0,0,25.4">
+            <Label x:Name="lblTitle" Content="Title" Foreground="White" FontSize="18" Margin="50,0,50,0"/>
+            <TextBox x:Name="txtTitle" Height="33" Width="300"  Margin="50,0,50,0"/>
+            <Label x:Name="lblInstructions" Content="Instructions" Foreground="White" FontSize="18" HorizontalAlignment="Left" Margin="50,0,50,0" Width="100"/>
+            <TextBox x:Name="txtInstructions" Height="331" Width="300" Margin="50,0,50,0" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"/>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Right" Width="345" Margin="0,0,402.4,0.4">
-            <Label x:Name="lblIngredientname" Content="Ingredient" Foreground="White" FontSize="18" Margin="0,0,0,0"/>
-            <TextBox x:Name="txtIngredientname" HorizontalAlignment="Left" Height="33" Width="301"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Width="400" Height="445" Margin="400,0,393.6,0.4">
+            <Label x:Name="lblIngredientname" HorizontalAlignment="Left" Content="Ingredient" Foreground="White" FontSize="18" Width="300" Margin="50,0,50,0"/>
+            <TextBox x:Name="txtIngredientname" HorizontalAlignment="Left" Height="33" Width="300" Margin="50,0,50,0"/>
 
 
-            <Label x:Name="lblAmount" Content="Amount" Foreground="White" FontSize="18" Margin="0,0,11.4,0"/>
-            <TextBox x:Name="txtAmount" Height="33" Margin="0,0,43.8,0"/>
+            <Label x:Name="lblAmount" Content="Amount" Foreground="White" FontSize="18" Margin="50,0,50,0"/>
+            <TextBox x:Name="txtAmount" Height="33" Width="300" HorizontalAlignment="Left" Margin="50,0,50,0"/>
 
-            <Label x:Name="lblUnit" Content="Unit" Foreground="White" FontSize="18"/>
-            <ComboBox Name="cmbUnits" Height="33" Margin="0,10,43.8,10" SelectedValuePath="Tag" SelectedValue="{Binding MeasureUnitInt, Mode=TwoWay}">
+            <Label x:Name="lblUnit" Content="Unit" Foreground="White" FontSize="18" Margin="50,0,50,0"/>
+            <ComboBox x:Name="cmbUnits" Height="33" Width="300" HorizontalAlignment="Left" Margin="50,0,50,0" SelectedValuePath="Tag" SelectedValue="{Binding MeasureUnitInt, Mode=TwoWay}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -33,9 +33,9 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button x:Name="btnAddIngr" Click="btnAddIngr_Click" Content="Add Ingredient" Margin="0,0,43.8,0"/>
+            <Button x:Name="btnAddIngr" Click="btnAddIngr_Click" Content="Add Ingredient" Height="20" Margin="50,10,50,0"/>
 
-            <DataGrid x:Name="grdIngredientLines" Visibility="Visible" Margin="0,10,43.10,0" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" Height="164" >
+            <DataGrid x:Name="grdIngredientLines" Visibility="Visible" Margin="50,10,50,0" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" Height="164" >
                 <DataGrid.Columns>
 
                     <DataGridTextColumn Header="Name" Width="0,33*" Binding="{Binding Ingredient.Name}"/>
@@ -48,28 +48,34 @@
 
             </DataGrid>
 
-            <Button x:Name="btnRemove" Click="btnRemove_Click" Content="Remove Ingredient" Background="#FC4445" Foreground="White" Margin="0,10,43.8,0" VerticalAlignment="Bottom"/>
+            <Button x:Name="btnRemove" Click="btnRemove_Click" Content="Remove Ingredient" Background="#FC4445" Foreground="White" Height="20" Margin="50,10,50,0" VerticalAlignment="Bottom"/>
 
 
         </StackPanel>
 
-        <Button x:Name="btnUpdate" Click="btnUpdate_Click" Content="Update Recipe" Background="#61892F" Foreground="White" Margin="736,418,260.4,17.4" RenderTransformOrigin="0.02,-0.326"/>
-        <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Margin="888,0,108.4,17.4" VerticalAlignment="Bottom" Height="27"/>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Width="400">
 
-        <Label x:Name="lblImage" Content="Image" Foreground="White" FontSize="18" Margin="736,0,25.4,419.4"/>
-        <TextBox x:Name="txtImage" HorizontalAlignment="Left" Height="33" Width="294" Margin="736,34,0,403.4"/>
 
-        <DataGrid Width="294" x:Name="grdImages" Visibility="Visible" Margin="736,137,108.4,168.4" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" >
-            <DataGrid.Columns>
+            <Label x:Name="lblImage" Content="Image" Foreground="White" FontSize="18" Margin="50,0,50,0" />
+            <TextBox x:Name="txtImage" HorizontalAlignment="Left" Height="33" Width="300" Margin="50,0,50,0"/>
 
-                <DataGridTextColumn Header="FileName" Width="*" Binding="{Binding FileName}"/>
+            <Button x:Name="btnAddImage" Click="btnAddImage_Click" Content="Add Image" Height="20" Margin="50,10,50,0"/>
 
-            </DataGrid.Columns>
+            <DataGrid x:Name="grdImages" Visibility="Visible" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" Margin="50,10,50,5" Height="164" >
+                <DataGrid.Columns>
 
-        </DataGrid>
+                    <DataGridTextColumn Header="FileName" Width="*" Binding="{Binding FileName}"/>
 
-        <Button x:Name="btnAddImage" Click="btnAddImage_Click" Content="Add Image" Margin="736,87,108.4,354.4"/>
-        <Button x:Name="btnRemoveImage" Click="btnRemoveImage_Click" Content="Remove Image" Background="#FC4445" Foreground="White" Margin="736,0,108.4,144.4" VerticalAlignment="Bottom"/>
+                </DataGrid.Columns>
 
+            </DataGrid>
+
+
+            <Button x:Name="btnRemoveImage" Click="btnRemoveImage_Click" Content="Remove Image" Background="#FC4445" Foreground="White" Height="20" Margin="50,5,50,65" />
+
+            <Button x:Name="btnUpdate" Click="btnUpdate_Click" Content="Update Recipe" Background="#61892F" Foreground="White" Height="20" Margin="50,15,50,5"/>
+            <Button x:Name="btnBack" Click="btnBack_Click" Content="Go Back!" Background="#FC4445" Foreground="White" Height="20" Margin="50,5,50,20"/>
+
+        </StackPanel>
     </Grid>
 </Window>
