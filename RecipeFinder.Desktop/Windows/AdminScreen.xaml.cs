@@ -50,7 +50,7 @@ namespace RecipeFinder.Desktop
 
         private void btnCreateUser_Click(object sender, RoutedEventArgs e)
         {
-            
+            MessageBox.Show("This feature is not yet implemented \nTry another one");
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
@@ -62,12 +62,12 @@ namespace RecipeFinder.Desktop
 
         private void btnUpdateUser_Click(object sender, RoutedEventArgs e)
         {
-           
+            MessageBox.Show("This feature is not yet implemented \nTry another one");
         }
 
         private void btnDeleteUser_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("This feature is not yet implemented \nTry another one");
         }
 
         private void btnCreateRecipe_Click(object sender, RoutedEventArgs e)
@@ -80,18 +80,23 @@ namespace RecipeFinder.Desktop
         private void btnUpdateRecipe_Click(object sender, RoutedEventArgs e)
         {
 
-            RecipeModel selectedRecipe = grdRecipes.SelectedItem as RecipeModel;
+            if (grdRecipes.SelectedItem == null)
+            {
+                MessageBox.Show("Oops! Please Select a Recipe");
+            }
+            else
+            {
+                RecipeModel selectedRecipe = grdRecipes.SelectedItem as RecipeModel;
 
-            UpdateRecipe update = new UpdateRecipe(selectedRecipe.Id);
-            update.Show();
-            this.Close();
-            
-
+                UpdateRecipe update = new UpdateRecipe(selectedRecipe.Id);
+                update.Show();
+                this.Close();
+            }      
         }
 
         private void btnDeleteRecipe_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("This feature is not yet implemented \nTry another one");
         }
 
         private void grdUsers_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)

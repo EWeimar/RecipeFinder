@@ -45,6 +45,23 @@ namespace RecipeFinder.Desktop
             {
                 MessageBox.Show("Username or Password is incorrect");
             }
-        }       
+        }
+
+        private void txtPassword_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                if (txtUsername.Text.ToLower() == "test" && @txtPassword.Password == "123")
+                {
+                    AdminWindow admin = new AdminWindow();
+                    admin.Show();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Username or Password is incorrect");
+                }
+            }
+        }
     }
 }
