@@ -78,7 +78,7 @@ namespace RecipeFinder.DataLayer.Repositories
             {
                 string sql = "UPDATE Ingredient SET Name = @Name WHERE Id = @Id";
 
-                return await db.ExecuteAsync(sql, new { Name = entity.Name, Id = entity.Id });
+                return await db.ExecuteAsync(sql, new { Name = entity.Name });
             }
         }
     }
