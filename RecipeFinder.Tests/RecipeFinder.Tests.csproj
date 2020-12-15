@@ -73,6 +73,10 @@
     <Compile Include="IntegrationTests\CanCreateRecipeWithAssocAndSaveToDatabase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\IngredientRepositoryTests.cs" />
+    <Compile Include="UnitTests\IngredientLineRepositoryTests.cs" />
+    <Compile Include="UnitTests\RecipeRepositoryTests.cs" />
+    <Compile Include="UnitTests\ImageRepositoryTests.cs" />
+    <Compile Include="UnitTests\UserRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

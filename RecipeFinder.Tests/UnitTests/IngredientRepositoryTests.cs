@@ -48,14 +48,14 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             Ingredient ingredient = new Ingredient();
             ingredient.Id = 0;
-            ingredient.Name = "i1";
+            ingredient.Name = "ingredient1";
 
             //Act
-            var res = await ingredientRepository.AddAsync(ingredient);
+            var addResult = await ingredientRepository.AddAsync(ingredient);
 
             //Assert
-            Assert.IsNotNull(res);
-            Assert.AreEqual(ingredient.Name, res.Name);
+            Assert.IsNotNull(addResult);
+            Assert.AreEqual(ingredient.Name, addResult.Name);
         }
 
         [TestMethod]
@@ -65,7 +65,7 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             Ingredient ingredient = new Ingredient();
             ingredient.Id = 0;
-            ingredient.Name = "i2";
+            ingredient.Name = "ingredient2";
 
             //Act
             var addResult = await ingredientRepository.AddAsync(ingredient);
@@ -87,7 +87,7 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             Ingredient ingredient = new Ingredient();
             ingredient.Id = 0;
-            ingredient.Name = "i3";
+            ingredient.Name = "ingredient3";
 
             //Act
             var addResult = await ingredientRepository.AddAsync(ingredient);
@@ -123,7 +123,7 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             Ingredient ingredient = new Ingredient();
             ingredient.Id = 0;
-            ingredient.Name = "i4";
+            ingredient.Name = "ingredient4";
 
             //Act
             var addResult = await ingredientRepository.AddAsync(ingredient);
@@ -144,18 +144,17 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             Ingredient ingredient = new Ingredient();
             ingredient.Id = 0;
-            ingredient.Name = "i5";
+            ingredient.Name = "ingredient5";
 
             //Act
             var addResult = await ingredientRepository.AddAsync(ingredient);
-            var deleteResult = await ingredientRepository.DeleteAsync(addResult.Id);
+            
 
             //Assert
             Assert.IsNotNull(addResult);
+            var deleteResult = await ingredientRepository.DeleteAsync(addResult.Id);
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(1, deleteResult);
-
-
         }
     }
 }
