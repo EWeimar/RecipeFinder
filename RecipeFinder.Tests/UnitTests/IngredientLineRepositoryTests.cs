@@ -140,5 +140,21 @@ namespace RecipeFinder.Tests.UnitTests
             Assert.AreEqual(1, deleteResult);
 
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        [Priority(4)]
+        public async Task GetNonExistentIngredientLine()
+        {
+            //Arrange
+            //Entities with id = 0, will never exist
+
+            //Act
+            var getResult = await ingredientLineRepository.GetByIdAsync(0);
+
+            //Assert
+            //Assert is done by annotation
+
+        }
     }
 }

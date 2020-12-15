@@ -31,6 +31,7 @@ namespace RecipeFinder.Tests.UnitTests
         public async Task Setup()
         {
             //Is run before each tests in file
+            
 
         }
 
@@ -48,8 +49,8 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user1";
-            user.Email = "user1Email";
+            user.Username = "user1" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Email = "user1Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Password = "user1Password";
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -67,13 +68,13 @@ namespace RecipeFinder.Tests.UnitTests
 
         [TestMethod]
         [Priority(1)]
-        public async Task GetRecipe()
+        public async Task GetUser()
         {
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user2";
-            user.Email = "user2Email";
+            user.Username = "user2" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Email = "user2Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Password = "user2Password";
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -93,42 +94,42 @@ namespace RecipeFinder.Tests.UnitTests
 
         [TestMethod]
         [Priority(2)]
-        public async Task UpdateRecipe()
+        public async Task UpdateUser()
         {
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user3";
-            user.Email = "user3Email";
+            user.Username = "user3" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Email = "user3Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Password = "user3Password";
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
 
             //Act
             var addResult = await userRepository.AddAsync(user);
-            addResult.Username = "user3Update";
-            addResult.Email = "user3EmailUpdate";
+            addResult.Username = "user3Update" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            addResult.Email = "user3EmailUpdate" + System.Guid.NewGuid().ToString().Substring(0, 6);
             addResult.Password = "user3PasswordUpdate";
             var updateResult = await userRepository.UpdateAsync(addResult);
 
             //Assert
             Assert.AreEqual(1, updateResult);
             var getResult = await userRepository.GetByIdAsync(addResult.Id);
-            Assert.AreEqual("user3Update", getResult.Username);
-            Assert.AreEqual("user3EmailUpdate", getResult.Email);
-            Assert.AreEqual("user3PasswordUpdate", getResult.Password);
+            Assert.AreEqual(addResult.Username, getResult.Username);
+            Assert.AreEqual(addResult.Email, getResult.Email);
+            Assert.AreEqual(addResult.Password, getResult.Password);
 
         }
 
         [TestMethod]
         [Priority(3)]
-        public async Task DeleteRecipe()
+        public async Task DeleteUser()
         {
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user4";
-            user.Email = "user4Email";
+            user.Username = "user4" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Email = "user4Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Password = "user4Password";
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -142,6 +143,22 @@ namespace RecipeFinder.Tests.UnitTests
             Assert.IsNotNull(deleteResult);
             Assert.AreEqual(1, deleteResult);
 
+
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        [Priority(4)]
+        public async Task GetNonExistentUser()
+        {
+            //Arrange
+            //Entities with id = 0, will never exist
+
+            //Act
+            var getResult = await userRepository.GetByIdAsync(0);
+
+            //Assert
+            //Assert is done by annotation
 
         }
     }
