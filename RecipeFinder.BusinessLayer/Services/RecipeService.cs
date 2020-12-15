@@ -216,6 +216,17 @@ namespace RecipeFinder.BusinessLayer.Services
         {
             Recipe recipe = await dbAccess.Recipes.GetByIdAsync(recipeDTO.Id);
 
+            recipe.Title = recipeDTO.Title;
+            recipe.Instruction = recipeDTO.Instruction;
+            recipe.RowVer = recipeDTO.RowVer; // convert to byte array
+
+            int updateResult = await dbAccess.Recipes.UpdateAsync(recipe);
+
+            if (updateResult == 0)
+            {
+                return 0;
+            }
+
             var existingIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), recipeDTO.Id)).ToList();
             var existingImages = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), recipeDTO.Id)).ToList();
 
@@ -230,11 +241,6 @@ namespace RecipeFinder.BusinessLayer.Services
             {
                 await dbAccess.Images.DeleteAsync(existingImage.Id);
             }
-
-            recipe.Title = recipeDTO.Title;
-            recipe.Instruction = recipeDTO.Instruction;
-            //recipe.RowVer = System.Convert.FromBase64String(recipeDTO.RowVer); // convert to byte array
-            recipe.RowVer = recipeDTO.RowVer; // convert to byte array
 
             // loop thru the ingredient lines sent by the user to be inserted
             foreach (IngredientLineDTO ingredientLineDTO in recipeDTO.IngredientLines)
@@ -278,39 +284,7 @@ namespace RecipeFinder.BusinessLayer.Services
                 await dbAccess.Images.AddAsync(image);
             }
 
-            return await dbAccess.Recipes.UpdateAsync(recipe);
-        }
-
-        public async Task<int> UpdateAsyncOld(RecipeDTO input)
-        {
-            Validation(input);
-
-            var updateRecipe = await dbAccess.Recipes.GetByIdAsync(input.Id);
-
-            //Check if recipe exists
-            if (updateRecipe == null)
-            {
-                throw new ArgumentNullException("The recipe could not be found!");
-            }
-
-            //Update the recipe properties
-            updateRecipe.Title = input.Title;
-            updateRecipe.Slug = input.Slug;
-            updateRecipe.Instruction = input.Instruction;
-
-            //Fetch ingredientLines in DB based on recipeId
-            var updateIngredientLines = (await dbAccess.IngredientLines.FindByCondition(nameof(IngredientLine.RecipeId), updateRecipe.Id)).ToList();
-
-            //Update ingredientLines
-            UpdateIngredientLine(input, updateIngredientLines);
-
-            //Fetch images in DB based on recipeId
-            var updateImages = (await dbAccess.Images.FindByCondition(nameof(Image.RecipeId), updateRecipe.Id)).ToList();
-            //Update images
-            UpdateImage(input, updateImages);
-
-            //Update the recipe
-            return await dbAccess.Recipes.UpdateAsync(updateRecipe);
+            return updateResult;
         }
 
         public async Task<int> DeleteAsync(RecipeDTO recipe)
