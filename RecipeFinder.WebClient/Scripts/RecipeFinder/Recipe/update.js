@@ -86,6 +86,12 @@ function saveUpdatedRecipe() {
         contentType: "application/json",
         success: function (response) {
             valdtElm.html("<div class=\"alert alert-success\">The recipe was successfully updated.</div>");
+
+            var newRowVersion = response.rowVer;
+
+            if (newRowVersion != undefined && newRowVersion != null && newRowVersion != "") {
+                $('#row_version').val(newRowVersion);
+            }
         },
         error: function (response) {
             valdtElm.html("<div class=\"alert alert-danger\">" + response.responseJSON.message+"</div>");
