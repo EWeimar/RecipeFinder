@@ -68,7 +68,7 @@ namespace RecipeFinder.WebAPI.Controllers
         }
 
         [HttpGet]
-        [RecipeFinderAuthenticationFilter]
+        [AuthenticationFilter]
         [Route("api/user/secret-area")]
         public async Task<HttpResponseMessage> SecretProtectedArea()
         {

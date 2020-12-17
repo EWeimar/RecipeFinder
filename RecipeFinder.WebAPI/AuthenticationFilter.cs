@@ -10,7 +10,10 @@ using System.Web.Http.Results;
 
 namespace RecipeFinder.WebAPI
 {
-    public class RecipeFinderAuthenticationFilter : AuthorizeAttribute, IAuthenticationFilter
+    /**
+     * 
+     */
+    public class AuthenticationFilter : AuthorizeAttribute, IAuthenticationFilter
     {
         public bool AllowMultiple
         {
