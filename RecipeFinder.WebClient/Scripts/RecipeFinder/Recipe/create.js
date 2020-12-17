@@ -82,6 +82,7 @@ function render() {
             ingredient_amount: ingredientLines[i].amount, ingredient_unit: ingredientLines[i].unit, identifier: ingredientLines[i].identifier,
             ingredient_unit_name: ingredientLines[i].unit_name
         });
+
         console.log("line: " + ingredientLines[i].identifier);
         
         $('#ingredient_lines').append(renderedIngredientLine);
