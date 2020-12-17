@@ -76,7 +76,11 @@ namespace RecipeFinder.WebAPI.Controllers
 
                 if (result > 0)
                 {
-                    return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated " });
+
+                    // This is used to get the next row version, to enable the user continuesly update the recipe
+                    var updatedRecipe = await RecipeService.GetByIdAsync(recipeDTO.Id);
+
+                    return Request.CreateResponse(HttpStatusCode.OK, new { message = "Recipe was succesfully updated ", RowVer = updatedRecipe.RowVer });
                 }
 
                 return Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = "Something horrible went wrong." + result });

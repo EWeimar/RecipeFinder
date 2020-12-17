@@ -22,24 +22,39 @@ namespace RecipeFinder.Desktop
 
         RecipeCaller rc;
 
+        string RowVersion = string.Empty;
+
         public UpdateRecipe(int RecipeId)
         {
             rc = new RecipeCaller(ConfigurationManager.AppSettings["RecipeFinderApiBaseUrl"]);
             InitializeComponent();
             recipe = GetRecipeById(RecipeId);
-            SetData();         
-
+            SetData();
         }
 
         private void SetData()
         {
+
+            // setting the current row version
+            this.RowVersion = recipe.rowVer;
+
+            // basic recipe information
             txtTitle.Text = recipe.Title;
             txtInstructions.Text = recipe.Instruction;
+
+            // adds measure units to combobox
             AddMeasureUnits();
+
+            // a list to edit the ingredient lines
             lines = new ObservableCollection<IngredientLineModel>(recipe.IngredientLines);
+
+            // add already existing ingredient lines to the editable list
             grdIngredientLines.ItemsSource = lines;
 
+            // a list to edit the images
             images = new ObservableCollection<ImageModel>(recipe.Images);
+
+            // add already existing images to the editable image list
             grdImages.ItemsSource = images;
         }
 
@@ -115,7 +130,7 @@ namespace RecipeFinder.Desktop
                 IngredientLines = new List<object>(),
                 Images = new List<object>(),
                 User = new {Id = recipe.User.Id},
-                RowVer = recipe.rowVer
+                RowVer = this.RowVersion
             };
 
             foreach (IngredientLineModel line in lines)
@@ -141,6 +156,14 @@ namespace RecipeFinder.Desktop
             }
 
             RFApiResult result = rc.UpdateRecipe(recipeDTO);
+
+            if (result.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+
+                RecipeModel updatedRecipeModel = rc.FindByCondition("id", recipeDTO.Id);
+
+                this.RowVersion = updatedRecipeModel.rowVer;
+            }
 
             MessageBox.Show(result.Message);
         }
