@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RecipeFinder.BusinessLayer.Lib;
 using RecipeFinder.DataLayer.Models;
 using RecipeFinder.DataLayer.Repositories;
 using System;
@@ -51,7 +52,7 @@ namespace RecipeFinder.Tests.UnitTests
             user.Id = 0;
             user.Username = "user1" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Email = "user1Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Password = "user1Password";
+            user.Password = SecurePasswordHasher.Hash("user1password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
 
@@ -75,7 +76,7 @@ namespace RecipeFinder.Tests.UnitTests
             user.Id = 0;
             user.Username = "user2" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Email = "user2Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Password = "user2Password";
+            user.Password = SecurePasswordHasher.Hash("user2password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
 
@@ -101,7 +102,7 @@ namespace RecipeFinder.Tests.UnitTests
             user.Id = 0;
             user.Username = "user3" + System.Guid.NewGuid().ToString().Substring(0, 6);
             user.Email = "user3Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Password = "user3Password";
+            user.Password = SecurePasswordHasher.Hash("user3password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
 

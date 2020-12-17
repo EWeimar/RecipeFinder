@@ -18,8 +18,6 @@
 
         <Grid Grid.Column="2"/>
 
-        <Label x:Name="lblRecipes" Content="Recipes" HorizontalAlignment="Center" FontSize="25" Foreground="White" Margin="657,57,32,471.4" Width="105"/>
-
         <Grid Height="600" Width="800" Margin="0,0,0,0.4">
 
             <DataGrid Name="grdRecipes" Margin="345,149,33,206" VerticalScrollBarVisibility="Auto" AutoGenerateColumns="False" IsReadOnly="True" SelectedItem="{Binding Path=SelectedRecipe, Mode=TwoWay}">
@@ -29,7 +27,7 @@
 
                     <DataGridTextColumn Header="Title" Width="150" Binding="{Binding Title}"/>
 
-                    <DataGridTextColumn Header="User" Width="100" Binding="{Binding User.Username}"/>                    
+                    <DataGridTextColumn Header="User" Width="100" Binding="{Binding User.Username}"/>
 
                     <DataGridTextColumn Header="Created At" Width="150" Binding="{Binding CreatedAt}"/>
 
@@ -49,11 +47,11 @@
                 </DataGrid.Columns>
 
             </DataGrid>
-            <Button x:Name="btnLogOut" Click="btnLogOut_Click" Content="Log Out" Background="Black" Foreground="White" FontSize="18" Width="120" Height="30" Margin="331,497,349,73"/>
+            <Button x:Name="btnLogOut" Click="btnLogOut_Click" Content="Log Out" Background="Black" Foreground="White" FontSize="18" Width="120" Height="30" Margin="340,497,340,73"/>
+            <Button x:Name="btnCreateRecipe" Click="btnCreateRecipe_Click" Content="Create" Background="#61892F" Foreground="White" Width="120" Height="40" FontSize="18" Margin="647,95,33,465" RenderTransformOrigin="0.486,0.581" />
+            <Label x:Name="lblRecipes" Content="Recipes" HorizontalAlignment="Center" FontSize="25" Foreground="White" Margin="662,51,33,487" Width="105"/>
 
         </Grid>
-
-        <Button Name="btnCreateRecipe" Click="btnCreateRecipe_Click" Content="Create" Background="#61892F" Foreground="White" Width="120" Height="40" FontSize="18" Margin="642,92,32,458.4" />
         <Button Name="btnUpdateRecipe" Click="btnUpdateRecipe_Click" Content="Update" Background="#61892F" Foreground="White" Width="120" Height="40" FontSize="18" Margin="502,411,172,139.4"/>
         <Button Name="btnDeleteRecipe" Click="btnDeleteRecipe_Click" Content="Delete" Background="#FC4445" Foreground="White" Width="120" Height="40" FontSize="18" Margin="642,411,32,139.4"/>
     </Grid>
