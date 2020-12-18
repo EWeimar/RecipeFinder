@@ -5,12 +5,12 @@ using RecipeFinder.DataLayer.Repositories;
 using System;
 using System.Threading.Tasks;
 
-namespace RecipeFinder.Tests.UnitTests
+namespace RecipeFinder.Tests.Repositories
 {
     [TestClass]
     public class UserRepositoryTests
     {
-        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
+        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB_TEST;Integrated Security=True;";
         private static UserRepository userRepository;
 
         [ClassInitialize]
@@ -18,7 +18,7 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             userRepository = new UserRepository(connString);
-
+            DBHelper.CleanDatabase(connString);
         }
 
         [ClassCleanup]
@@ -26,6 +26,7 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             userRepository = null;
+            DBHelper.CleanDatabase(connString);
         }
 
         [TestInitialize]
@@ -50,8 +51,8 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user1" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Email = "user1Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Username = "user1";
+            user.Email = "user1Email";
             user.Password = SecurePasswordHasher.Hash("user1password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -74,8 +75,8 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user2" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Email = "user2Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Username = "user2";
+            user.Email = "user2Email";
             user.Password = SecurePasswordHasher.Hash("user2password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -100,16 +101,16 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user3" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Email = "user3Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Username = "user3";
+            user.Email = "user3Email";
             user.Password = SecurePasswordHasher.Hash("user3password");
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
 
             //Act
             var addResult = await userRepository.AddAsync(user);
-            addResult.Username = "user3Update" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            addResult.Email = "user3EmailUpdate" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            addResult.Username = "user3Update";
+            addResult.Email = "user3EmailUpdate";
             addResult.Password = "user3PasswordUpdate";
             var updateResult = await userRepository.UpdateAsync(addResult);
 
@@ -129,8 +130,8 @@ namespace RecipeFinder.Tests.UnitTests
             //Arrange
             User user = new User();
             user.Id = 0;
-            user.Username = "user4" + System.Guid.NewGuid().ToString().Substring(0, 6);
-            user.Email = "user4Email" + System.Guid.NewGuid().ToString().Substring(0, 6);
+            user.Username = "user4";
+            user.Email = "user4Email";
             user.Password = "user4Password";
             user.IsAdmin = false;
             user.CreatedAt = DateTime.Now;
@@ -141,9 +142,22 @@ namespace RecipeFinder.Tests.UnitTests
             //Assert
             Assert.IsNotNull(addResult);
             var deleteResult = await userRepository.DeleteAsync(addResult.Id);
-            Assert.IsNotNull(deleteResult);
             Assert.AreEqual(1, deleteResult);
-
+            
+            try
+            {
+                var getResult = await userRepository.GetByIdAsync(addResult.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                //Success.
+            }
+            catch (Exception)
+            {
+                //Failure.
+                //This assert statement ensures failure.
+                Assert.AreEqual(1, 2);
+            }
 
         }
 

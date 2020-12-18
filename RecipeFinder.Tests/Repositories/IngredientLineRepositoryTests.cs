@@ -4,12 +4,12 @@ using RecipeFinder.DataLayer.Repositories;
 using System;
 using System.Threading.Tasks;
 
-namespace RecipeFinder.Tests.UnitTests
+namespace RecipeFinder.Tests.Repositories
 {
     [TestClass]
     public class IngredientLineRepositoryTests
     {
-        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
+        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB_TEST;Integrated Security=True;";
         private static IngredientLineRepository ingredientLineRepository;
 
         [ClassInitialize]
@@ -17,7 +17,8 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             ingredientLineRepository = new IngredientLineRepository(connString);
-
+            DBHelper.CleanDatabase(connString);
+            DBHelper.CreateTestData(connString);
         }
 
         [ClassCleanup]
@@ -25,6 +26,7 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             ingredientLineRepository = null;
+            DBHelper.CleanDatabase(connString);
         }
 
         [TestInitialize]
@@ -104,7 +106,6 @@ namespace RecipeFinder.Tests.UnitTests
 
             //Act
             var addResult = await ingredientLineRepository.AddAsync(ingredientLine);
-            addResult.IngredientId = 2;
             addResult.Amount = 5;
             addResult.MeasureUnit = MeasureUnit.Kg;
             var updateResult = await ingredientLineRepository.UpdateAsync(addResult);
@@ -112,7 +113,6 @@ namespace RecipeFinder.Tests.UnitTests
             //Assert
             Assert.AreEqual(1, updateResult);
             var getResult = await ingredientLineRepository.GetByIdAsync(addResult.Id);
-            Assert.AreEqual(2, getResult.IngredientId);
             Assert.AreEqual(5, getResult.Amount);
             Assert.AreEqual(MeasureUnit.Kg, getResult.MeasureUnit);
 
@@ -136,9 +136,22 @@ namespace RecipeFinder.Tests.UnitTests
             //Assert
             Assert.IsNotNull(addResult);
             var deleteResult = await ingredientLineRepository.DeleteAsync(addResult.Id);
-            Assert.IsNotNull(deleteResult);
             Assert.AreEqual(1, deleteResult);
-
+            
+            try
+            {
+                var getResult = await ingredientLineRepository.GetByIdAsync(addResult.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                //Success.
+            }
+            catch (Exception)
+            {
+                //Failure.
+                //This assert statement ensures failure.
+                Assert.AreEqual(1, 2);
+            }
         }
 
         [TestMethod]

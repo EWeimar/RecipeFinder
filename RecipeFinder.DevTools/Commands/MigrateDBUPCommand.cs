@@ -13,8 +13,10 @@ namespace RecipeFinder.DevTools.Commands
     {
         public static void RunCommand() {
             var connectionString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
+            var testConnectionString = @"Data Source=.\SQLExpress;Initial Catalog=RecipeFinderDB_TEST;Integrated Security=True;";
 
             EnsureDatabase.For.SqlDatabase(connectionString);
+            EnsureDatabase.For.SqlDatabase(testConnectionString);
 
             var upgrader =
                 DeployChanges.To
@@ -25,6 +27,16 @@ namespace RecipeFinder.DevTools.Commands
                     .Build();
 
             var result = upgrader.PerformUpgrade();
+
+            var testUpgrader =
+              DeployChanges.To
+                  .SqlDatabase(testConnectionString)
+                  .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                  //.WithScriptsFromFileSystem(@"DatabaseScripts/")
+                  .LogToConsole()
+                  .Build();
+
+            var testResult = testUpgrader.PerformUpgrade();
 
             if (!result.Successful)
             {

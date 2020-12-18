@@ -4,12 +4,12 @@ using RecipeFinder.DataLayer.Repositories;
 using System;
 using System.Threading.Tasks;
 
-namespace RecipeFinder.Tests.UnitTests
+namespace RecipeFinder.Tests.Repositories
 {
     [TestClass]
     public class ImageRepositoryTests
     {
-        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB;Integrated Security=True;";
+        private const string connString = "Data Source=.\\SQLExpress;Initial Catalog=RecipeFinderDB_TEST;Integrated Security=True;";
         private static ImageRepository imageRepository;
 
         [ClassInitialize]
@@ -17,7 +17,8 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             imageRepository = new ImageRepository(connString);
-
+            DBHelper.CleanDatabase(connString);
+            DBHelper.CreateTestData(connString);
         }
 
         [ClassCleanup]
@@ -25,6 +26,7 @@ namespace RecipeFinder.Tests.UnitTests
         {
             //Is run once for all tests in file
             imageRepository = null;
+            DBHelper.CleanDatabase(connString);
         }
 
         [TestInitialize]
@@ -122,9 +124,22 @@ namespace RecipeFinder.Tests.UnitTests
             //Assert
             Assert.IsNotNull(addResult);
             var deleteResult = await imageRepository.DeleteAsync(addResult.Id);
-            Assert.IsNotNull(deleteResult);
             Assert.AreEqual(1, deleteResult);
 
+            try
+            {
+                var getResult = await imageRepository.GetByIdAsync(addResult.Id);
+            }
+            catch (InvalidOperationException)
+            {
+                //Success.
+            }
+            catch (Exception)
+            {
+                //Failure.
+                //This assert statement ensures failure.
+                Assert.AreEqual(1, 2);
+            }
         }
 
         [TestMethod]
