@@ -12,8 +12,6 @@ namespace RecipeFinder.WebClient.Controllers
     {
         public ActionResult Index()
         {
-            //SetFlash(Models.FlashMessageType.Danger, "Hov hov mester.");
-
             ViewBag.recipes = GetAllRecipes();
             return View();
         }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace RecipeFinder.BusinessLayer.Lib
 {
+    
     public static class SecurePasswordHasher
-{
+    {
     /// <summary>
     /// Size of salt.
     /// </summary>

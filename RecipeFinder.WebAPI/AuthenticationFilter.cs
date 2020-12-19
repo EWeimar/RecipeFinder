@@ -11,7 +11,7 @@ using System.Web.Http.Results;
 namespace RecipeFinder.WebAPI
 {
     /**
-     * 
+     * Tutorial used: https://www.youtube.com/watch?v=AUbGk5Ab40A
      */
     public class AuthenticationFilter : AuthorizeAttribute, IAuthenticationFilter
     {

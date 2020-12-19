@@ -5,8 +5,8 @@ using System.Security.Claims;
 
 namespace RecipeFinder.WebAPI
 {
-    /*
-     * https://www.youtube.com/watch?v=AUbGk5Ab40A
+    /**
+     * Tutorial used: https://www.youtube.com/watch?v=AUbGk5Ab40A
      */
     public class TokenManager
     {
